@@ -1,6 +1,6 @@
 /* Не на глазок: кеш приложения. Открытие из кеша без обращения к сети; новая версия скачивается в фоне и применяется по кнопке «Обновить» (или при следующем открытии). */
 'use strict';
-var BUILD='202610291821-49c7f063c4',CACHE='nng-'+BUILD,FONTS='nng-fonts';
+var BUILD='202610292010-2fe14a79be',CACHE='nng-'+BUILD,FONTS='nng-fonts';
 var FILES=['./','index.html','manifest.webmanifest','icon-192.png','icon-512.png','icon-maskable-512.png'];
 self.addEventListener('install',function(e){
   e.waitUntil(caches.open(CACHE).then(function(c){
