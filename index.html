@@ -436,7 +436,7 @@ p.cmsg.bkst{margin:0 0 10px}
 .crow .pn{min-width:0;overflow-wrap:anywhere}
 .crow .num{font:14px var(--font-num);text-align:right;font-variant-numeric:tabular-nums}
 .crow.nop .num{color:var(--bad)}
-@media (max-width:900px){
+@media (max-width:1369px){
   .mrow.mhead{display:none}
   .mrow{grid-template-columns:repeat(3,minmax(0,1fr));grid-template-areas:"mn mn mn" "c p mk" "mg pr fc" "op op op";gap:8px;padding:14px 0}
   .mrow > :nth-child(1){grid-area:mn}.mrow > :nth-child(2){grid-area:c}.mrow > :nth-child(3){grid-area:p}.mrow > :nth-child(4){grid-area:mk}
@@ -553,7 +553,7 @@ p.cmsg.warn{color:var(--warn)}
 .mfold > summary.mfavg .num.inc{color:var(--warn)}
 .mfold > .hint{padding:0 4px}
 .mfold .mrow:first-of-type{border-top:0}
-@media (max-width:900px){
+@media (max-width:1369px){
   .mfold > summary.mfavg{grid-template-columns:repeat(3,minmax(0,1fr));grid-template-areas:"t t t" "c p mk" "mg pr fc";gap:8px;padding-right:12px}
   .mfold > summary.mfavg > :nth-child(1){grid-area:t}.mfold > summary.mfavg > :nth-child(2){grid-area:c}.mfold > summary.mfavg > :nth-child(3){grid-area:p}
   .mfold > summary.mfavg > :nth-child(4){grid-area:mk}.mfold > summary.mfavg > :nth-child(5){grid-area:mg}.mfold > summary.mfavg > :nth-child(6){grid-area:pr}
@@ -1520,7 +1520,7 @@ header.top .whoami{display:inline-flex;align-items:center;padding:0 14px;max-wid
 .mextra[open]>summary::before{content:"−"}
 .mextra .mxbody{padding:4px 0 12px;display:flex;flex-direction:column;gap:6px}
 :root[data-theme="light"]:not([data-accent]) .mextra{background:var(--glass);border:1px solid rgba(255,255,255,.72);box-shadow:var(--sh1)}
-@media (min-width:901px){.mrow:not(.mlite),.mfold>summary.mfavg{grid-template-columns:minmax(0,1.3fr) 104px 104px 84px 84px 84px 76px 172px}}
+@media (min-width:1370px){.mrow:not(.mlite),.mfold>summary.mfavg{grid-template-columns:minmax(0,1.3fr) 104px 104px 84px 84px 84px 76px 172px}}
 /* окно просмотра ТТК */
 .tvlock{overflow:hidden}
 .tvover{position:fixed;inset:0;z-index:90;background:rgba(47,62,70,.42);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:20px}
@@ -1571,6 +1571,32 @@ header.top .whoami{display:inline-flex;align-items:center;padding:0 14px;max-wid
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 :root[data-theme="light"]:not([data-accent]) .tvbox{background:rgba(255,255,255,.84);-webkit-backdrop-filter:blur(24px) saturate(1.2);backdrop-filter:blur(24px) saturate(1.2);border-radius:26px}
 :root[data-theme="light"]:not([data-accent]) .tvsum{background:rgba(227,238,234,.7)}
+
+/* главная по роли */
+.hmrole .hmch{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}.hmsub{color:var(--ink-2);font-size:13px}
+.hmtasks{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:8px}
+.hmtask{display:flex;align-items:center;gap:12px;padding:8px 10px 8px 12px;border:1px solid var(--line);border-radius:14px;background:var(--dense)}
+.hmtask b{font-size:26px;line-height:1;min-width:30px;color:var(--ink-2)}.hmtask.has b{color:var(--accent)}
+.hmtask span{flex:1;font-size:14px;display:flex;flex-direction:column}.hmtask small{color:var(--ink-2);font-size:12px}
+.hmtask .btn{min-height:36px;white-space:nowrap}.hmz{font-style:normal;color:var(--good);padding:0 8px}
+/* массовое обновление разделов ТТК */
+.tbtab{max-height:360px;overflow:auto;border:1px solid var(--line);border-radius:12px;background:var(--dense);margin-top:8px}
+.tbtab table{width:100%;border-collapse:collapse;font-size:13px}.tbtab th,.tbtab td{padding:6px 8px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+.tbtab th{position:sticky;top:0;background:var(--dense);z-index:1}.tbtab td small{display:block;color:var(--ink-2)}
+.tbtab td:nth-child(3){color:var(--ink-2)}
+#tbBox .chkl{justify-content:flex-start}#tbBox .chkl input{width:auto;flex:none;margin:0}#tbBox>summary{cursor:pointer}
+
+#syBulk del{background:rgba(235,174,183,.45);text-decoration:none;border-radius:3px;padding:0 2px}#syBulk ins{background:rgba(94,139,126,.28);text-decoration:none;border-radius:3px;padding:0 2px;font-weight:600}
+
+/* тестовая версия */
+html.testmode body{padding-top:34px}
+#testBar{position:fixed;top:0;left:0;right:0;height:34px;z-index:300;display:flex;align-items:center;gap:12px;padding:0 12px;background:#b45309;color:#fff;font-size:13px;overflow:hidden;white-space:nowrap}
+#testBar b{letter-spacing:.02em}#testBar span{opacity:.92;overflow:hidden;text-overflow:ellipsis;min-width:0;flex:1}
+#testBar button{flex:none;min-height:24px;padding:0 10px;border:1px solid rgba(255,255,255,.7);border-radius:8px;background:rgba(255,255,255,.14);color:#fff;font:inherit;cursor:pointer}
+html.testmode .tabs{top:82px}
+#testBar u{text-decoration:none}#testBar i{font-style:normal}#testBar .sh{display:none}
+@media (max-width:999px){html.testmode .tabs{top:auto}#testBar span{display:none}#testBar{justify-content:space-between}}
+@media (max-width:560px){#testBar u,#testBar .lg{display:none}#testBar .sh{display:inline}#testBar{padding:0 8px;gap:6px}#testBar button{padding:0 8px}}
 </style>
 <script id="skinBoot">try{var d=document.documentElement,a=localStorage.getItem('kbzhu:accent'),t=localStorage.getItem('kbzhu:theme');if(a&&a!=='mint')d.setAttribute('data-accent',a);if(t==='dark')d.setAttribute('data-theme','dark');else if(t!=='auto')d.setAttribute('data-theme','light');}catch(e){document.documentElement.setAttribute('data-theme','light');}</script>
 
@@ -1628,7 +1654,7 @@ header.top .whoami{display:inline-flex;align-items:center;padding:0 14px;max-wid
 <input type="file" id="syUpFile" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" multiple hidden>
 <div class="toast-wrap" aria-live="polite"><div class="toast" id="toast"></div></div>
 
-<script>window.KBZHU_PWA=1;window.KBZHU_SEED={"ings":{"baton":{"c":51.4,"f":2.9,"kind":"label","name":"Батон нарезной (хлеб пшеничный)","p":7.5,"source":"Этикетка: Батон нарезной, ООО «Сергиево-Посадский хлебокомбинат», 265 ккал на 100 г (фото пользователя)","aliases":["хлеб пшеничный"]},"file-kurinoe":{"c":0,"f":1.8,"kind":"table","loss":{"bake":20,"boil":25,"cold":2,"fry":20,"stew":30},"name":"Филе грудки ц/б с/м","p":22.3,"source":"Таблица пользователя: «Филе грудки ц/б с/м» принято как «Филе куриное» из ТТК №14 (ккал в таблице: 105)","aliases":["филе куриное зам","филе грудки ц б с м вес"]},"luk":{"c":8.2,"f":0.2,"kind":"table","loss":{"bake":10,"boil":null,"cold":0,"fry":30,"stew":15},"name":"Лук репчатый очищ. вак.","p":1.4,"source":"Таблица пользователя (ккал в таблице: 41)","aliases":["лук репчатый свеж цел очищ вак","лук репчатый свеж цел очищ вес вак"]},"maslo-podsolnechnoe":{"c":0,"f":99.9,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Масло подсолнечное раф.","p":0,"source":"Таблица пользователя (ккал в таблице: 899)","aliases":["масло подсолнечное раф дез","масло подсолнечное для смазки листов","масло подсолнечное раф дез фас пл бут"]},"perets":{"c":38.6,"f":3.3,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Перец черный молотый","p":10,"source":"Таблица пользователя (ккал в таблице: 251)","aliases":["перец черный молотый","перец черный молотый фас 50г бум пак"]},"shea-govyadina":{"c":0,"f":7,"kind":"estimate","name":"Шея говяжья","p":20,"source":"Ориентир: значение для постной говядины, не сверено. Жирность шеи сильно влияет на результат, например 18,9 / 12,4 для более жирной","aliases":["шея говяжья зам"]},"sol":{"c":0,"f":0,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Соль поваренная","p":0,"source":"Таблица пользователя (ккал в таблице: 0)","aliases":["соль поваренная пищевая","соль поваренная пищевая помол 1 вес"]},"tbl-001":{"c":51,"f":1.5,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Багет","p":7.5,"source":"Таблица пользователя (ккал в таблице: 260)"},"tbl-002":{"c":0.8,"f":1.1,"kind":"table","loss":{"bake":10,"boil":20,"cold":45,"fry":null,"stew":null},"name":"Креветки (замороженные)","p":18.2,"source":"Таблица пользователя (ккал в таблице: 87)"},"tbl-003":{"c":3.5,"f":30,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Сыр Креметто","p":6,"source":"Таблица пользователя (ккал в таблице: 310)"},"tbl-004":{"c":3.3,"f":2,"kind":"table","loss":{"bake":10,"boil":15,"cold":30,"fry":null,"stew":10},"name":"Мидии (замороженные)","p":11.5,"source":"Таблица пользователя (ккал в таблице: 77)"},"tbl-005":{"c":4,"f":0.4,"kind":"table","loss":{"bake":null,"boil":null,"cold":5,"fry":null,"stew":null},"name":"Микрозелень","p":2.5,"source":"Таблица пользователя (ккал в таблице: 30)"},"tbl-006":{"c":3.8,"f":0.2,"kind":"table","loss":{"bake":10,"boil":null,"cold":2,"fry":null,"stew":null},"name":"Помидоры черри","p":1.1,"source":"Таблица пользователя (ккал в таблице: 24)"},"tbl-007":{"c":0,"f":90,"kind":"table","loss":{"bake":null,"boil":null,"cold":2,"fry":null,"stew":null},"name":"Сало соленое","p":1.4,"source":"Таблица пользователя (ккал в таблице: 816)"},"tbl-008":{"c":0,"f":31,"kind":"table","loss":{"bake":35,"boil":35,"cold":15,"fry":35,"stew":40},"name":"Свинина (шея)","p":13.6,"source":"Таблица пользователя (ккал в таблице: 334)"},"tbl-009":{"c":0,"f":23,"kind":"table","loss":{"bake":30,"boil":35,"cold":30,"fry":30,"stew":40},"name":"Свиные ребра","p":14.5,"source":"Таблица пользователя (ккал в таблице: 265)"},"tbl-010":{"c":0,"f":1,"kind":"table","loss":{"bake":20,"boil":20,"cold":40,"fry":25,"stew":20},"name":"Тунец","p":23,"source":"Таблица пользователя (ккал в таблице: 101)"},"tbl-011":{"c":0,"f":32,"kind":"table","loss":{"bake":null,"boil":null,"cold":null,"fry":null,"stew":null},"name":"Шпроты консервированные","p":17.5,"source":"Таблица пользователя (ккал в таблице: 363)"},"tbl-012":{"c":14,"f":0.2,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Ананас конс. фас ж/б","p":0.4,"source":"Таблица пользователя (ккал в таблице: 60)"},"tbl-013":{"c":8.1,"f":0.2,"kind":"table","loss":{"bake":null,"boil":null,"cold":30,"fry":null,"stew":null},"name":"Апельсин","p":0.9,"source":"Таблица пользователя (ккал в таблице: 36)"},"tbl-014":{"c":4.5,"f":0.1,"kind":"table","loss":{"bake":20,"boil":null,"cold":10,"fry":20,"stew":15},"name":"Баклажан свежий","p":1.2,"source":"Таблица пользователя (ккал в таблице: 24)","aliases":["баклажан свеж цел н очищ н мыт вес"]},"tbl-015":{"c":7.5,"f":6,"kind":"table","loss":{"bake":5,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Бешамель №649","p":3.5,"source":"Таблица пользователя (ккал в таблице: 96)"},"tbl-016":{"c":0.3,"f":0.5,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Бульон куриный","p":2,"source":"Таблица пользователя (ккал в таблице: 15)"},"tbl-017":{"c":12.6,"f":0.1,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Ванилин фас 1,5г","p":0.1,"source":"Таблица пользователя (ккал в таблице: 51)","aliases":["ванилин фас 1 5г п п"]},"tbl-018":{"c":32,"f":4.5,"kind":"table","loss":{"bake":null,"boil":10,"cold":0,"fry":8,"stew":null},"name":"Вареники с картофелем зам.","p":5.5,"source":"Таблица пользователя (ккал в таблице: 190)","aliases":["вареники с картофелем замор вес"]},"tbl-019":{"c":33,"f":4,"kind":"table","loss":{"bake":null,"boil":10,"cold":0,"fry":8,"stew":null},"name":"Вареники с картофелем и луком зам.","p":5,"source":"Таблица пользователя (ккал в таблице: 188)","aliases":["вареники с картофелем и луком зам вес"]},"tbl-020":{"c":30,"f":7,"kind":"table","loss":{"bake":null,"boil":10,"cold":0,"fry":8,"stew":null},"name":"Вареники с творогом зам.","p":9,"source":"Таблица пользователя (ккал в таблице: 218)","aliases":["вареники с творогом зам вес"]},"tbl-021":{"c":1.5,"f":18,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Ветчина свиная \"Закусочная\"","p":14,"source":"Таблица пользователя (ккал в таблице: 224)","aliases":["ветчина свиная закусочная вес"]},"tbl-022":{"c":10.5,"f":0.3,"kind":"table","loss":{"bake":null,"boil":null,"cold":10,"fry":null,"stew":null},"name":"Вишня замор. цел.","p":0.8,"source":"Таблица пользователя (ккал в таблице: 50)","aliases":["вишня замор цел вес"]},"tbl-023":{"c":0,"f":14,"kind":"table","loss":{"bake":35,"boil":38,"cold":2,"fry":35,"stew":40},"name":"Говядина лопатка б/к с/м","p":18.6,"source":"Таблица пользователя (ккал в таблице: 200)","aliases":["говядина лопатка б к с м фас"]},"tbl-024":{"c":0,"f":6,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Горбуша в с/с конс.","p":20,"source":"Таблица пользователя (ккал в таблице: 134)","aliases":["горбуша в собственном соку конс фас 250г ж б"]},"tbl-025":{"c":49,"f":1.2,"kind":"table","loss":{"bake":null,"boil":100,"cold":0,"fry":null,"stew":null},"name":"Горох шлифованный колотый","p":23,"source":"Таблица пользователя (ккал в таблице: 299)","aliases":["горох шлифованный колотый 1с вес"]},"tbl-026":{"c":6.5,"f":0.2,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Горошек зеленый конс.","p":3.1,"source":"Таблица пользователя (ккал в таблице: 40)","aliases":["горошек зеленый конс фас ж б"]},"tbl-027":{"c":12,"f":6.4,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Горчица","p":5.7,"source":"Таблица пользователя (ккал в таблице: 128)","aliases":["горчица вес а"]},"tbl-028":{"c":0.4,"f":0.5,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Грибы резаные конс.","p":2.5,"source":"Таблица пользователя (ккал в таблице: 21)","aliases":["грибы резаные конс фас ж б"]},"tbl-029":{"c":0,"f":5,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Грудка куриная копченая","p":18,"source":"Таблица пользователя (ккал в таблице: 117)","aliases":["грудка куриная копченая вес"]},"tbl-030":{"c":3,"f":17,"kind":"table","loss":{"bake":null,"boil":null,"cold":5,"fry":null,"stew":35},"name":"Гуляш из говядины с/м","p":15,"source":"Таблица пользователя (ккал в таблице: 225)","aliases":["гуляш из говядины с м вес"]},"tbl-031":{"c":62,"f":0,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Джем \"Абрикос\"","p":0.5,"source":"Таблица пользователя (ккал в таблице: 250)","aliases":["джем абрикос конс вес"]},"tbl-032":{"c":63,"f":0,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Джем \"Вишня\"","p":0.4,"source":"Таблица пользователя (ккал в таблице: 252)","aliases":["джем вишня конс вес"]},"tbl-033":{"c":62.5,"f":0,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Джем в ассортименте","p":0.5,"source":"Таблица пользователя (ккал в таблице: 251)","aliases":["джем в ассортименте конс вес"]},"tbl-034":{"c":26,"f":5,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":12,"stew":null},"name":"Дольки (картофельные, зам.)","p":2.3,"source":"Таблица пользователя (ккал в таблице: 160)","aliases":["дольки"]},"tbl-035":{"c":12,"f":5,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Дрожжи хлебопекарные сухие","p":40,"source":"Таблица пользователя (ккал в таблице: 253)","aliases":["дрожжи хлебопекарные сух вес п п"]},"tbl-036":{"c":0.7,"f":0.4,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Желатин","p":87.2,"source":"Таблица пользователя (ккал в таблице: 355)"},"tbl-037":{"c":30,"f":12,"kind":"table","loss":{"bake":15,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Закрытая пицца с курицей и сыром зам.","p":10,"source":"Таблица пользователя (ккал в таблице: 270)","aliases":["закрытая пицца с курицей и сыром 100г зам"]},"tbl-038":{"c":5,"f":25,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Заправка с-т Класич ТТК979","p":1,"source":"Таблица пользователя (ккал в таблице: 240)"},"tbl-039":{"c":8,"f":8,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Зернистая горчица","p":6.5,"source":"Таблица пользователя (ккал в таблице: 130)"},"tbl-040":{"c":17,"f":22,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Зира","p":17.8,"source":"Таблица пользователя (ккал в таблице: 333)","aliases":["зира фас бум пак"]},"tbl-041":{"c":0,"f":15,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Икра лососевая зернистая","p":32,"source":"Таблица пользователя (ккал в таблице: 263)","aliases":["икра лососевая зернистая а"]},"tbl-042":{"c":4.6,"f":0.3,"kind":"table","loss":{"bake":20,"boil":null,"cold":15,"fry":20,"stew":15},"name":"Кабачок свежий","p":0.6,"source":"Таблица пользователя (ккал в таблице: 24)","aliases":["кабачок свеж цел н очищ н мыт вес"]},"tbl-043":{"c":0,"f":2.2,"kind":"table","loss":{"bake":null,"boil":20,"cold":30,"fry":25,"stew":null},"name":"Кальмар с/м","p":18,"source":"Таблица пользователя (ккал в таблице: 92)","aliases":["кальмар с м вес а"]},"tbl-044":{"c":4,"f":0.4,"kind":"table","loss":{"bake":15,"boil":10,"cold":5,"fry":15,"stew":10},"name":"Капуста брокколи с/м","p":2.8,"source":"Таблица пользователя (ккал в таблице: 28)","aliases":["капуста брокколи с м рез очищ вес"]},"tbl-045":{"c":2.2,"f":0,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Капуста квашеная","p":1.8,"source":"Таблица пользователя (ккал в таблице: 19)","aliases":["капуста кваш фас ведро"]},"tbl-046":{"c":5.1,"f":0,"kind":"table","loss":{"bake":10,"boil":null,"cold":20,"fry":null,"stew":10},"name":"Капуста краснокочанная свеж.","p":1.3,"source":"Таблица пользователя (ккал в таблице: 26)","aliases":["капуста краснокочанная свеж цел н очищ н мыт вес"]},"tbl-047":{"c":3,"f":0.2,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Капуста морская","p":0.9,"source":"Таблица пользователя (ккал в таблице: 18)"},"tbl-048":{"c":2,"f":0.2,"kind":"table","loss":{"bake":null,"boil":null,"cold":20,"fry":null,"stew":null},"name":"Капуста пекинская свеж.","p":1.2,"source":"Таблица пользователя (ккал в таблице: 16)","aliases":["капуста пекинская свеж цел н очищ н мыт вес"]},"tbl-049":{"c":4.7,"f":0.1,"kind":"table","loss":{"bake":15,"boil":10,"cold":20,"fry":20,"stew":15},"name":"Капуста свежая белокочанная","p":1.8,"source":"Таблица пользователя (ккал в таблице: 27)","aliases":["капуста свеж цел н очищ н мыт вес"]},"tbl-050":{"c":3.5,"f":0.3,"kind":"table","loss":{"bake":15,"boil":12,"cold":10,"fry":20,"stew":12},"name":"Капуста цветная с/м","p":2.5,"source":"Таблица пользователя (ккал в таблице: 26)","aliases":["капуста цветная с м рез очищ мыт вес"]},"tbl-051":{"c":16.3,"f":0.4,"kind":"table","loss":{"bake":20,"boil":10,"cold":28,"fry":30,"stew":15},"name":"Картофель свежий","p":2,"source":"Таблица пользователя (ккал в таблице: 77)","aliases":["картофель свеж цел н очищ н мыт вес"]},"tbl-052":{"c":16.3,"f":0.4,"kind":"table","loss":{"bake":20,"boil":10,"cold":0,"fry":30,"stew":15},"name":"Картофель свежий очищ. вак.","p":2,"source":"Таблица пользователя (ккал в таблице: 77)","aliases":["картофель свеж цел очищ вес вак"]},"tbl-053":{"c":26,"f":5,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":12,"stew":null},"name":"Картофельные дольки (зам.)","p":2.3,"source":"Таблица пользователя (ккал в таблице: 160)","aliases":["картофельные дольки"]},"tbl-054":{"c":5,"f":0,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Квас","p":0.2,"source":"Таблица пользователя (ккал в таблице: 20)","aliases":["квас фас пл бут"]},"tbl-055":{"c":23,"f":0.2,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Кетчуп томатный","p":1.7,"source":"Таблица пользователя (ккал в таблице: 101)","aliases":["кетчуп томатный вес"]},"tbl-056":{"c":3.7,"f":0.5,"kind":"table","loss":{"bake":null,"boil":null,"cold":15,"fry":null,"stew":null},"name":"Кинза свежая","p":2.1,"source":"Таблица пользователя (ккал в таблице: 27)","aliases":["кинза свеж цел н очищ н мыт вес"]},"tbl-057":{"c":13,"f":18,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Кориандр сушёный","p":12,"source":"Таблица пользователя (ккал в таблице: 262)","aliases":["кориандр суш фас пач"]},"tbl-058":{"c":27.5,"f":1.2,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Корица молотая","p":3.9,"source":"Таблица пользователя (ккал в таблице: 247)","aliases":["корица молотая вес"]},"tbl-059":{"c":0,"f":4,"kind":"table","loss":{"bake":null,"boil":null,"cold":100,"fry":null,"stew":null},"name":"Кость говяжья с/м","p":2.5,"source":"Таблица пользователя (ккал в таблице: 46)","aliases":["кость говяжья с м вес"]},"tbl-060":{"c":0,"f":5,"kind":"table","loss":{"bake":null,"boil":null,"cold":100,"fry":null,"stew":null},"name":"Кость куриная с/м","p":3,"source":"Таблица пользователя (ккал в таблице: 57)","aliases":["кость куриная с м вес"]},"tbl-061":{"c":0,"f":4.5,"kind":"table","loss":{"bake":null,"boil":null,"cold":100,"fry":null,"stew":null},"name":"Кость пищевая с/м","p":2.8,"source":"Таблица пользователя (ккал в таблице: 52)","aliases":["кость пищевая с м вес"]},"tbl-062":{"c":15,"f":4,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Крабовые палочки зам.","p":7,"source":"Таблица пользователя (ккал в таблице: 124)","aliases":["крабовые палочки зам кор"]},"tbl-063":{"c":0,"f":0,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Краситель пищевой","p":0,"source":"Таблица пользователя (ккал в таблице: 0)","aliases":["краситель пищевой вес пач"]},"tbl-064":{"c":79.6,"f":0,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Крахмал","p":0.1,"source":"Таблица пользователя (ккал в таблице: 318)","aliases":["крахмал сух вес"]},"tbl-065":{"c":69,"f":1.3,"kind":"table","loss":{"bake":null,"boil":100,"cold":0,"fry":null,"stew":null},"name":"Крупа булгур","p":12.3,"source":"Таблица пользователя (ккал в таблице: 342)","aliases":["крупа булгур фас пач"]},"tbl-066":{"c":62.1,"f":3.3,"kind":"table","loss":{"bake":null,"boil":100,"cold":0,"fry":null,"stew":null},"name":"Крупа гречневая ядрица","p":12.6,"source":"Таблица пользователя (ккал в таблице: 335)","aliases":["крупа гречневая ядрица вес"]},"tbl-067":{"c":60,"f":6,"kind":"table","loss":{"bake":null,"boil":100,"cold":0,"fry":null,"stew":null},"name":"Крупа овсяная","p":12,"source":"Таблица пользователя (ккал в таблице: 342)","aliases":["крупа овсяная вес а"]},"tbl-068":{"c":66,"f":1.1,"kind":"table","loss":{"bake":null,"boil":100,"cold":0,"fry":null,"stew":null},"name":"Крупа перловая","p":9.3,"source":"Таблица пользователя (ккал в таблице: 315)","aliases":["крупа перловая 1с вес"]},"tbl-069":{"c":66.5,"f":3.8,"kind":"table","loss":{"bake":null,"boil":100,"cold":0,"fry":null,"stew":null},"name":"Крупа пшено","p":11.5,"source":"Таблица пользователя (ккал в таблице: 348)","aliases":["крупа пшено 1с вес а"]},"tbl-070":{"c":74,"f":1,"kind":"table","loss":{"bake":null,"boil":100,"cold":0,"fry":null,"stew":null},"name":"Крупа рисовая","p":7,"source":"Таблица пользователя (ккал в таблице: 333)","aliases":["крупа рисовая вес"]},"tbl-071":{"c":22,"f":1.5,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Кукуруза конс.","p":2.5,"source":"Таблица пользователя (ккал в таблице: 112)","aliases":["кукуруза конс фас ж б"]},"tbl-072":{"c":12.2,"f":48.7,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Кунжут белый","p":19.4,"source":"Таблица пользователя (ккал в таблице: 565)","aliases":["кунжут белый вес а"]},"tbl-073":{"c":1.5,"f":20,"kind":"table","loss":{"bake":20,"boil":10,"cold":0,"fry":25,"stew":20},"name":"Купат куриный","p":13,"source":"Таблица пользователя (ккал в таблице: 238)"},"tbl-074":{"c":1,"f":28,"kind":"table","loss":{"bake":20,"boil":10,"cold":0,"fry":25,"stew":20},"name":"Купат свиной","p":11.5,"source":"Таблица пользователя (ккал в таблице: 302)"},"tbl-075":{"c":44,"f":3,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Куркума молотая","p":8,"source":"Таблица пользователя (ккал в таблице: 235)","aliases":["куркума молотая вес"]},"tbl-076":{"c":48.5,"f":8.2,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Лавровый лист","p":7.6,"source":"Таблица пользователя (ккал в таблице: 313)","aliases":["лавровый лист сух фас 20г бум пак"]},"tbl-077":{"c":3,"f":0.1,"kind":"table","loss":{"bake":null,"boil":null,"cold":40,"fry":null,"stew":null},"name":"Лимон","p":0.9,"source":"Таблица пользователя (ккал в таблице: 16)"},"tbl-078":{"c":0,"f":0,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Лимонная кислота","p":0,"source":"Таблица пользователя (ккал в таблице: 0)","aliases":["лимонная кислота сух фас 50г бум пак"]},"tbl-079":{"c":0,"f":8.1,"kind":"table","loss":{"bake":20,"boil":20,"cold":35,"fry":25,"stew":null},"name":"Лосось с/м","p":20,"source":"Таблица пользователя (ккал в таблице: 153)","aliases":["лось см"]},"tbl-080":{"c":0,"f":12,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Лосось слабосоленый (СС)","p":22,"source":"Таблица пользователя (ккал в таблице: 202)","aliases":["лось сс"]},"tbl-081":{"c":3.5,"f":0.1,"kind":"table","loss":{"bake":null,"boil":null,"cold":20,"fry":null,"stew":null},"name":"Лук зеленый свежий","p":1.3,"source":"Таблица пользователя (ккал в таблице: 20)","aliases":["лук зеленый свеж цел н очищ н мыт вес"]},"tbl-082":{"c":8.2,"f":0.2,"kind":"table","loss":{"bake":10,"boil":null,"cold":16,"fry":30,"stew":15},"name":"Лук репчатый свежий","p":1.4,"source":"Таблица пользователя (ккал в таблице: 41)","aliases":["лук репчатый свеж цел н очищ н мыт вес"]},"tbl-084":{"c":30,"f":8,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":15,"stew":null},"name":"Луковые кольца (зам.)","p":3,"source":"Таблица пользователя (ккал в таблице: 200)","aliases":["луковые кольца"]},"tbl-085":{"c":3,"f":67,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Майонез","p":1.1,"source":"Таблица пользователя (ккал в таблице: 619)","aliases":["майонез фас 760г ведро а"]},"tbl-086":{"c":23.8,"f":41,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Мак пищевой","p":17.5,"source":"Таблица пользователя (ккал в таблице: 536)","aliases":["мак пищевой вес"]},"tbl-087":{"c":70,"f":2,"kind":"table","loss":{"bake":null,"boil":100,"cold":0,"fry":null,"stew":null},"name":"Макароны \"Лапша домашняя\"","p":11,"source":"Таблица пользователя (ккал в таблице: 340)","aliases":["макаронные изделия лапша домашняя вес"]},"tbl-088":{"c":72,"f":1.1,"kind":"table","loss":{"bake":null,"boil":100,"cold":0,"fry":null,"stew":null},"name":"Макароны (бантики)","p":10.4,"source":"Таблица пользователя (ккал в таблице: 337)","aliases":["макаронные изделия бантики вес"]},"tbl-089":{"c":74,"f":1,"kind":"table","loss":{"bake":null,"boil":100,"cold":0,"fry":null,"stew":null},"name":"Макароны (вермишель)","p":10,"source":"Таблица пользователя (ккал в таблице: 345)","aliases":["макаронные изделия вермишель вес а"]},"tbl-090":{"c":71,"f":1.2,"kind":"table","loss":{"bake":null,"boil":100,"cold":0,"fry":null,"stew":null},"name":"Макароны (рожки, перья)","p":10.5,"source":"Таблица пользователя (ккал в таблице: 338)","aliases":["макаронные изделия рожки перья вес а"]},"tbl-091":{"c":72.5,"f":1.1,"kind":"table","loss":{"bake":null,"boil":100,"cold":0,"fry":null,"stew":null},"name":"Макароны (спагетти)","p":10.5,"source":"Таблица пользователя (ккал в таблице: 341)","aliases":["макаронные изделия спагетти вес а"]},"tbl-092":{"c":1,"f":60,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Маргарин столовый 60%","p":0.5,"source":"Таблица пользователя (ккал в таблице: 546)","aliases":["маргарин столовый вес 60"]},"tbl-093":{"c":5.5,"f":16,"kind":"table","loss":{"bake":null,"boil":null,"cold":10,"fry":null,"stew":null},"name":"Маслины конс.","p":1.8,"source":"Таблица пользователя (ккал в таблице: 175)","aliases":["маслины конс фас 400г ж б"]},"tbl-094":{"c":0,"f":99.9,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Масло горчичное","p":0,"source":"Таблица пользователя (ккал в таблице: 899)","aliases":["масло горчичное фас пл бут"]},"tbl-096":{"c":1.3,"f":72.5,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Масло сладко-сливочное 72,5%","p":0.8,"source":"Таблица пользователя (ккал в таблице: 665)","aliases":["масло сладко сливочное н сол вес 72 5"]},"tbl-097":{"c":80.2,"f":0,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Мед","p":0.8,"source":"Таблица пользователя (ккал в таблице: 328)","aliases":["мед вес а"]},"tbl-098":{"c":0,"f":0.9,"kind":"table","loss":{"bake":15,"boil":20,"cold":45,"fry":20,"stew":null},"name":"Минтай б/г с/м","p":15.9,"source":"Таблица пользователя (ккал в таблице: 72)","aliases":["минтай б г с м фас а"]},"tbl-099":{"c":4.7,"f":2.5,"kind":"table","loss":{"bake":null,"boil":5,"cold":0,"fry":null,"stew":null},"name":"Молоко питьевое 2,5%","p":2.8,"source":"Таблица пользователя (ккал в таблице: 53)","aliases":["молоко питьевое фас 2 5"]},"tbl-100":{"c":56,"f":8,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Молоко сгущеное 7%","p":6.8,"source":"Таблица пользователя (ккал в таблице: 324)","aliases":["молоко сгущеное вес пл бут 7"]},"tbl-101":{"c":4.7,"f":3.2,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Молоко ультрапаст. 3,2%","p":3,"source":"Таблица пользователя (ккал в таблице: 59)","aliases":["молоко ультрапастеризованное нормализованное фас 3 2"]},"tbl-102":{"c":6.9,"f":0.1,"kind":"table","loss":{"bake":20,"boil":8,"cold":0,"fry":30,"stew":20},"name":"Морковь свеж. очищ. вак.","p":1.3,"source":"Таблица пользователя (ккал в таблице: 34)","aliases":["морковь свеж цел очищ вес вак"]},"tbl-103":{"c":70,"f":1.1,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Мука пшеничная в/с","p":10.3,"source":"Таблица пользователя (ккал в таблице: 332)","aliases":["мука пшеничная хлебопекарная в с вес а"]},"tbl-104":{"c":4.5,"f":7,"kind":"table","loss":{"bake":null,"boil":null,"cold":5,"fry":null,"stew":null},"name":"Облепиха с/м","p":0.9,"source":"Таблица пользователя (ккал в таблице: 80)","aliases":["облепиха вес с м цел"]},"tbl-105":{"c":2.5,"f":0.1,"kind":"table","loss":{"bake":null,"boil":null,"cold":5,"fry":null,"stew":null},"name":"Огурец свежий","p":0.8,"source":"Таблица пользователя (ккал в таблице: 14)","aliases":["огурец свеж цел н очищ н мыт вес"]},"tbl-106":{"c":1.2,"f":0,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Огурец солёный","p":0.8,"source":"Таблица пользователя (ккал в таблице: 11)","aliases":["огурец сол цел фас ведро"]},"tbl-107":{"c":0,"f":8,"kind":"table","loss":{"bake":20,"boil":30,"cold":8,"fry":25,"stew":30},"name":"Окорочок куриный б/к","p":17.5,"source":"Таблица пользователя (ккал в таблице: 142)","aliases":["ококорок куриный б к"]},"tbl-108":{"c":34,"f":13,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Паприка красная сладкая","p":14,"source":"Таблица пользователя (ккал в таблице: 309)","aliases":["паприка красная сладкая вес"]},"tbl-109":{"c":73,"f":1,"kind":"table","loss":{"bake":null,"boil":100,"cold":0,"fry":null,"stew":null},"name":"Паста \"Ризони\"","p":10,"source":"Таблица пользователя (ккал в таблице: 340)"},"tbl-110":{"c":18,"f":0.2,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Паста томатная конс.","p":4.8,"source":"Таблица пользователя (ккал в таблице: 99)","aliases":["паста томатная конс фас 1000г с б"]},"tbl-111":{"c":5.3,"f":0.1,"kind":"table","loss":{"bake":15,"boil":null,"cold":25,"fry":10,"stew":10},"name":"Перец болгарский красный свеж.","p":1.3,"source":"Таблица пользователя (ккал в таблице: 27)","aliases":["перец болгарский красный свеж цел н очищ н мыт вес"]},"tbl-112":{"c":30,"f":17,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Перец красный молотый","p":12,"source":"Таблица пользователя (ккал в таблице: 321)","aliases":["перец красный молотый фас бум пак кг"]},"tbl-114":{"c":6.3,"f":0.4,"kind":"table","loss":{"bake":null,"boil":null,"cold":20,"fry":null,"stew":null},"name":"Петрушка свежая","p":3.7,"source":"Таблица пользователя (ккал в таблице: 47)","aliases":["петрушка свеж цел н очищ н мыт вес"]},"tbl-115":{"c":4.7,"f":3.1,"kind":"table","loss":{"bake":30,"boil":35,"cold":5,"fry":30,"stew":35},"name":"Печень говяжья с/м","p":17.4,"source":"Таблица пользователя (ккал в таблице: 116)","aliases":["печень говяжья цел с м фас"]},"tbl-116":{"c":1.5,"f":5,"kind":"table","loss":{"bake":25,"boil":30,"cold":5,"fry":25,"stew":30},"name":"Печень куриная зам.","p":19,"source":"Таблица пользователя (ккал в таблице: 128)","aliases":["печень куриная зам вес"]},"tbl-117":{"c":38,"f":15,"kind":"table","loss":{"bake":10,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Пирожок слоеный с яблоком/апельсином 100г","p":4.5,"source":"Таблица пользователя (ккал в таблице: 305)","aliases":["пирожок слоеный с яблоком и апельсином 100г зам"]},"tbl-118":{"c":64,"f":0,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Повидло","p":0.4,"source":"Таблица пользователя (ккал в таблице: 256)","aliases":["повидло вес"]},"tbl-119":{"c":3.9,"f":0.2,"kind":"table","loss":{"bake":15,"boil":null,"cold":2,"fry":null,"stew":5},"name":"Помидор свежий","p":0.9,"source":"Таблица пользователя (ккал в таблице: 22)","aliases":["помидор свеж цел н очищ н мыт вес"]},"tbl-120":{"c":95,"f":0.5,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Посыпка кондитерская","p":0.5,"source":"Таблица пользователя (ккал в таблице: 380)"},"tbl-121":{"c":45,"f":5,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Приправа для плова","p":10,"source":"Таблица пользователя (ккал в таблице: 265)","aliases":["приправа для плова суш фас пач"]},"tbl-122":{"c":30,"f":14,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Приправа карри","p":13,"source":"Таблица пользователя (ккал в таблице: 298)","aliases":["приправа карри молотая вес"]},"tbl-123":{"c":35,"f":4,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Приправа Хмели-Сунели","p":8,"source":"Таблица пользователя (ккал в таблице: 208)","aliases":["приправа хмели сунели суш фас пач"]},"tbl-124":{"c":25,"f":7,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Прованские травы","p":5,"source":"Таблица пользователя (ккал в таблице: 183)","aliases":["прованские травы сушеные вес"]},"tbl-125":{"c":3,"f":20,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Продукт плавленный","p":12,"source":"Таблица пользователя (ккал в таблице: 240)","aliases":["продукт плавленный фас пач а"]},"tbl-126":{"c":30,"f":0,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Разрыхлитель теста","p":0.1,"source":"Таблица пользователя (ккал в таблице: 120)","aliases":["разрыхлитель теста фас пач"]},"tbl-127":{"c":3.4,"f":0.1,"kind":"table","loss":{"bake":null,"boil":null,"cold":20,"fry":null,"stew":null},"name":"Редис свежий","p":1.2,"source":"Таблица пользователя (ккал в таблице: 19)","aliases":["редис свеж цел н очищ н мыт вес"]},"tbl-128":{"c":0,"f":18,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Сардина конс. 245г","p":17,"source":"Таблица пользователя (ккал в таблице: 230)","aliases":["сардина конс фас 245 ж б"]},"tbl-129":{"c":99.8,"f":0,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Сахар-песок","p":0,"source":"Таблица пользователя (ккал в таблице: 399)","aliases":["сахар песок вес"]},"tbl-130":{"c":99.5,"f":0,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Сахарная пудра","p":0,"source":"Таблица пользователя (ккал в таблице: 398)","aliases":["сахарная пудра вес"]},"tbl-131":{"c":9,"f":0.1,"kind":"table","loss":{"bake":20,"boil":20,"cold":0,"fry":25,"stew":20},"name":"Свекла свеж. очищ. вак.","p":1.5,"source":"Таблица пользователя (ккал в таблице: 42)","aliases":["свекла свеж цел очищ вес вак"]},"tbl-132":{"c":0,"f":23,"kind":"table","loss":{"bake":30,"boil":35,"cold":3,"fry":30,"stew":40},"name":"Свинина карбонат б/к зам.","p":16,"source":"Таблица пользователя (ккал в таблице: 271)","aliases":["свинина карбонат б к замор вес"]},"tbl-133":{"c":0,"f":12.3,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Сельдь филе с/с","p":17.5,"source":"Таблица пользователя (ккал в таблице: 181)","aliases":["сельдь филе с с фас ведро а"]},"tbl-134":{"c":70,"f":0,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Сироп в ассортименте","p":0,"source":"Таблица пользователя (ккал в таблице: 280)","aliases":["сироп в ас те"]},"tbl-135":{"c":50,"f":0.5,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Сладкий чили (соус)","p":0.7,"source":"Таблица пользователя (ккал в таблице: 207)","aliases":["сладкий чили"]},"tbl-136":{"c":4,"f":22,"kind":"table","loss":{"bake":5,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Сливки 22%","p":2.5,"source":"Таблица пользователя (ккал в таблице: 220)","aliases":["сливки ультрапак фас пач 22"]},"tbl-137":{"c":4,"f":10,"kind":"table","loss":{"bake":5,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Сливки 10% (А)","p":3,"source":"Таблица пользователя (ккал в таблице: 118)","aliases":["сливки ультрапаст фас пач 10 а"]},"tbl-138":{"c":6,"f":0.3,"kind":"table","loss":{"bake":15,"boil":10,"cold":0,"fry":15,"stew":10},"name":"Смесь овощная Мексиканская зам.","p":2.5,"source":"Таблица пользователя (ккал в таблице: 38)","aliases":["смесь овощная мексиканская замор вес"]},"tbl-139":{"c":3.2,"f":15,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Сметана 15%","p":2.8,"source":"Таблица пользователя (ккал в таблице: 159)","aliases":["сметана фас п п 15"]},"tbl-140":{"c":7.3,"f":0.4,"kind":"table","loss":{"bake":null,"boil":null,"cold":5,"fry":null,"stew":null},"name":"Смородина черная с/м","p":1,"source":"Таблица пользователя (ккал в таблице: 40)","aliases":["смородина черная с м цел вес"]},"tbl-141":{"c":3.5,"f":0,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Сок томатный","p":1,"source":"Таблица пользователя (ккал в таблице: 18)","aliases":["сок томатный фас 1л кор"]},"tbl-143":{"c":1.8,"f":22,"kind":"table","loss":{"bake":null,"boil":10,"cold":0,"fry":15,"stew":null},"name":"Сосиски Классические","p":10.5,"source":"Таблица пользователя (ккал в таблице: 248)","aliases":["сосиски классические вес"]},"tbl-144":{"c":35,"f":0.5,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Соус Барбекю","p":1,"source":"Таблица пользователя (ккал в таблице: 148)","aliases":["соус барбекю вес а"]},"tbl-145":{"c":15,"f":10,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Соус горчичный","p":2,"source":"Таблица пользователя (ккал в таблице: 158)"},"tbl-146":{"c":12,"f":8,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Соус из черного перца","p":1.5,"source":"Таблица пользователя (ккал в таблице: 126)","aliases":["соус из черного перца фас пач а"]},"tbl-147":{"c":40,"f":0.2,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Соус кисло-сладкий","p":0.5,"source":"Таблица пользователя (ккал в таблице: 164)","aliases":["соус кисло сладкий фас пач"]},"tbl-148":{"c":7,"f":3,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Соус овощной ТТК751","p":1,"source":"Таблица пользователя (ккал в таблице: 59)"},"tbl-149":{"c":5,"f":0,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Соус соевый","p":7,"source":"Таблица пользователя (ккал в таблице: 48)","aliases":["соус соевый фас а"]},"tbl-150":{"c":5,"f":18,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Соус Сырный","p":2,"source":"Таблица пользователя (ккал в таблице: 190)","aliases":["соус сырный вес"]},"tbl-151":{"c":20,"f":5,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Соус Сэн-сой","p":1,"source":"Таблица пользователя (ккал в таблице: 129)","aliases":["соус сэн сой вес"]},"tbl-152":{"c":25,"f":5,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Соус тыквенно-медовый №1","p":1,"source":"Таблица пользователя (ккал в таблице: 149)"},"tbl-153":{"c":38,"f":0.1,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Соус Унаги","p":1.5,"source":"Таблица пользователя (ккал в таблице: 158)","aliases":["соус унаги л"]},"tbl-154":{"c":48,"f":0.3,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Соус Чили сладкий","p":0.5,"source":"Таблица пользователя (ккал в таблице: 196)","aliases":["соус чили сладкий фас пач а"]},"tbl-155":{"c":68,"f":2.5,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Сухари панировочные","p":10,"source":"Таблица пользователя (ккал в таблице: 335)","aliases":["сухари панировочные вес а"]},"tbl-156":{"c":66,"f":0.5,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Сухофрукты (изюм)","p":2.5,"source":"Таблица пользователя (ккал в таблице: 280)","aliases":["сухофрукты изюм вес"]},"tbl-157":{"c":53,"f":0.3,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Сухофрукты (курага)","p":5.2,"source":"Таблица пользователя (ккал в таблице: 232)","aliases":["сухофрукты курага вес"]},"tbl-158":{"c":2,"f":22,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Сыр \"Фетакса\" 45%","p":12,"source":"Таблица пользователя (ккал в таблице: 254)","aliases":["сыр фетакса вес 45"]},"tbl-159":{"c":2.5,"f":24,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Сыр плавленный Дружба","p":11,"source":"Таблица пользователя (ккал в таблице: 268)","aliases":["сыр плавленный дружба вес а"]},"tbl-160":{"c":0,"f":29,"kind":"table","loss":{"bake":10,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Сыр Российский 50%","p":23,"source":"Таблица пользователя (ккал в таблице: 353)","aliases":["сыр российский вес 50 а"]},"tbl-161":{"c":3.5,"f":25,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Сыр творожный","p":7,"source":"Таблица пользователя (ккал в таблице: 267)","aliases":["сыр творожный вес"]},"tbl-162":{"c":25,"f":18,"kind":"table","loss":{"bake":10,"boil":null,"cold":0,"fry":10,"stew":null},"name":"Сырные палочки (зам.)","p":10,"source":"Таблица пользователя (ккал в таблице: 302)","aliases":["сырные палочки"]},"tbl-163":{"c":2,"f":9,"kind":"table","loss":{"bake":10,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Творог 9%","p":16.7,"source":"Таблица пользователя (ккал в таблице: 155)","aliases":["творог вес 9"]},"tbl-164":{"c":48,"f":10,"kind":"table","loss":{"bake":15,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Тесто сдобное","p":7,"source":"Таблица пользователя (ккал в таблице: 310)"},"tbl-165":{"c":42,"f":20,"kind":"table","loss":{"bake":15,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Тесто слоеное","p":6,"source":"Таблица пользователя (ккал в таблице: 372)"},"tbl-166":{"c":4.4,"f":0.1,"kind":"table","loss":{"bake":20,"boil":10,"cold":25,"fry":25,"stew":15},"name":"Тыква свежая","p":1,"source":"Таблица пользователя (ккал в таблице: 22)","aliases":["тыква свеж цел н очищ н мыт вес"]},"tbl-167":{"c":4.1,"f":0.5,"kind":"table","loss":{"bake":null,"boil":null,"cold":20,"fry":null,"stew":null},"name":"Укроп свежий","p":2.5,"source":"Таблица пользователя (ккал в таблице: 31)","aliases":["укроп свеж цел н очищ н мыт вес"]},"tbl-168":{"c":0.5,"f":15,"kind":"table","loss":{"bake":30,"boil":35,"cold":2,"fry":30,"stew":40},"name":"Фарш говяжий зам.","p":17,"source":"Таблица пользователя (ккал в таблице: 203)","aliases":["фарш говяжий замор вес"]},"tbl-169":{"c":8,"f":18,"kind":"table","loss":{"bake":30,"boil":35,"cold":0,"fry":30,"stew":40},"name":"Фарш для тефтелей 735","p":14,"source":"Таблица пользователя (ккал в таблице: 250)"},"tbl-170":{"c":0.5,"f":10,"kind":"table","loss":{"bake":25,"boil":30,"cold":2,"fry":25,"stew":35},"name":"Фарш куриный с/м","p":16,"source":"Таблица пользователя (ккал в таблице: 156)","aliases":["фарш куриный с м вес"]},"tbl-171":{"c":47,"f":2,"kind":"table","loss":{"bake":null,"boil":100,"cold":0,"fry":null,"stew":null},"name":"Фасоль сухая","p":21,"source":"Таблица пользователя (ккал в таблице: 290)","aliases":["фасоль вес"]},"tbl-172":{"c":15,"f":0.4,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Фасоль красная конс.","p":7.5,"source":"Таблица пользователя (ккал в таблице: 98)","aliases":["фасоль красная с с конс фас ж б"]},"tbl-173":{"c":3.6,"f":0.2,"kind":"table","loss":{"bake":12,"boil":10,"cold":5,"fry":12,"stew":10},"name":"Фасоль стручковая зам.","p":2,"source":"Таблица пользователя (ккал в таблице: 24)","aliases":["фасоль стручковая зам рез фас упак"]},"tbl-175":{"c":0,"f":1.5,"kind":"table","loss":{"bake":15,"boil":15,"cold":20,"fry":20,"stew":null},"name":"Филе морского языка с/м","p":16.5,"source":"Таблица пользователя (ккал в таблице: 80)","aliases":["филе морского языка с м вес а"]},"tbl-176":{"c":0,"f":3.8,"kind":"table","loss":{"bake":20,"boil":20,"cold":30,"fry":25,"stew":null},"name":"Форель","p":19.2,"source":"Таблица пользователя (ккал в таблице: 111)"},"tbl-177":{"c":40,"f":1.3,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Хлеб бородинский","p":7,"source":"Таблица пользователя (ккал в таблице: 200)"},"tbl-178":{"c":48,"f":1,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Хлеб пшеничный сп.","p":8,"source":"Таблица пользователя (ккал в таблице: 238)","aliases":["хлеб пшен сп"]},"tbl-179":{"c":0.2,"f":0,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Чай зеленый Гринфилд 1пак","p":0.5,"source":"Таблица пользователя (ккал в таблице: 3)"},"tbl-180":{"c":29.9,"f":0.5,"kind":"table","loss":{"bake":null,"boil":null,"cold":15,"fry":null,"stew":null},"name":"Чеснок свежий","p":6.5,"source":"Таблица пользователя (ккал в таблице: 149)","aliases":["чеснок свеж цел н очищ н мыт вес"]},"tbl-181":{"c":72,"f":0.5,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Чеснок сушеный","p":16,"source":"Таблица пользователя (ккал в таблице: 356)","aliases":["чеснок сушеный вес"]},"tbl-182":{"c":0.1,"f":1,"kind":"table","loss":{"bake":25,"boil":20,"cold":5,"fry":30,"stew":20},"name":"Шампиньоны свежие","p":4.3,"source":"Таблица пользователя (ккал в таблице: 24)","aliases":["шампиньоны свеж цел н очищ н мыт вес"]},"tbl-183":{"c":9.8,"f":0.4,"kind":"table","loss":{"bake":10,"boil":null,"cold":10,"fry":null,"stew":5},"name":"Яблоко свежее","p":0.4,"source":"Таблица пользователя (ккал в таблице: 47)","aliases":["яблоко свеж цел н очищ н мыт вес"]},"tbl-184":{"c":0.2,"f":12.1,"kind":"table","loss":{"bake":30,"boil":35,"cold":8,"fry":null,"stew":35},"name":"Язык говяжий с/м","p":13.6,"source":"Таблица пользователя (ккал в таблице: 164)","aliases":["язык говяжий с м фас"]},"voda":{"c":0,"f":0,"kind":"table","name":"Вода питьевая","p":0,"source":"Принято 0","aliases":["вода питьевая","вода питьевая в хлеб"]},"yaytso":{"c":0.7,"f":11.5,"kind":"table","loss":{"bake":null,"boil":10,"cold":12,"fry":null,"stew":null},"name":"Яйцо куриное кат.1","p":12.7,"source":"Таблица пользователя (ккал в таблице: 157)","aliases":["яйца куриные","яйцо куриное кат 1 охл а"]}},"recipes":{}};window.KBZHU_RELEASE=1;window.KBZHU_BUILD=202611041848;window.KBZHU_URL="https://script.google.com/macros/s/AKfycbwZw800m1ZmF4tA5KXb4PcdbIvxwUeGg-A9hytwud8wHvq6v5Q_PKWDDD1Jcm1LR1yQsw/exec";</script>
+<script>window.KBZHU_PWA=1;window.KBZHU_SEED={"ings":{"baton":{"c":51.4,"f":2.9,"kind":"label","name":"Батон нарезной (хлеб пшеничный)","p":7.5,"source":"Этикетка: Батон нарезной, ООО «Сергиево-Посадский хлебокомбинат», 265 ккал на 100 г (фото пользователя)","aliases":["хлеб пшеничный"]},"file-kurinoe":{"c":0,"f":1.8,"kind":"table","loss":{"bake":20,"boil":25,"cold":2,"fry":20,"stew":30},"name":"Филе грудки ц/б с/м","p":22.3,"source":"Таблица пользователя: «Филе грудки ц/б с/м» принято как «Филе куриное» из ТТК №14 (ккал в таблице: 105)","aliases":["филе куриное зам","филе грудки ц б с м вес"]},"luk":{"c":8.2,"f":0.2,"kind":"table","loss":{"bake":10,"boil":null,"cold":0,"fry":30,"stew":15},"name":"Лук репчатый очищ. вак.","p":1.4,"source":"Таблица пользователя (ккал в таблице: 41)","aliases":["лук репчатый свеж цел очищ вак","лук репчатый свеж цел очищ вес вак"]},"maslo-podsolnechnoe":{"c":0,"f":99.9,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Масло подсолнечное раф.","p":0,"source":"Таблица пользователя (ккал в таблице: 899)","aliases":["масло подсолнечное раф дез","масло подсолнечное для смазки листов","масло подсолнечное раф дез фас пл бут"]},"perets":{"c":38.6,"f":3.3,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Перец черный молотый","p":10,"source":"Таблица пользователя (ккал в таблице: 251)","aliases":["перец черный молотый","перец черный молотый фас 50г бум пак"]},"shea-govyadina":{"c":0,"f":7,"kind":"estimate","name":"Шея говяжья","p":20,"source":"Ориентир: значение для постной говядины, не сверено. Жирность шеи сильно влияет на результат, например 18,9 / 12,4 для более жирной","aliases":["шея говяжья зам"]},"sol":{"c":0,"f":0,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Соль поваренная","p":0,"source":"Таблица пользователя (ккал в таблице: 0)","aliases":["соль поваренная пищевая","соль поваренная пищевая помол 1 вес"]},"tbl-001":{"c":51,"f":1.5,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Багет","p":7.5,"source":"Таблица пользователя (ккал в таблице: 260)"},"tbl-002":{"c":0.8,"f":1.1,"kind":"table","loss":{"bake":10,"boil":20,"cold":45,"fry":null,"stew":null},"name":"Креветки (замороженные)","p":18.2,"source":"Таблица пользователя (ккал в таблице: 87)"},"tbl-003":{"c":3.5,"f":30,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Сыр Креметто","p":6,"source":"Таблица пользователя (ккал в таблице: 310)"},"tbl-004":{"c":3.3,"f":2,"kind":"table","loss":{"bake":10,"boil":15,"cold":30,"fry":null,"stew":10},"name":"Мидии (замороженные)","p":11.5,"source":"Таблица пользователя (ккал в таблице: 77)"},"tbl-005":{"c":4,"f":0.4,"kind":"table","loss":{"bake":null,"boil":null,"cold":5,"fry":null,"stew":null},"name":"Микрозелень","p":2.5,"source":"Таблица пользователя (ккал в таблице: 30)"},"tbl-006":{"c":3.8,"f":0.2,"kind":"table","loss":{"bake":10,"boil":null,"cold":2,"fry":null,"stew":null},"name":"Помидоры черри","p":1.1,"source":"Таблица пользователя (ккал в таблице: 24)"},"tbl-007":{"c":0,"f":90,"kind":"table","loss":{"bake":null,"boil":null,"cold":2,"fry":null,"stew":null},"name":"Сало соленое","p":1.4,"source":"Таблица пользователя (ккал в таблице: 816)"},"tbl-008":{"c":0,"f":31,"kind":"table","loss":{"bake":35,"boil":35,"cold":15,"fry":35,"stew":40},"name":"Свинина (шея)","p":13.6,"source":"Таблица пользователя (ккал в таблице: 334)"},"tbl-009":{"c":0,"f":23,"kind":"table","loss":{"bake":30,"boil":35,"cold":30,"fry":30,"stew":40},"name":"Свиные ребра","p":14.5,"source":"Таблица пользователя (ккал в таблице: 265)"},"tbl-010":{"c":0,"f":1,"kind":"table","loss":{"bake":20,"boil":20,"cold":40,"fry":25,"stew":20},"name":"Тунец","p":23,"source":"Таблица пользователя (ккал в таблице: 101)"},"tbl-011":{"c":0,"f":32,"kind":"table","loss":{"bake":null,"boil":null,"cold":null,"fry":null,"stew":null},"name":"Шпроты консервированные","p":17.5,"source":"Таблица пользователя (ккал в таблице: 363)"},"tbl-012":{"c":14,"f":0.2,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Ананас конс. фас ж/б","p":0.4,"source":"Таблица пользователя (ккал в таблице: 60)"},"tbl-013":{"c":8.1,"f":0.2,"kind":"table","loss":{"bake":null,"boil":null,"cold":30,"fry":null,"stew":null},"name":"Апельсин","p":0.9,"source":"Таблица пользователя (ккал в таблице: 36)"},"tbl-014":{"c":4.5,"f":0.1,"kind":"table","loss":{"bake":20,"boil":null,"cold":10,"fry":20,"stew":15},"name":"Баклажан свежий","p":1.2,"source":"Таблица пользователя (ккал в таблице: 24)","aliases":["баклажан свеж цел н очищ н мыт вес"]},"tbl-015":{"c":7.5,"f":6,"kind":"table","loss":{"bake":5,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Бешамель №649","p":3.5,"source":"Таблица пользователя (ккал в таблице: 96)"},"tbl-016":{"c":0.3,"f":0.5,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Бульон куриный","p":2,"source":"Таблица пользователя (ккал в таблице: 15)"},"tbl-017":{"c":12.6,"f":0.1,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Ванилин фас 1,5г","p":0.1,"source":"Таблица пользователя (ккал в таблице: 51)","aliases":["ванилин фас 1 5г п п"]},"tbl-018":{"c":32,"f":4.5,"kind":"table","loss":{"bake":null,"boil":10,"cold":0,"fry":8,"stew":null},"name":"Вареники с картофелем зам.","p":5.5,"source":"Таблица пользователя (ккал в таблице: 190)","aliases":["вареники с картофелем замор вес"]},"tbl-019":{"c":33,"f":4,"kind":"table","loss":{"bake":null,"boil":10,"cold":0,"fry":8,"stew":null},"name":"Вареники с картофелем и луком зам.","p":5,"source":"Таблица пользователя (ккал в таблице: 188)","aliases":["вареники с картофелем и луком зам вес"]},"tbl-020":{"c":30,"f":7,"kind":"table","loss":{"bake":null,"boil":10,"cold":0,"fry":8,"stew":null},"name":"Вареники с творогом зам.","p":9,"source":"Таблица пользователя (ккал в таблице: 218)","aliases":["вареники с творогом зам вес"]},"tbl-021":{"c":1.5,"f":18,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Ветчина свиная \"Закусочная\"","p":14,"source":"Таблица пользователя (ккал в таблице: 224)","aliases":["ветчина свиная закусочная вес"]},"tbl-022":{"c":10.5,"f":0.3,"kind":"table","loss":{"bake":null,"boil":null,"cold":10,"fry":null,"stew":null},"name":"Вишня замор. цел.","p":0.8,"source":"Таблица пользователя (ккал в таблице: 50)","aliases":["вишня замор цел вес"]},"tbl-023":{"c":0,"f":14,"kind":"table","loss":{"bake":35,"boil":38,"cold":2,"fry":35,"stew":40},"name":"Говядина лопатка б/к с/м","p":18.6,"source":"Таблица пользователя (ккал в таблице: 200)","aliases":["говядина лопатка б к с м фас"]},"tbl-024":{"c":0,"f":6,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Горбуша в с/с конс.","p":20,"source":"Таблица пользователя (ккал в таблице: 134)","aliases":["горбуша в собственном соку конс фас 250г ж б"]},"tbl-025":{"c":49,"f":1.2,"kind":"table","loss":{"bake":null,"boil":100,"cold":0,"fry":null,"stew":null},"name":"Горох шлифованный колотый","p":23,"source":"Таблица пользователя (ккал в таблице: 299)","aliases":["горох шлифованный колотый 1с вес"]},"tbl-026":{"c":6.5,"f":0.2,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Горошек зеленый конс.","p":3.1,"source":"Таблица пользователя (ккал в таблице: 40)","aliases":["горошек зеленый конс фас ж б"]},"tbl-027":{"c":12,"f":6.4,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Горчица","p":5.7,"source":"Таблица пользователя (ккал в таблице: 128)","aliases":["горчица вес а"]},"tbl-028":{"c":0.4,"f":0.5,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Грибы резаные конс.","p":2.5,"source":"Таблица пользователя (ккал в таблице: 21)","aliases":["грибы резаные конс фас ж б"]},"tbl-029":{"c":0,"f":5,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Грудка куриная копченая","p":18,"source":"Таблица пользователя (ккал в таблице: 117)","aliases":["грудка куриная копченая вес"]},"tbl-030":{"c":3,"f":17,"kind":"table","loss":{"bake":null,"boil":null,"cold":5,"fry":null,"stew":35},"name":"Гуляш из говядины с/м","p":15,"source":"Таблица пользователя (ккал в таблице: 225)","aliases":["гуляш из говядины с м вес"]},"tbl-031":{"c":62,"f":0,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Джем \"Абрикос\"","p":0.5,"source":"Таблица пользователя (ккал в таблице: 250)","aliases":["джем абрикос конс вес"]},"tbl-032":{"c":63,"f":0,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Джем \"Вишня\"","p":0.4,"source":"Таблица пользователя (ккал в таблице: 252)","aliases":["джем вишня конс вес"]},"tbl-033":{"c":62.5,"f":0,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Джем в ассортименте","p":0.5,"source":"Таблица пользователя (ккал в таблице: 251)","aliases":["джем в ассортименте конс вес"]},"tbl-034":{"c":26,"f":5,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":12,"stew":null},"name":"Дольки (картофельные, зам.)","p":2.3,"source":"Таблица пользователя (ккал в таблице: 160)","aliases":["дольки"]},"tbl-035":{"c":12,"f":5,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Дрожжи хлебопекарные сухие","p":40,"source":"Таблица пользователя (ккал в таблице: 253)","aliases":["дрожжи хлебопекарные сух вес п п"]},"tbl-036":{"c":0.7,"f":0.4,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Желатин","p":87.2,"source":"Таблица пользователя (ккал в таблице: 355)"},"tbl-037":{"c":30,"f":12,"kind":"table","loss":{"bake":15,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Закрытая пицца с курицей и сыром зам.","p":10,"source":"Таблица пользователя (ккал в таблице: 270)","aliases":["закрытая пицца с курицей и сыром 100г зам"]},"tbl-038":{"c":5,"f":25,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Заправка с-т Класич ТТК979","p":1,"source":"Таблица пользователя (ккал в таблице: 240)"},"tbl-039":{"c":8,"f":8,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Зернистая горчица","p":6.5,"source":"Таблица пользователя (ккал в таблице: 130)"},"tbl-040":{"c":17,"f":22,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Зира","p":17.8,"source":"Таблица пользователя (ккал в таблице: 333)","aliases":["зира фас бум пак"]},"tbl-041":{"c":0,"f":15,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Икра лососевая зернистая","p":32,"source":"Таблица пользователя (ккал в таблице: 263)","aliases":["икра лососевая зернистая а"]},"tbl-042":{"c":4.6,"f":0.3,"kind":"table","loss":{"bake":20,"boil":null,"cold":15,"fry":20,"stew":15},"name":"Кабачок свежий","p":0.6,"source":"Таблица пользователя (ккал в таблице: 24)","aliases":["кабачок свеж цел н очищ н мыт вес"]},"tbl-043":{"c":0,"f":2.2,"kind":"table","loss":{"bake":null,"boil":20,"cold":30,"fry":25,"stew":null},"name":"Кальмар с/м","p":18,"source":"Таблица пользователя (ккал в таблице: 92)","aliases":["кальмар с м вес а"]},"tbl-044":{"c":4,"f":0.4,"kind":"table","loss":{"bake":15,"boil":10,"cold":5,"fry":15,"stew":10},"name":"Капуста брокколи с/м","p":2.8,"source":"Таблица пользователя (ккал в таблице: 28)","aliases":["капуста брокколи с м рез очищ вес"]},"tbl-045":{"c":2.2,"f":0,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Капуста квашеная","p":1.8,"source":"Таблица пользователя (ккал в таблице: 19)","aliases":["капуста кваш фас ведро"]},"tbl-046":{"c":5.1,"f":0,"kind":"table","loss":{"bake":10,"boil":null,"cold":20,"fry":null,"stew":10},"name":"Капуста краснокочанная свеж.","p":1.3,"source":"Таблица пользователя (ккал в таблице: 26)","aliases":["капуста краснокочанная свеж цел н очищ н мыт вес"]},"tbl-047":{"c":3,"f":0.2,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Капуста морская","p":0.9,"source":"Таблица пользователя (ккал в таблице: 18)"},"tbl-048":{"c":2,"f":0.2,"kind":"table","loss":{"bake":null,"boil":null,"cold":20,"fry":null,"stew":null},"name":"Капуста пекинская свеж.","p":1.2,"source":"Таблица пользователя (ккал в таблице: 16)","aliases":["капуста пекинская свеж цел н очищ н мыт вес"]},"tbl-049":{"c":4.7,"f":0.1,"kind":"table","loss":{"bake":15,"boil":10,"cold":20,"fry":20,"stew":15},"name":"Капуста свежая белокочанная","p":1.8,"source":"Таблица пользователя (ккал в таблице: 27)","aliases":["капуста свеж цел н очищ н мыт вес"]},"tbl-050":{"c":3.5,"f":0.3,"kind":"table","loss":{"bake":15,"boil":12,"cold":10,"fry":20,"stew":12},"name":"Капуста цветная с/м","p":2.5,"source":"Таблица пользователя (ккал в таблице: 26)","aliases":["капуста цветная с м рез очищ мыт вес"]},"tbl-051":{"c":16.3,"f":0.4,"kind":"table","loss":{"bake":20,"boil":10,"cold":28,"fry":30,"stew":15},"name":"Картофель свежий","p":2,"source":"Таблица пользователя (ккал в таблице: 77)","aliases":["картофель свеж цел н очищ н мыт вес"]},"tbl-052":{"c":16.3,"f":0.4,"kind":"table","loss":{"bake":20,"boil":10,"cold":0,"fry":30,"stew":15},"name":"Картофель свежий очищ. вак.","p":2,"source":"Таблица пользователя (ккал в таблице: 77)","aliases":["картофель свеж цел очищ вес вак"]},"tbl-053":{"c":26,"f":5,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":12,"stew":null},"name":"Картофельные дольки (зам.)","p":2.3,"source":"Таблица пользователя (ккал в таблице: 160)","aliases":["картофельные дольки"]},"tbl-054":{"c":5,"f":0,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Квас","p":0.2,"source":"Таблица пользователя (ккал в таблице: 20)","aliases":["квас фас пл бут"]},"tbl-055":{"c":23,"f":0.2,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Кетчуп томатный","p":1.7,"source":"Таблица пользователя (ккал в таблице: 101)","aliases":["кетчуп томатный вес"]},"tbl-056":{"c":3.7,"f":0.5,"kind":"table","loss":{"bake":null,"boil":null,"cold":15,"fry":null,"stew":null},"name":"Кинза свежая","p":2.1,"source":"Таблица пользователя (ккал в таблице: 27)","aliases":["кинза свеж цел н очищ н мыт вес"]},"tbl-057":{"c":13,"f":18,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Кориандр сушёный","p":12,"source":"Таблица пользователя (ккал в таблице: 262)","aliases":["кориандр суш фас пач"]},"tbl-058":{"c":27.5,"f":1.2,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Корица молотая","p":3.9,"source":"Таблица пользователя (ккал в таблице: 247)","aliases":["корица молотая вес"]},"tbl-059":{"c":0,"f":4,"kind":"table","loss":{"bake":null,"boil":null,"cold":100,"fry":null,"stew":null},"name":"Кость говяжья с/м","p":2.5,"source":"Таблица пользователя (ккал в таблице: 46)","aliases":["кость говяжья с м вес"]},"tbl-060":{"c":0,"f":5,"kind":"table","loss":{"bake":null,"boil":null,"cold":100,"fry":null,"stew":null},"name":"Кость куриная с/м","p":3,"source":"Таблица пользователя (ккал в таблице: 57)","aliases":["кость куриная с м вес"]},"tbl-061":{"c":0,"f":4.5,"kind":"table","loss":{"bake":null,"boil":null,"cold":100,"fry":null,"stew":null},"name":"Кость пищевая с/м","p":2.8,"source":"Таблица пользователя (ккал в таблице: 52)","aliases":["кость пищевая с м вес"]},"tbl-062":{"c":15,"f":4,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Крабовые палочки зам.","p":7,"source":"Таблица пользователя (ккал в таблице: 124)","aliases":["крабовые палочки зам кор"]},"tbl-063":{"c":0,"f":0,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Краситель пищевой","p":0,"source":"Таблица пользователя (ккал в таблице: 0)","aliases":["краситель пищевой вес пач"]},"tbl-064":{"c":79.6,"f":0,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Крахмал","p":0.1,"source":"Таблица пользователя (ккал в таблице: 318)","aliases":["крахмал сух вес"]},"tbl-065":{"c":69,"f":1.3,"kind":"table","loss":{"bake":null,"boil":100,"cold":0,"fry":null,"stew":null},"name":"Крупа булгур","p":12.3,"source":"Таблица пользователя (ккал в таблице: 342)","aliases":["крупа булгур фас пач"]},"tbl-066":{"c":62.1,"f":3.3,"kind":"table","loss":{"bake":null,"boil":100,"cold":0,"fry":null,"stew":null},"name":"Крупа гречневая ядрица","p":12.6,"source":"Таблица пользователя (ккал в таблице: 335)","aliases":["крупа гречневая ядрица вес"]},"tbl-067":{"c":60,"f":6,"kind":"table","loss":{"bake":null,"boil":100,"cold":0,"fry":null,"stew":null},"name":"Крупа овсяная","p":12,"source":"Таблица пользователя (ккал в таблице: 342)","aliases":["крупа овсяная вес а"]},"tbl-068":{"c":66,"f":1.1,"kind":"table","loss":{"bake":null,"boil":100,"cold":0,"fry":null,"stew":null},"name":"Крупа перловая","p":9.3,"source":"Таблица пользователя (ккал в таблице: 315)","aliases":["крупа перловая 1с вес"]},"tbl-069":{"c":66.5,"f":3.8,"kind":"table","loss":{"bake":null,"boil":100,"cold":0,"fry":null,"stew":null},"name":"Крупа пшено","p":11.5,"source":"Таблица пользователя (ккал в таблице: 348)","aliases":["крупа пшено 1с вес а"]},"tbl-070":{"c":74,"f":1,"kind":"table","loss":{"bake":null,"boil":100,"cold":0,"fry":null,"stew":null},"name":"Крупа рисовая","p":7,"source":"Таблица пользователя (ккал в таблице: 333)","aliases":["крупа рисовая вес"]},"tbl-071":{"c":22,"f":1.5,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Кукуруза конс.","p":2.5,"source":"Таблица пользователя (ккал в таблице: 112)","aliases":["кукуруза конс фас ж б"]},"tbl-072":{"c":12.2,"f":48.7,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Кунжут белый","p":19.4,"source":"Таблица пользователя (ккал в таблице: 565)","aliases":["кунжут белый вес а"]},"tbl-073":{"c":1.5,"f":20,"kind":"table","loss":{"bake":20,"boil":10,"cold":0,"fry":25,"stew":20},"name":"Купат куриный","p":13,"source":"Таблица пользователя (ккал в таблице: 238)"},"tbl-074":{"c":1,"f":28,"kind":"table","loss":{"bake":20,"boil":10,"cold":0,"fry":25,"stew":20},"name":"Купат свиной","p":11.5,"source":"Таблица пользователя (ккал в таблице: 302)"},"tbl-075":{"c":44,"f":3,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Куркума молотая","p":8,"source":"Таблица пользователя (ккал в таблице: 235)","aliases":["куркума молотая вес"]},"tbl-076":{"c":48.5,"f":8.2,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Лавровый лист","p":7.6,"source":"Таблица пользователя (ккал в таблице: 313)","aliases":["лавровый лист сух фас 20г бум пак"]},"tbl-077":{"c":3,"f":0.1,"kind":"table","loss":{"bake":null,"boil":null,"cold":40,"fry":null,"stew":null},"name":"Лимон","p":0.9,"source":"Таблица пользователя (ккал в таблице: 16)"},"tbl-078":{"c":0,"f":0,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Лимонная кислота","p":0,"source":"Таблица пользователя (ккал в таблице: 0)","aliases":["лимонная кислота сух фас 50г бум пак"]},"tbl-079":{"c":0,"f":8.1,"kind":"table","loss":{"bake":20,"boil":20,"cold":35,"fry":25,"stew":null},"name":"Лосось с/м","p":20,"source":"Таблица пользователя (ккал в таблице: 153)","aliases":["лось см"]},"tbl-080":{"c":0,"f":12,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Лосось слабосоленый (СС)","p":22,"source":"Таблица пользователя (ккал в таблице: 202)","aliases":["лось сс"]},"tbl-081":{"c":3.5,"f":0.1,"kind":"table","loss":{"bake":null,"boil":null,"cold":20,"fry":null,"stew":null},"name":"Лук зеленый свежий","p":1.3,"source":"Таблица пользователя (ккал в таблице: 20)","aliases":["лук зеленый свеж цел н очищ н мыт вес"]},"tbl-082":{"c":8.2,"f":0.2,"kind":"table","loss":{"bake":10,"boil":null,"cold":16,"fry":30,"stew":15},"name":"Лук репчатый свежий","p":1.4,"source":"Таблица пользователя (ккал в таблице: 41)","aliases":["лук репчатый свеж цел н очищ н мыт вес"]},"tbl-084":{"c":30,"f":8,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":15,"stew":null},"name":"Луковые кольца (зам.)","p":3,"source":"Таблица пользователя (ккал в таблице: 200)","aliases":["луковые кольца"]},"tbl-085":{"c":3,"f":67,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Майонез","p":1.1,"source":"Таблица пользователя (ккал в таблице: 619)","aliases":["майонез фас 760г ведро а"]},"tbl-086":{"c":23.8,"f":41,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Мак пищевой","p":17.5,"source":"Таблица пользователя (ккал в таблице: 536)","aliases":["мак пищевой вес"]},"tbl-087":{"c":70,"f":2,"kind":"table","loss":{"bake":null,"boil":100,"cold":0,"fry":null,"stew":null},"name":"Макароны \"Лапша домашняя\"","p":11,"source":"Таблица пользователя (ккал в таблице: 340)","aliases":["макаронные изделия лапша домашняя вес"]},"tbl-088":{"c":72,"f":1.1,"kind":"table","loss":{"bake":null,"boil":100,"cold":0,"fry":null,"stew":null},"name":"Макароны (бантики)","p":10.4,"source":"Таблица пользователя (ккал в таблице: 337)","aliases":["макаронные изделия бантики вес"]},"tbl-089":{"c":74,"f":1,"kind":"table","loss":{"bake":null,"boil":100,"cold":0,"fry":null,"stew":null},"name":"Макароны (вермишель)","p":10,"source":"Таблица пользователя (ккал в таблице: 345)","aliases":["макаронные изделия вермишель вес а"]},"tbl-090":{"c":71,"f":1.2,"kind":"table","loss":{"bake":null,"boil":100,"cold":0,"fry":null,"stew":null},"name":"Макароны (рожки, перья)","p":10.5,"source":"Таблица пользователя (ккал в таблице: 338)","aliases":["макаронные изделия рожки перья вес а"]},"tbl-091":{"c":72.5,"f":1.1,"kind":"table","loss":{"bake":null,"boil":100,"cold":0,"fry":null,"stew":null},"name":"Макароны (спагетти)","p":10.5,"source":"Таблица пользователя (ккал в таблице: 341)","aliases":["макаронные изделия спагетти вес а"]},"tbl-092":{"c":1,"f":60,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Маргарин столовый 60%","p":0.5,"source":"Таблица пользователя (ккал в таблице: 546)","aliases":["маргарин столовый вес 60"]},"tbl-093":{"c":5.5,"f":16,"kind":"table","loss":{"bake":null,"boil":null,"cold":10,"fry":null,"stew":null},"name":"Маслины конс.","p":1.8,"source":"Таблица пользователя (ккал в таблице: 175)","aliases":["маслины конс фас 400г ж б"]},"tbl-094":{"c":0,"f":99.9,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Масло горчичное","p":0,"source":"Таблица пользователя (ккал в таблице: 899)","aliases":["масло горчичное фас пл бут"]},"tbl-096":{"c":1.3,"f":72.5,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Масло сладко-сливочное 72,5%","p":0.8,"source":"Таблица пользователя (ккал в таблице: 665)","aliases":["масло сладко сливочное н сол вес 72 5"]},"tbl-097":{"c":80.2,"f":0,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Мед","p":0.8,"source":"Таблица пользователя (ккал в таблице: 328)","aliases":["мед вес а"]},"tbl-098":{"c":0,"f":0.9,"kind":"table","loss":{"bake":15,"boil":20,"cold":45,"fry":20,"stew":null},"name":"Минтай б/г с/м","p":15.9,"source":"Таблица пользователя (ккал в таблице: 72)","aliases":["минтай б г с м фас а"]},"tbl-099":{"c":4.7,"f":2.5,"kind":"table","loss":{"bake":null,"boil":5,"cold":0,"fry":null,"stew":null},"name":"Молоко питьевое 2,5%","p":2.8,"source":"Таблица пользователя (ккал в таблице: 53)","aliases":["молоко питьевое фас 2 5"]},"tbl-100":{"c":56,"f":8,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Молоко сгущеное 7%","p":6.8,"source":"Таблица пользователя (ккал в таблице: 324)","aliases":["молоко сгущеное вес пл бут 7"]},"tbl-101":{"c":4.7,"f":3.2,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Молоко ультрапаст. 3,2%","p":3,"source":"Таблица пользователя (ккал в таблице: 59)","aliases":["молоко ультрапастеризованное нормализованное фас 3 2"]},"tbl-102":{"c":6.9,"f":0.1,"kind":"table","loss":{"bake":20,"boil":8,"cold":0,"fry":30,"stew":20},"name":"Морковь свеж. очищ. вак.","p":1.3,"source":"Таблица пользователя (ккал в таблице: 34)","aliases":["морковь свеж цел очищ вес вак"]},"tbl-103":{"c":70,"f":1.1,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Мука пшеничная в/с","p":10.3,"source":"Таблица пользователя (ккал в таблице: 332)","aliases":["мука пшеничная хлебопекарная в с вес а"]},"tbl-104":{"c":4.5,"f":7,"kind":"table","loss":{"bake":null,"boil":null,"cold":5,"fry":null,"stew":null},"name":"Облепиха с/м","p":0.9,"source":"Таблица пользователя (ккал в таблице: 80)","aliases":["облепиха вес с м цел"]},"tbl-105":{"c":2.5,"f":0.1,"kind":"table","loss":{"bake":null,"boil":null,"cold":5,"fry":null,"stew":null},"name":"Огурец свежий","p":0.8,"source":"Таблица пользователя (ккал в таблице: 14)","aliases":["огурец свеж цел н очищ н мыт вес"]},"tbl-106":{"c":1.2,"f":0,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Огурец солёный","p":0.8,"source":"Таблица пользователя (ккал в таблице: 11)","aliases":["огурец сол цел фас ведро"]},"tbl-107":{"c":0,"f":8,"kind":"table","loss":{"bake":20,"boil":30,"cold":8,"fry":25,"stew":30},"name":"Окорочок куриный б/к","p":17.5,"source":"Таблица пользователя (ккал в таблице: 142)","aliases":["ококорок куриный б к"]},"tbl-108":{"c":34,"f":13,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Паприка красная сладкая","p":14,"source":"Таблица пользователя (ккал в таблице: 309)","aliases":["паприка красная сладкая вес"]},"tbl-109":{"c":73,"f":1,"kind":"table","loss":{"bake":null,"boil":100,"cold":0,"fry":null,"stew":null},"name":"Паста \"Ризони\"","p":10,"source":"Таблица пользователя (ккал в таблице: 340)"},"tbl-110":{"c":18,"f":0.2,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Паста томатная конс.","p":4.8,"source":"Таблица пользователя (ккал в таблице: 99)","aliases":["паста томатная конс фас 1000г с б"]},"tbl-111":{"c":5.3,"f":0.1,"kind":"table","loss":{"bake":15,"boil":null,"cold":25,"fry":10,"stew":10},"name":"Перец болгарский красный свеж.","p":1.3,"source":"Таблица пользователя (ккал в таблице: 27)","aliases":["перец болгарский красный свеж цел н очищ н мыт вес"]},"tbl-112":{"c":30,"f":17,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Перец красный молотый","p":12,"source":"Таблица пользователя (ккал в таблице: 321)","aliases":["перец красный молотый фас бум пак кг"]},"tbl-114":{"c":6.3,"f":0.4,"kind":"table","loss":{"bake":null,"boil":null,"cold":20,"fry":null,"stew":null},"name":"Петрушка свежая","p":3.7,"source":"Таблица пользователя (ккал в таблице: 47)","aliases":["петрушка свеж цел н очищ н мыт вес"]},"tbl-115":{"c":4.7,"f":3.1,"kind":"table","loss":{"bake":30,"boil":35,"cold":5,"fry":30,"stew":35},"name":"Печень говяжья с/м","p":17.4,"source":"Таблица пользователя (ккал в таблице: 116)","aliases":["печень говяжья цел с м фас"]},"tbl-116":{"c":1.5,"f":5,"kind":"table","loss":{"bake":25,"boil":30,"cold":5,"fry":25,"stew":30},"name":"Печень куриная зам.","p":19,"source":"Таблица пользователя (ккал в таблице: 128)","aliases":["печень куриная зам вес"]},"tbl-117":{"c":38,"f":15,"kind":"table","loss":{"bake":10,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Пирожок слоеный с яблоком/апельсином 100г","p":4.5,"source":"Таблица пользователя (ккал в таблице: 305)","aliases":["пирожок слоеный с яблоком и апельсином 100г зам"]},"tbl-118":{"c":64,"f":0,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Повидло","p":0.4,"source":"Таблица пользователя (ккал в таблице: 256)","aliases":["повидло вес"]},"tbl-119":{"c":3.9,"f":0.2,"kind":"table","loss":{"bake":15,"boil":null,"cold":2,"fry":null,"stew":5},"name":"Помидор свежий","p":0.9,"source":"Таблица пользователя (ккал в таблице: 22)","aliases":["помидор свеж цел н очищ н мыт вес"]},"tbl-120":{"c":95,"f":0.5,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Посыпка кондитерская","p":0.5,"source":"Таблица пользователя (ккал в таблице: 380)"},"tbl-121":{"c":45,"f":5,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Приправа для плова","p":10,"source":"Таблица пользователя (ккал в таблице: 265)","aliases":["приправа для плова суш фас пач"]},"tbl-122":{"c":30,"f":14,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Приправа карри","p":13,"source":"Таблица пользователя (ккал в таблице: 298)","aliases":["приправа карри молотая вес"]},"tbl-123":{"c":35,"f":4,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Приправа Хмели-Сунели","p":8,"source":"Таблица пользователя (ккал в таблице: 208)","aliases":["приправа хмели сунели суш фас пач"]},"tbl-124":{"c":25,"f":7,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Прованские травы","p":5,"source":"Таблица пользователя (ккал в таблице: 183)","aliases":["прованские травы сушеные вес"]},"tbl-125":{"c":3,"f":20,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Продукт плавленный","p":12,"source":"Таблица пользователя (ккал в таблице: 240)","aliases":["продукт плавленный фас пач а"]},"tbl-126":{"c":30,"f":0,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Разрыхлитель теста","p":0.1,"source":"Таблица пользователя (ккал в таблице: 120)","aliases":["разрыхлитель теста фас пач"]},"tbl-127":{"c":3.4,"f":0.1,"kind":"table","loss":{"bake":null,"boil":null,"cold":20,"fry":null,"stew":null},"name":"Редис свежий","p":1.2,"source":"Таблица пользователя (ккал в таблице: 19)","aliases":["редис свеж цел н очищ н мыт вес"]},"tbl-128":{"c":0,"f":18,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Сардина конс. 245г","p":17,"source":"Таблица пользователя (ккал в таблице: 230)","aliases":["сардина конс фас 245 ж б"]},"tbl-129":{"c":99.8,"f":0,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Сахар-песок","p":0,"source":"Таблица пользователя (ккал в таблице: 399)","aliases":["сахар песок вес"]},"tbl-130":{"c":99.5,"f":0,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Сахарная пудра","p":0,"source":"Таблица пользователя (ккал в таблице: 398)","aliases":["сахарная пудра вес"]},"tbl-131":{"c":9,"f":0.1,"kind":"table","loss":{"bake":20,"boil":20,"cold":0,"fry":25,"stew":20},"name":"Свекла свеж. очищ. вак.","p":1.5,"source":"Таблица пользователя (ккал в таблице: 42)","aliases":["свекла свеж цел очищ вес вак"]},"tbl-132":{"c":0,"f":23,"kind":"table","loss":{"bake":30,"boil":35,"cold":3,"fry":30,"stew":40},"name":"Свинина карбонат б/к зам.","p":16,"source":"Таблица пользователя (ккал в таблице: 271)","aliases":["свинина карбонат б к замор вес"]},"tbl-133":{"c":0,"f":12.3,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Сельдь филе с/с","p":17.5,"source":"Таблица пользователя (ккал в таблице: 181)","aliases":["сельдь филе с с фас ведро а"]},"tbl-134":{"c":70,"f":0,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Сироп в ассортименте","p":0,"source":"Таблица пользователя (ккал в таблице: 280)","aliases":["сироп в ас те"]},"tbl-135":{"c":50,"f":0.5,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Сладкий чили (соус)","p":0.7,"source":"Таблица пользователя (ккал в таблице: 207)","aliases":["сладкий чили"]},"tbl-136":{"c":4,"f":22,"kind":"table","loss":{"bake":5,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Сливки 22%","p":2.5,"source":"Таблица пользователя (ккал в таблице: 220)","aliases":["сливки ультрапак фас пач 22"]},"tbl-137":{"c":4,"f":10,"kind":"table","loss":{"bake":5,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Сливки 10% (А)","p":3,"source":"Таблица пользователя (ккал в таблице: 118)","aliases":["сливки ультрапаст фас пач 10 а"]},"tbl-138":{"c":6,"f":0.3,"kind":"table","loss":{"bake":15,"boil":10,"cold":0,"fry":15,"stew":10},"name":"Смесь овощная Мексиканская зам.","p":2.5,"source":"Таблица пользователя (ккал в таблице: 38)","aliases":["смесь овощная мексиканская замор вес"]},"tbl-139":{"c":3.2,"f":15,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Сметана 15%","p":2.8,"source":"Таблица пользователя (ккал в таблице: 159)","aliases":["сметана фас п п 15"]},"tbl-140":{"c":7.3,"f":0.4,"kind":"table","loss":{"bake":null,"boil":null,"cold":5,"fry":null,"stew":null},"name":"Смородина черная с/м","p":1,"source":"Таблица пользователя (ккал в таблице: 40)","aliases":["смородина черная с м цел вес"]},"tbl-141":{"c":3.5,"f":0,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Сок томатный","p":1,"source":"Таблица пользователя (ккал в таблице: 18)","aliases":["сок томатный фас 1л кор"]},"tbl-143":{"c":1.8,"f":22,"kind":"table","loss":{"bake":null,"boil":10,"cold":0,"fry":15,"stew":null},"name":"Сосиски Классические","p":10.5,"source":"Таблица пользователя (ккал в таблице: 248)","aliases":["сосиски классические вес"]},"tbl-144":{"c":35,"f":0.5,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Соус Барбекю","p":1,"source":"Таблица пользователя (ккал в таблице: 148)","aliases":["соус барбекю вес а"]},"tbl-145":{"c":15,"f":10,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Соус горчичный","p":2,"source":"Таблица пользователя (ккал в таблице: 158)"},"tbl-146":{"c":12,"f":8,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Соус из черного перца","p":1.5,"source":"Таблица пользователя (ккал в таблице: 126)","aliases":["соус из черного перца фас пач а"]},"tbl-147":{"c":40,"f":0.2,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Соус кисло-сладкий","p":0.5,"source":"Таблица пользователя (ккал в таблице: 164)","aliases":["соус кисло сладкий фас пач"]},"tbl-148":{"c":7,"f":3,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Соус овощной ТТК751","p":1,"source":"Таблица пользователя (ккал в таблице: 59)"},"tbl-149":{"c":5,"f":0,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Соус соевый","p":7,"source":"Таблица пользователя (ккал в таблице: 48)","aliases":["соус соевый фас а"]},"tbl-150":{"c":5,"f":18,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Соус Сырный","p":2,"source":"Таблица пользователя (ккал в таблице: 190)","aliases":["соус сырный вес"]},"tbl-151":{"c":20,"f":5,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Соус Сэн-сой","p":1,"source":"Таблица пользователя (ккал в таблице: 129)","aliases":["соус сэн сой вес"]},"tbl-152":{"c":25,"f":5,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Соус тыквенно-медовый №1","p":1,"source":"Таблица пользователя (ккал в таблице: 149)"},"tbl-153":{"c":38,"f":0.1,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Соус Унаги","p":1.5,"source":"Таблица пользователя (ккал в таблице: 158)","aliases":["соус унаги л"]},"tbl-154":{"c":48,"f":0.3,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Соус Чили сладкий","p":0.5,"source":"Таблица пользователя (ккал в таблице: 196)","aliases":["соус чили сладкий фас пач а"]},"tbl-155":{"c":68,"f":2.5,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Сухари панировочные","p":10,"source":"Таблица пользователя (ккал в таблице: 335)","aliases":["сухари панировочные вес а"]},"tbl-156":{"c":66,"f":0.5,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Сухофрукты (изюм)","p":2.5,"source":"Таблица пользователя (ккал в таблице: 280)","aliases":["сухофрукты изюм вес"]},"tbl-157":{"c":53,"f":0.3,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Сухофрукты (курага)","p":5.2,"source":"Таблица пользователя (ккал в таблице: 232)","aliases":["сухофрукты курага вес"]},"tbl-158":{"c":2,"f":22,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Сыр \"Фетакса\" 45%","p":12,"source":"Таблица пользователя (ккал в таблице: 254)","aliases":["сыр фетакса вес 45"]},"tbl-159":{"c":2.5,"f":24,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Сыр плавленный Дружба","p":11,"source":"Таблица пользователя (ккал в таблице: 268)","aliases":["сыр плавленный дружба вес а"]},"tbl-160":{"c":0,"f":29,"kind":"table","loss":{"bake":10,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Сыр Российский 50%","p":23,"source":"Таблица пользователя (ккал в таблице: 353)","aliases":["сыр российский вес 50 а"]},"tbl-161":{"c":3.5,"f":25,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Сыр творожный","p":7,"source":"Таблица пользователя (ккал в таблице: 267)","aliases":["сыр творожный вес"]},"tbl-162":{"c":25,"f":18,"kind":"table","loss":{"bake":10,"boil":null,"cold":0,"fry":10,"stew":null},"name":"Сырные палочки (зам.)","p":10,"source":"Таблица пользователя (ккал в таблице: 302)","aliases":["сырные палочки"]},"tbl-163":{"c":2,"f":9,"kind":"table","loss":{"bake":10,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Творог 9%","p":16.7,"source":"Таблица пользователя (ккал в таблице: 155)","aliases":["творог вес 9"]},"tbl-164":{"c":48,"f":10,"kind":"table","loss":{"bake":15,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Тесто сдобное","p":7,"source":"Таблица пользователя (ккал в таблице: 310)"},"tbl-165":{"c":42,"f":20,"kind":"table","loss":{"bake":15,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Тесто слоеное","p":6,"source":"Таблица пользователя (ккал в таблице: 372)"},"tbl-166":{"c":4.4,"f":0.1,"kind":"table","loss":{"bake":20,"boil":10,"cold":25,"fry":25,"stew":15},"name":"Тыква свежая","p":1,"source":"Таблица пользователя (ккал в таблице: 22)","aliases":["тыква свеж цел н очищ н мыт вес"]},"tbl-167":{"c":4.1,"f":0.5,"kind":"table","loss":{"bake":null,"boil":null,"cold":20,"fry":null,"stew":null},"name":"Укроп свежий","p":2.5,"source":"Таблица пользователя (ккал в таблице: 31)","aliases":["укроп свеж цел н очищ н мыт вес"]},"tbl-168":{"c":0.5,"f":15,"kind":"table","loss":{"bake":30,"boil":35,"cold":2,"fry":30,"stew":40},"name":"Фарш говяжий зам.","p":17,"source":"Таблица пользователя (ккал в таблице: 203)","aliases":["фарш говяжий замор вес"]},"tbl-169":{"c":8,"f":18,"kind":"table","loss":{"bake":30,"boil":35,"cold":0,"fry":30,"stew":40},"name":"Фарш для тефтелей 735","p":14,"source":"Таблица пользователя (ккал в таблице: 250)"},"tbl-170":{"c":0.5,"f":10,"kind":"table","loss":{"bake":25,"boil":30,"cold":2,"fry":25,"stew":35},"name":"Фарш куриный с/м","p":16,"source":"Таблица пользователя (ккал в таблице: 156)","aliases":["фарш куриный с м вес"]},"tbl-171":{"c":47,"f":2,"kind":"table","loss":{"bake":null,"boil":100,"cold":0,"fry":null,"stew":null},"name":"Фасоль сухая","p":21,"source":"Таблица пользователя (ккал в таблице: 290)","aliases":["фасоль вес"]},"tbl-172":{"c":15,"f":0.4,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Фасоль красная конс.","p":7.5,"source":"Таблица пользователя (ккал в таблице: 98)","aliases":["фасоль красная с с конс фас ж б"]},"tbl-173":{"c":3.6,"f":0.2,"kind":"table","loss":{"bake":12,"boil":10,"cold":5,"fry":12,"stew":10},"name":"Фасоль стручковая зам.","p":2,"source":"Таблица пользователя (ккал в таблице: 24)","aliases":["фасоль стручковая зам рез фас упак"]},"tbl-175":{"c":0,"f":1.5,"kind":"table","loss":{"bake":15,"boil":15,"cold":20,"fry":20,"stew":null},"name":"Филе морского языка с/м","p":16.5,"source":"Таблица пользователя (ккал в таблице: 80)","aliases":["филе морского языка с м вес а"]},"tbl-176":{"c":0,"f":3.8,"kind":"table","loss":{"bake":20,"boil":20,"cold":30,"fry":25,"stew":null},"name":"Форель","p":19.2,"source":"Таблица пользователя (ккал в таблице: 111)"},"tbl-177":{"c":40,"f":1.3,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Хлеб бородинский","p":7,"source":"Таблица пользователя (ккал в таблице: 200)"},"tbl-178":{"c":48,"f":1,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Хлеб пшеничный сп.","p":8,"source":"Таблица пользователя (ккал в таблице: 238)","aliases":["хлеб пшен сп"]},"tbl-179":{"c":0.2,"f":0,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Чай зеленый Гринфилд 1пак","p":0.5,"source":"Таблица пользователя (ккал в таблице: 3)"},"tbl-180":{"c":29.9,"f":0.5,"kind":"table","loss":{"bake":null,"boil":null,"cold":15,"fry":null,"stew":null},"name":"Чеснок свежий","p":6.5,"source":"Таблица пользователя (ккал в таблице: 149)","aliases":["чеснок свеж цел н очищ н мыт вес"]},"tbl-181":{"c":72,"f":0.5,"kind":"table","loss":{"bake":null,"boil":null,"cold":0,"fry":null,"stew":null},"name":"Чеснок сушеный","p":16,"source":"Таблица пользователя (ккал в таблице: 356)","aliases":["чеснок сушеный вес"]},"tbl-182":{"c":0.1,"f":1,"kind":"table","loss":{"bake":25,"boil":20,"cold":5,"fry":30,"stew":20},"name":"Шампиньоны свежие","p":4.3,"source":"Таблица пользователя (ккал в таблице: 24)","aliases":["шампиньоны свеж цел н очищ н мыт вес"]},"tbl-183":{"c":9.8,"f":0.4,"kind":"table","loss":{"bake":10,"boil":null,"cold":10,"fry":null,"stew":5},"name":"Яблоко свежее","p":0.4,"source":"Таблица пользователя (ккал в таблице: 47)","aliases":["яблоко свеж цел н очищ н мыт вес"]},"tbl-184":{"c":0.2,"f":12.1,"kind":"table","loss":{"bake":30,"boil":35,"cold":8,"fry":null,"stew":35},"name":"Язык говяжий с/м","p":13.6,"source":"Таблица пользователя (ккал в таблице: 164)","aliases":["язык говяжий с м фас"]},"voda":{"c":0,"f":0,"kind":"table","name":"Вода питьевая","p":0,"source":"Принято 0","aliases":["вода питьевая","вода питьевая в хлеб"]},"yaytso":{"c":0.7,"f":11.5,"kind":"table","loss":{"bake":null,"boil":10,"cold":12,"fry":null,"stew":null},"name":"Яйцо куриное кат.1","p":12.7,"source":"Таблица пользователя (ккал в таблице: 157)","aliases":["яйца куриные","яйцо куриное кат 1 охл а"]}},"recipes":{}};window.KBZHU_RELEASE=1;window.KBZHU_BUILD=202611050354;window.KBZHU_URL="https://script.google.com/macros/s/AKfycbwZw800m1ZmF4tA5KXb4PcdbIvxwUeGg-A9hytwud8wHvq6v5Q_PKWDDD1Jcm1LR1yQsw/exec";</script>
 <script>
 (function(){
 'use strict';
@@ -2777,13 +2803,26 @@ function syAlUnion(mine,theirs){
    запись, которая от неё не отличается, не считается изменённой и просто заменяется общей; различия по разным полям объединяются,
    конфликтом остаётся только одно и то же поле, изменённое по-разному. */
 var SY_SEEDIX=null;
-function sySeedBase(id){
-  var sd=(typeof window!=='undefined'&&window.KBZHU_SEED&&window.KBZHU_SEED.ings)||null;
-  if(!sd||!id||!sd[id])return null;
+function sySeedHas(kind,id){
+  var sd=(typeof window!=='undefined'&&window.KBZHU_SEED)||null,m=sd&&(kind==='ing'?sd.ings:sd.recipes);
+  return!!(m&&id&&Object.prototype.hasOwnProperty.call(m,id));
+}
+function sySeedBase(id,kind,ctx){
+  var sd=(typeof window!=='undefined'&&window.KBZHU_SEED)||null;
+  kind=kind||'ing';
+  if(!sd||!id||!sySeedHas(kind,id))return null;
+  if(kind==='rec'){
+    /* карта из встроенной базы приводится к общему виду теми же правилами и с теми же связями сырья, что и ваша копия */
+    var ci={},ri={};
+    Object.keys(sd.ings||{}).forEach(function(k){ci[k]=normIng(sd.ings[k]);});
+    ri[id]=normRecipe(sd.recipes[id]);
+    return syRecShared({ings:ci,recipes:ri,map:ctx&&ctx.map||{ing:{},rec:{}}},id);
+  }
   if(!SY_SEEDIX||SY_SEEDIX.np!==!!NOPRICE)SY_SEEDIX={np:!!NOPRICE,m:Object.create(null)};
-  if(!SY_SEEDIX.m[id])SY_SEEDIX.m[id]=syIngClean(sd[id]);
+  if(!SY_SEEDIX.m[id])SY_SEEDIX.m[id]=syIngClean(sd.ings[id]);
   return SY_SEEDIX.m[id];
 }
+function sy1Obj(o){return!!o&&typeof o==='object'&&!Array.isArray(o);}
 function syMerge3(base,loc,rem){
   var keys={},out={},conf=[];
   [base,loc,rem].forEach(function(o){Object.keys(o||{}).forEach(function(k){keys[k]=1;});});
@@ -2793,6 +2832,11 @@ function syMerge3(base,loc,rem){
     if(l===r)v=loc[k];
     else if(l===b)v=rem[k];
     else if(r===b)v=loc[k];
+    else if(sy1Obj(loc[k])&&sy1Obj(rem[k])&&(base[k]===undefined||sy1Obj(base[k]))){
+      /* вложенные поля (технология, условия хранения…) сверяются по отдельности: разные подпункты объединяются, спорным остаётся только один и тот же */
+      var sub=syMerge3(base[k]||{},loc[k],rem[k]);
+      v=sub.json;sub.conflicts.forEach(function(c){conf.push(k+'.'+c);});
+    }
     else{conf.push(k);v=loc[k];}
     if(v!==undefined)out[k]=v;
   });
@@ -2840,20 +2884,26 @@ function syPlanPull(ctx,items){
         m[id]={sid:R.sid,rev:(e&&e.rev)||0,h:(e&&e.h)||''};
         var cur=syCur(vctx,kind,id);
         ent.curName=cur.name;
+        var hist=!!(e&&e.rev>0),bs=ctx.bases&&ctx.bases[kind+'|'+R.sid],sb=null;
+        var tri=function(base){
+          /* три версии: общая на момент последней сверки (или встроенная), ваша и новая общая */
+          var mg=syMerge3(base,cur.shared,j);
+          if(mg.conflicts.length){ent.state='conflict';ent.fields=mg.conflicts;}
+          else{ent.state='merge';ent.mjson=mg.json;}
+          ent.cls='edit';
+        };
         if(cur.h===rh)ent.state='same';
         else if(kind==='ing'&&syAlOnly(cur.shared,j)){ent.state='same';ent.merge=true;}
         else if(e&&((e.rev>0&&e.h===cur.h)||(e.sent&&e.sent===cur.h)))ent.state='update';
-        else if(kind==='ing'&&!(e&&e.rev>0)&&sySeedBase(id)){
-          /* истории синхронизации нет, но запись пришла из встроенной базы: сверяем три версии — встроенную, вашу и общую */
-          var sb=sySeedBase(id);
-          if(cur.h===syH(sb))ent.state='update';
-          else{
-            var mg=syMerge3(sb,cur.shared,j);
-            if(mg.conflicts.length){ent.state='conflict';ent.fields=mg.conflicts;}
-            else{ent.state='merge';ent.mjson=mg.json;}
-          }
+        else if(hist&&e.h===rh)ent.state='same';        /* в общей базе версия та же, что вы получили раньше: меняли только вы, это ваша правка, а не расхождение */
+        else if(hist&&bs)tri(kind==='ing'?syIngClean(bs):syRecClean(bs));
+        else if(!hist&&(sb=sySeedBase(id,kind,vctx))){
+          /* истории сверки нет, но запись пришла из встроенной базы (по её постоянному ид): не тронутая правками заменяется общей без вопросов */
+          if(cur.h===syH(sb)){ent.state='update';ent.cls='first';}
+          else tri(sb);
         }
-        else ent.state='conflict';
+        else if(!hist){ent.state='migrate';ent.cls='migrate';}      /* старые данные неизвестного происхождения: общая версия становится текущей, ваш вариант сохраняется как восстановленный черновик */
+        else{ent.state='conflict';ent.cls='edit';}
       }
       plan.push(ent);
     });
@@ -2903,6 +2953,7 @@ function syApplyPlan(ctx,plan,choose,adoptRemote){
     var m=syMap(ctx,e.kind),id=e.localId,old=id?m[id]:null;
     if(e.state==='same'){
       m[id]={sid:e.sid,rev:e.rev,h:e.h};res.mapped++;
+      (res.bases=res.bases||[]).push({kind:e.kind,sid:e.sid,json:e.json});
       if(e.merge&&ctx.ings[id]){
         var al=syAlUnion(ctx.ings[id].aliases,e.json.aliases);
         if(al.length&&canon(al)!==canon(ctx.ings[id].aliases||[])){ctx.ings[id].aliases=al;res.merged++;res.ings.push(id);}
@@ -2910,12 +2961,20 @@ function syApplyPlan(ctx,plan,choose,adoptRemote){
       }
       return;
     }
-    if(e.state==='merge'&&ctx.ings[id]){
+    if(e.state==='merge'&&(e.kind==='ing'?ctx.ings[id]:ctx.recipes[id])){
       /* ваши правки по одним полям и общие по другим: общая версия принимается, ваши поля остаются и уйдут отдельной правкой */
-      var om=ctx.ings[id];
-      ctx.ings[id]=normIng(e.mjson);
-      if(NOPRICE)PRICE_ING.forEach(function(k){if(om[k]!==undefined)ctx.ings[id][k]=om[k];});
-      m[id]={sid:e.sid,rev:e.rev,h:e.h};res.updated++;res.ings.push(id);res.merge3=(res.merge3||0)+1;
+      if(e.kind==='ing'){
+        var om=ctx.ings[id];
+        ctx.ings[id]=normIng(e.mjson);
+        if(NOPRICE)PRICE_ING.forEach(function(k){if(om[k]!==undefined)ctx.ings[id][k]=om[k];});
+        res.ings.push(id);
+      }else{
+        var or=ctx.recipes[id],mr=syRecToLocal(ctx,e.mjson);
+        if(or){if(or.qty)mr.qty=or.qty;if(or.op)mr.op=or.op;if(or.cat)mr.cat=or.cat;if(or.arch)mr.arch=true;}
+        ctx.recipes[id]=mr;res.recs.push(id);
+      }
+      m[id]={sid:e.sid,rev:e.rev,h:e.h};res.updated++;res.merge3=(res.merge3||0)+1;
+      (res.bases=res.bases||[]).push({kind:e.kind,sid:e.sid,json:e.json});
       return;
     }
     if(e.state==='conflict'&&syPick(e,choose,adoptRemote)!=='remote'){
@@ -2923,6 +2982,8 @@ function syApplyPlan(ctx,plan,choose,adoptRemote){
       res.kept++;return;
     }
     if(e.state==='new')id=uid();
+    if(e.state==='migrate')res.migrated=(res.migrated||0)+1;
+    (res.bases=res.bases||[]).push({kind:e.kind,sid:e.sid,json:e.json});
     if(e.kind==='ing'){
       var oi=ctx.ings[id];
       ctx.ings[id]=normIng(e.json);
@@ -2948,6 +3009,7 @@ function syApplyPlan(ctx,plan,choose,adoptRemote){
     delete src[id];delete m[id];res.removed++;
   });
   syPfResolve(ctx);
+  if(res.bases&&typeof syBasesSave==='function')syBasesSave(res.bases);       /* снимки общих версий для будущего объединения */
   return res;
 }
 function syNum(v){return v===null||v===undefined||!isFinite(v)?'—':String(Math.round(v*100)/100).replace('.',',');}
@@ -6502,7 +6564,7 @@ function viewMenu(){
 
   h+='<div class="tools mtools" style="margin-top:14px"><label class="field grow"><span class="lbl">Поиск по названию или номеру ТТК</span><input id="msearch" data-act="mQ" data-fk="msearch" autocomplete="off" value="'+esc(S.mq||'')+'" placeholder="Поиск по названию или номеру ТТК"></label>'+'</div>'
     +'<div class="chips" id="mChips" style="margin-bottom:12px">'+menuChipsHtml(items)+'</div>'
-    +'<details class="mextra" id="mExtra"'+(S.mExtra?' open':'')+'><summary>Дополнительные действия</summary><div class="mxbody">'+ex+sortH+menuToneHtml()+mFoldersHtml()+'</div></details>'
+    +'<details class="mextra" id="mExtra"'+(S.mExtra?' open':'')+'><summary>Дополнительные действия</summary><div class="mxbody">'+ex+sortH+menuToneHtml()+mFoldersHtml()+tbHtml()+'</div></details>'
     +'<div id="mList">'+mListHtml()+'</div>'
     +'<p class="hint">Себестоимость порции — только сырьё по брутто, без зарплаты и накладных расходов. Наценка = (цена − себестоимость) / себестоимость. Маржинальность = (цена − себестоимость) / цена. «Сырьё, %» — доля сырья в цене. Цена продажи и цены сырья должны быть на одной базе: обе с НДС или обе без. Меняя цену, наценку или маржинальность, вы меняете цену продажи: остальные показатели пересчитываются сами. Цена продажи подставляется в калькуляцию ОП-1 как наценка.</p>'
     ;
@@ -6945,6 +7007,7 @@ function reach(url){
 }
 /* Скрипт с адреса Google: ответ приходит вызовом функции. Если скрипт загрузился, а функция не вызвана, таблица недоступна без входа */
 function jsonpGet(url,ms){
+  if(testProd(url))return Promise.reject({code:'testprod'});
   return new Promise(function(resolve,reject){
     var name='__kbzhuGv'+Math.random().toString(36).slice(2,9),sc=document.createElement('script'),done=false,tm;
     function end(){done=true;clearTimeout(tm);try{delete window[name];}catch(e){window[name]=undefined;}if(sc.parentNode)sc.parentNode.removeChild(sc);}
@@ -7269,7 +7332,7 @@ function syLoad(){
   S.sy.phSeen=(d.ph&&typeof d.ph==='object'&&!Array.isArray(d.ph))?d.ph:{};
   S.sy.dq=(d.dq&&typeof d.dq==='object'&&!Array.isArray(d.dq))?d.dq:{};
   S.sy.pt=(d.pt&&typeof d.pt==='object'&&!Array.isArray(d.pt))?d.pt:{};
-  S.sy.heal=d.hl?1:0;
+  S.sy.heal=d.hl?1:0;S.sy.bs=d.bs?1:0;
   S.sy.hold=(d.hd&&typeof d.hd==='object'&&d.hd.items&&typeof d.hd.items==='object'&&Object.keys(d.hd.items).length)?d.hd:null;
   bkSig=JSON.stringify([S.sy.map,S.sy.gone,S.sy.del,S.sy.cfg.rev]);
   if(syMigrateHash(syCtx()))syPersist();
@@ -7277,10 +7340,10 @@ function syLoad(){
 function syPersist(){
   var sg=JSON.stringify([S.sy.map,S.sy.gone,S.sy.del,S.sy.cfg.rev]),ch=!!bkSig&&sg!==bkSig;
   bkSig=sg;
-  lsSet(SY_KEY,JSON.stringify({cfg:S.sy.cfg,map:S.sy.map,gone:S.sy.gone,del:S.sy.del,rv:S.sy.rv,fr:S.sy.fr,ph:S.sy.phSeen,hd:S.sy.hold,dq:S.sy.dq,pt:S.sy.pt,hl:S.sy.heal}));
+  lsSet(SY_KEY,JSON.stringify({cfg:S.sy.cfg,map:S.sy.map,gone:S.sy.gone,del:S.sy.del,rv:S.sy.rv,fr:S.sy.fr,ph:S.sy.phSeen,hd:S.sy.hold,dq:S.sy.dq,pt:S.sy.pt,hl:S.sy.heal,bs:S.sy.bs}));
   if(ch)bkTouch();
 }
-function syCtx(){return{ings:S.ings,recipes:S.recipes,map:S.sy.map,cats:ensureMenu(),gone:S.sy.gone,del:S.sy.del};}
+function syCtx(){return{ings:S.ings,recipes:S.recipes,map:S.sy.map,cats:ensureMenu(),gone:S.sy.gone,del:S.sy.del,bases:S.sy.bases||{}};}
 /* вы удалили ТТК: на проверку это не уходит и в журнал не попадает, а при получении общего блюдо не возвращается */
 function syForgetRec(id){
   var e=S.sy.map.rec[id];
@@ -7431,6 +7494,7 @@ function syErrText(e){
     if(e.err==='a'||e.err==='op')return'В таблице стоит старая версия скрипта, она не умеет работать с файлами. Откройте вкладку «Личный кабинет» → «Настройка скрипта»: скопируйте новый скрипт, вставьте его вместо старого (коды задайте те же), выполните «setup» и создайте новую версию развёртывания.';
     return String(e.msg||'Скрипт вернул ошибку.');
   }
+  if(c==='testprod')return'ТЕСТОВАЯ ВЕРСИЯ: рабочая общая база заблокирована, чтобы ничего не испортить. Подключите отдельную тестовую копию таблицы со своим скриптом.';
   if(c==='ac')return String(e.msg||'Не удалось разделить данные пользователей.');
   if(c==='url')return'Вставьте адрес веб-приложения из Apps Script (он оканчивается на /exec) или ссылку на файл подключения.';
   if(c==='ptrfail')return'Не удалось прочитать файл подключения. '+cloudErrText(e.inner);
@@ -7472,6 +7536,7 @@ function syWait(rid,n,max){
 }
 /* запись: тело уходит без чтения ответа (так её принимает любой браузер), итог забирается по номеру запроса */
 function syPost(op,extra,code,maxWait){
+  if(testProd(S.sy.cfg.url))return Promise.reject({code:'testprod'});
   var c=S.sy.cfg,req={op:op,code:code||c.code,by:c.name.trim(),bkt:acBkt(),rid:'q'+uid()+Math.random().toString(36).slice(2,6)};
   Object.keys(extra||{}).forEach(function(k){req[k]=extra[k];});
   return fetch(c.url,{method:'POST',mode:'no-cors',credentials:'omit',cache:'no-store',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(req)})
@@ -7615,7 +7680,7 @@ function syMyCodeSave(first){
 }
 function syDisconnect(){
   S.sy.cfg={url:'',name:S.sy.cfg.name,code:'',auto:false,rev:0,role:'',mapUrl:'',ptr:S.sy.cfg.ptr,pfAuto:S.sy.cfg.pfAuto!==false,bkAuto:S.sy.cfg.bkAuto!==false,bkRev:S.sy.cfg.bkRev||0,bkWho:S.sy.cfg.bkWho||'',bkDirty:!!S.sy.cfg.bkDirty,bkDev:S.sy.cfg.bkDev||'',bkAt:S.sy.cfg.bkAt||0,pubAuto:S.sy.cfg.pubAuto===true,pubDocs:S.sy.cfg.pubDocs!==false};S.sy.bk=null;S.sy.pg=null;S.sy.pf=pfFresh();S.sy.addr=undefined;
-  S.sy.heal=0;S.sy.map={ing:{},rec:{}};S.sy.gone={};S.sy.del={};S.sy.phSeen={};S.sy.phv=undefined;S.sy.info=null;S.sy.plan=null;S.sy.pend=null;S.sy.log=null;S.sy.pub={};S.sy.msg={};S.sy.hold=null;S.sy.holdAsk=false;S.sy.first=false;S.sy.us={list:null,busy:false,open:false,f:{name:'',role:'editor',own:true},made:null,err:''};S.sy.files=null;S.sy.lay=null;S.sy.layKnown=false;S.sy.layForce=false;S.sy.layGm=null;S.sy.gmQ=null;
+  S.sy.heal=0;S.sy.bs=0;S.sy.map={ing:{},rec:{}};S.sy.gone={};S.sy.del={};S.sy.phSeen={};S.sy.phv=undefined;S.sy.info=null;S.sy.plan=null;S.sy.pend=null;S.sy.log=null;S.sy.pub={};S.sy.msg={};S.sy.hold=null;S.sy.holdAsk=false;S.sy.first=false;S.sy.us={list:null,busy:false,open:false,f:{name:'',role:'editor',own:true},made:null,err:''};S.sy.files=null;S.sy.lay=null;S.sy.layKnown=false;S.sy.layForce=false;S.sy.layGm=null;S.sy.gmQ=null;
   syPersist();renderAll();flash('Отключено. Ваши данные остались в этом браузере');
 }
 
@@ -7644,21 +7709,78 @@ function syHealPrices(ctx,items){
   });
   return n;
 }
+/* снимок общей версии на момент последней сверки: от него считается объединение трёх версий. Лежит на устройстве (IndexedDB), не в основном хранилище */
+function syBaseKey(kind,sid){return'base:'+(S.sy.cfg.uid||S.sy.cfg.name||'-')+':'+kind+'|'+sid;}
+function syBasesSave(list){
+  if(!list||!list.length)return Promise.resolve();
+  try{return acKvPutMany(list.map(function(b){return[syBaseKey(b.kind,b.sid),b.json];}))['catch'](function(){});}catch(e){return Promise.resolve();}
+}
+/* основы нужны только там, где пришла новая общая версия, а у вас запись менялась */
+function syBasesFor(items){
+  var ctx=syCtx(),want=[],idx={ing:Object.create(null),rec:Object.create(null)};
+  ['ing','rec'].forEach(function(k){var m=syMap(ctx,k);Object.keys(m).forEach(function(id){if(m[id]&&m[id].sid)idx[k][m[id].sid]=id;});});
+  items.forEach(function(R){
+    if(!R||(R.json&&R.json._del))return;
+    var id=idx[R.kind]&&idx[R.kind][R.sid],e,src;
+    if(!id)return;
+    e=syMap(ctx,R.kind)[id];src=R.kind==='ing'?ctx.ings:ctx.recipes;
+    if(!e||!(e.rev>0)||!src[id]||syCur(ctx,R.kind,id).h===e.h)return;
+    want.push(R.kind+'|'+R.sid);
+  });
+  if(!want.length)return Promise.resolve({});
+  function key(k){var i=k.indexOf('|');return syBaseKey(k.slice(0,i),k.slice(i+1));}
+  try{
+    return acKvGetMany(want.map(key)).then(function(o){var out={};want.forEach(function(k){if(o[key(k)])out[k]=o[key(k)];});return out;},function(){return{};});
+  }catch(e){return Promise.resolve({});}
+}
+/* карточка ТТК открыта и в ней сейчас вводят текст: входящее её не трогает, применится после закрытия */
+function syOpenCard(){
+  var a;
+  if(S.tab!=='calc'||!S.active||!S.recipes[S.active]||typeof document==='undefined')return'';
+  a=document.activeElement;
+  if(!a||!/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)||!a.closest||!a.closest('#view'))return'';
+  return S.active;
+}
+function syOpenRetry(){
+  if(S.sy.openT)return;
+  S.sy.openT=setTimeout(function(){
+    S.sy.openT=0;
+    if(!S.sy.openSkip||!syLinked())return;
+    if(syOpenCard()||S.sy.busy.pull){syOpenRetry();return;}
+    S.sy.openSkip=0;syPull(true);
+  },8000);
+}
 function syPull(auto,quick){
   if(!syLinked()||S.sy.busy.pull)return Promise.resolve();
   syBusy('pull',true);S.sy.merged=0;if(!auto){syMsg('pull','busy','Получаю обновления…');scheduleRender();}
   var healAll=!S.sy.heal&&!NOPRICE;     /* один раз на устройство: полная сверка цен (см. syHealPrices) */
-  return syGet({a:'pull',since:healAll?0:S.sy.cfg.rev}).then(function(d){
+  var fullAll=healAll||!S.sy.bs;     /* один раз на устройство: полная сверка заодно сохраняет снимки общих версий для объединения правок */
+  return syGet({a:'pull',since:fullAll?0:S.sy.cfg.rev}).then(function(d){
     return acPull(d).then(function(ch){
     if(ch){syBusy('pull',false);return syPull(auto,quick);}      /* регионы изменились: общую базу берём заново */
     d.items.forEach(function(it){if(it.json&&it.json._del)delete S.sy.pub[it.kind+'|'+it.sid];else S.sy.pub[it.kind+'|'+it.sid]=it;});
     var healed=healAll?syHealPrices(syCtx(),d.items):0;
     if(healAll){S.sy.heal=1;syPersist();if(healed){syChanged();flash('Вернул цены из общей базы: '+healed+' поз. Ничего не отправлено.');}}
-    var plan=syPlanPull(syCtx(),d.items),n={'new':0,update:0,conflict:0,same:0,'delete':0};
-    plan.forEach(function(p){n[p.state==='merge'?'update':p.state]++;});
-    syBusy('pull',false);S.sy.loaded=true;S.sy.loadErr='';S.sy.pullAt=Date.now();
-    syPreBackup(plan);
-    var take=!syAdmin();   /* не технолог: версия технолога главная, расхождения не разбираются; свои правки, которые она заменила, откладываются (syHoldBack) */
+    return syBasesFor(d.items).then(function(bs){
+    S.sy.bases=bs;
+    var plan=syPlanPull(syCtx(),d.items),n={'new':0,update:0,conflict:0,same:0,'delete':0,migrate:0};
+    var take=!syAdmin();   /* не технолог: версия технолога главная, расхождения не разбираются; свои правки, которые она заменила, откладываются */
+    /* открытая карточка: пока в ней вводят текст, входящее для неё откладывается (версию заберёт следующая сверка) */
+    var openId=syOpenCard(),later=0;
+    if(openId)plan=plan.filter(function(p0){if(p0.kind==='rec'&&p0.localId===openId&&p0.state!=='same'){later++;return false;}return true;});
+    S.sy.openSkip=later;
+    if(later)syOpenRetry();
+    plan.forEach(function(p){n[p.state==='merge'?'update':(p.state==='migrate'?'update':p.state)]++;});
+    /* то, что заменится общей версией и чего нет нигде, кроме вашего устройства: сначала копия на устройство, и только после записи — замена */
+    var repl=plan.filter(function(p0){return p0.localId&&(p0.state==='migrate'||(take&&p0.state==='conflict'));});
+    return syPreBackup(repl).then(function(ok){
+    syBusy('pull',false);
+    if(!ok){
+      S.sy.loadErr=S.sy.backupErr||'Не удалось сохранить копию ваших данных на этом устройстве. Загрузка остановлена: ваши данные не тронуты.';
+      syMsg('pull','err',S.sy.loadErr);if(auto)flash('Общая база не применена: копию ваших данных сохранить не удалось');scheduleRender();upBarUpdate();
+      return;
+    }
+    S.sy.loaded=true;S.sy.loadErr='';S.sy.backupErr='';S.sy.pullAt=Date.now();
     if(!auto&&(n['new']||n.update||n.conflict||n['delete'])&&n.same){
       /* совпавшие позиции только связываются с общей базой, данные не меняются: делаем это сразу, чтобы они не висели в «Моих изменениях» */
       var r0=syApplyPlan(syCtx(),plan.filter(function(p){return p.state==='same';}),{});syPersist();
@@ -7667,13 +7789,13 @@ function syPull(auto,quick){
     var defer=!take&&n.conflict>0&&(auto||quick);       /* настоящие конфликты не решаются молча: безопасное применяется сразу, спорное — в панель сравнения */
     if(take||(auto&&!defer)||(quick&&!n.conflict)||!(n['new']||n.update||n.conflict||n['delete'])){
       var ch={},hd=null;
-      if(take){
-        plan.forEach(function(p0){if(p0.state==='conflict')ch[p0.kind+'|'+p0.sid]='remote';});
-        if(syHoldCan())hd=syHoldMake(plan);
-      }
+      if(take)plan.forEach(function(p0){if(p0.state==='conflict')ch[p0.kind+'|'+p0.sid]='remote';});
+      if(syHoldCan())hd=syHoldMake(plan,take);
       var res=syApplyPlan(syCtx(),plan,ch,!syAdmin());
       if(hd)syHoldAdd(hd);
-      S.sy.cfg.rev=d.rev;syPersist();
+            if(!later)S.sy.cfg.rev=d.rev;
+      if(fullAll&&!later)S.sy.bs=1;
+      syPersist();
       if(res.added||res.updated||res.merged||res.removed)syChanged();
       var parts=[];
       if(res.added)parts.push('новых '+res.added);
@@ -7683,14 +7805,16 @@ function syPull(auto,quick){
       var tail=res.kept?(take?', осталось сырьё, которое нужно вашим ТТК: '+res.kept:', у вас оставлено своё в конфликтах: '+res.kept):'';
       var text=parts.length?'Получено из общей базы: '+parts.join(', ')+tail+'.':(res.kept?(take?'Общая база применена'+tail+'.':'Есть расхождения с общей базой: '+res.kept+', ваше оставлено. Откройте вкладку «Личный кабинет».'):'Всё актуально: в общей базе нет ничего нового.');
       syMsg('pull',(res.kept&&!take)?'warn':'ok',text+' · '+nowHm());
-      if(hd)flash('Данные обновлены по версии технолога. Свои правки можно вернуть кнопкой «Продолжить работу»');
+      if(hd)flash(take?'Данные обновлены по версии технолога. Свои правки можно вернуть кнопкой «Продолжить работу»':'Общая база загружена. Ваши прежние варианты сохранены как восстановленные черновики: кнопка «Продолжить работу» вернёт их как правки');
+      else if(later&&(auto||quick))flash('Есть новая версия карточки, которую вы сейчас правите: она применится, когда вы её закроете');
       else if((auto||quick)&&(res.added||res.updated||res.removed||res.kept))flash(text);
       if(S.active&&!S.recipes[S.active]){S.active=null;}
       S.sy.plan=null;layRefresh();
     }else{
       if(defer){
         var safe=plan.filter(function(p0){return p0.state!=='conflict';}),rs=null;
-        if(safe.length){rs=syApplyPlan(syCtx(),safe,{});syPersist();if(safe.some(function(p0){return p0.state!=='same';}))syChanged();}   /* совпавшие тоже связываются с общей версией, иначе они остаются «изменёнными» */
+        var hd2=safe.length&&syHoldCan()?syHoldMake(safe,false):null;
+        if(safe.length){rs=syApplyPlan(syCtx(),safe,{});if(hd2)syHoldAdd(hd2);if(fullAll)S.sy.bs=1;syPersist();if(safe.some(function(p0){return p0.state!=='same';}))syChanged();}   /* совпавшие тоже связываются с общей версией, иначе они остаются «изменёнными» */
         plan=plan.filter(function(p0){return p0.state==='conflict';});
         n={'new':0,update:0,conflict:plan.length,same:0,'delete':0};
         if(rs&&(rs.added||rs.updated||rs.removed))flash('Получено из общей базы: '+((rs.added||0)+(rs.updated||0)+(rs.removed||0))+'. Есть расхождения: выберите, что оставить');
@@ -7701,8 +7825,10 @@ function syPull(auto,quick){
     }
     scheduleRender();
     });
+    });
+    });
   }).catch(function(e){
-    syBusy('pull',false);
+    syBusy('pull',false);S.sy.backupErr='';
     S.sy.loadErr=syErrText(e);           /* кэш остаётся прежним; загрузку можно повторить кнопкой */
     syMsg('pull','err',S.sy.loadErr);if(auto)flash('Не удалось получить общую базу');scheduleRender();upBarUpdate();
   });
@@ -7710,27 +7836,36 @@ function syPull(auto,quick){
 /* состояния загрузки общей базы: «загрузка» и «нет связи» отличаются от «данных действительно нет» (пока не загружено, нехватку цен не показываем) */
 function syLoading(){return S.mode==='local'&&syLinked()&&!S.sy.loaded;}
 function syLoadHtml(){
+  if(S.sy.backupErr)return'<div class="incbar" role="alert"><b>Общая база не применена.</b><span class="incs">'+esc(S.sy.backupErr)+'</span><button type="button" class="btn mini" data-act="syRetryLoad">Повторить загрузку</button></div>';
   if(S.sy.loadErr)return'<div class="incbar" role="status"><b>Нет связи с общей базой.</b><span class="incs">Показаны данные, сохранённые на этом устройстве; цены могут быть неполными.</span><button type="button" class="btn mini" data-act="syRetryLoad">Повторить загрузку</button></div>';
   return'<div class="incbar" role="status"><b>Загружаю общую базу…</b><span class="incs">Цены и карты появятся после загрузки.</span></div>';
 }
 /* Перед первым применением общей базы: правки человека, которых нет во встроенной базе и которые затрагиваются обновлением,
    сохраняются отдельной копией на этом устройстве (IndexedDB), чтобы при любом выборе ничего не пропало */
-function syPreBackup(plan){
-  var hit=plan.filter(function(p){return p.adopt&&p.localId&&(p.state==='conflict'||p.state==='merge');}),o={},c=S.sy.cfg;
-  if(!hit.length||S.sy.preSaved)return;
-  hit.forEach(function(p){var src=p.kind==='ing'?S.ings:S.recipes;if(src[p.localId])o[p.kind+'|'+p.localId]={kind:p.kind,id:p.localId,name:p.curName||p.name,j:JSON.parse(JSON.stringify(src[p.localId]))};});
-  S.sy.preSaved=true;
-  try{acKvPut('pre:'+(c.uid||c.name||'-')+':'+Date.now(),{at:Date.now(),items:o})['catch'](function(){});}catch(e){}
+function syPreBackup(entries){
+  var o={},n=0,c=S.sy.cfg,fail=function(e){
+    S.sy.backupErr='Не удалось сохранить копию ваших данных на этом устройстве'+(e&&e.message?' ('+String(e.message).slice(0,80)+')':'')+'. Загрузка остановлена: ваши данные не тронуты. Нажмите «Повторить загрузку».';
+    return false;
+  };
+  (entries||[]).forEach(function(p){
+    var src=p.kind==='ing'?S.ings:S.recipes;
+    if(p.localId&&src[p.localId]){o[p.kind+'|'+p.localId]={kind:p.kind,id:p.localId,sid:p.sid,name:p.curName||p.name,j:JSON.parse(JSON.stringify(src[p.localId]))};n++;}
+  });
+  if(!n)return Promise.resolve(true);
+  /* «копия есть» только после подтверждённой записи; ошибка не глушится: замена не выполняется, данные остаются как были */
+  try{
+    return acKvPut('pre:'+(c.uid||c.name||'-')+':'+Date.now(),{at:Date.now(),items:o}).then(function(){S.sy.backupErr='';S.sy.preSaved=true;return true;},fail);
+  }catch(e){return Promise.resolve(fail(e));}
 }
 /* Не технолог (редактор, тер. управляющий, шеф-повар): при получении общего версия технолога применяется целиком, выбирать не нужно.
    Редактору и тер. управляющему копии их неотправленных правок, которые эта версия заменила, откладываются на плашку «Продолжить работу»:
    это только страховка от потерь при обновлении. Если замен не было, остаётся одна версия технолога и кнопки нет. */
-function syHoldCan(){return S.sy.cfg.role==='editor'||S.sy.cfg.role==='finance';}
-function syHoldMake(plan){
+function syHoldCan(){return S.sy.cfg.role==='admin'||S.sy.cfg.role==='editor'||S.sy.cfg.role==='finance';}
+function syHoldMake(plan,take){
   var ctx=syCtx(),items={},n=0;
   plan.forEach(function(e){
     var src=e.kind==='ing'?ctx.ings:ctx.recipes,o=e.localId&&src[e.localId];
-    if(e.state!=='conflict'||e.adopt||!o)return;
+    if(!o||!(e.state==='migrate'||(take&&e.state==='conflict')))return;
     items[e.kind+'|'+e.sid]={kind:e.kind,sid:e.sid,id:e.localId,name:String(e.curName||o.name||''),j:JSON.parse(JSON.stringify(o))};
     n++;
   });
@@ -7775,26 +7910,38 @@ function syHoldBarHtml(){
   if(ni)p.push('сырьё и цены: '+ni);
   if(nr)p.push('ТТК: '+nr);
   if(S.sy.holdAsk)return'<div class="upbar rev" role="alert"><div class="upt"><b>Отбросить свои правки?</b><span>Останется только версия технолога ('+esc(p.join(', '))+'). Вернуть их потом будет нельзя.</span></div><span class="upbtns"><button class="btn big" data-act="hdDrop">Отбросить</button><button class="btn" data-act="hdNo">Назад</button></span></div>';
+  if(syAdmin())return'<div class="upbar rev" role="status"><div class="upt"><b>Общая база загружена</b><span>Ваши прежние варианты сохранены как восстановленные черновики ('+esc(p.join(', '))+(nm.length?': '+esc(nm.join(', '))+(ks.length>nm.length?'…':''):'')+'). Они сами никуда не отправятся. «Продолжить работу» вернёт их как ваши правки.</span></div><span class="upbtns"><button class="btn big" data-act="hdBack">Продолжить работу</button><button class="btn" data-act="hdAsk">Не нужно</button></span></div>';
   return'<div class="upbar rev" role="status"><div class="upt"><b>Данные обновлены по версии технолога</b><span>Ваши последние правки отложены ('+esc(p.join(', '))+(nm.length?': '+esc(nm.join(', '))+(ks.length>nm.length?'…':''):'')+'). Нажмите «Продолжить работу», чтобы вернуть их.</span></div><span class="upbtns"><button class="btn big" data-act="hdBack">Продолжить работу</button><button class="btn" data-act="hdAsk">Не нужно</button></span></div>';
 }
 function syApply(){
   var p=S.sy.plan;if(!p)return;
   var un=p.entries.filter(function(e){return e.state==='conflict'&&!S.sy.choose[e.kind+'|'+e.sid]&&syAdmin();}).length;
   if(un){flash('Выберите, что оставить, в каждом конфликте: осталось '+un);return;}
+  if(S.sy.busy.apply)return;
   /* пока список был на экране, вы могли что-то поправить: состояния пересчитываем заново */
-  var res=syApplyPlan(syCtx(),syPlanPull(syCtx(),p.items),S.sy.choose,!syAdmin());
-  S.sy.cfg.rev=p.rev;S.sy.plan=null;syPersist();syChanged();
-  var parts=[];
-  if(res.added)parts.push('новых '+res.added);
-  if(res.updated)parts.push('обновлено '+res.updated);
-  if(res.removed)parts.push('удалено '+res.removed);
-  var mg=res.merged+(S.sy.merged||0);S.sy.merged=0;
-  if(mg)parts.push('синонимов дополнено у '+mg);
-  if(res.kept)parts.push('оставлено ваше '+res.kept);
-  syMsg('pull','ok','Применено: '+(parts.join(', ')||'ничего не менялось')+' · '+nowHm());
-  if(S.active&&!S.recipes[S.active]){S.active=null;}
-  layRefresh();
-  renderAll();flash('Общая база получена');
+  var plan=syPlanPull(syCtx(),p.items),take=!syAdmin();
+  /* общее, которое заменит ваши варианты, сначала сохраняется на устройстве; не записалось — ничего не меняется */
+  var repl=plan.filter(function(e){return e.localId&&(e.state==='migrate'||(e.state==='conflict'&&syPick(e,S.sy.choose,take)==='remote'));});
+  S.sy.busy.apply=true;
+  syPreBackup(repl).then(function(ok){
+    S.sy.busy.apply=false;
+    if(!ok){syMsg('pull','err',S.sy.backupErr);flash('Не применено: копию ваших данных сохранить не удалось');scheduleRender();return;}
+    var hd=syHoldCan()?syHoldMake(plan.filter(function(e){return e.state==='migrate';}),false):null;
+    var res=syApplyPlan(syCtx(),plan,S.sy.choose,take);
+    if(hd)syHoldAdd(hd);
+        S.sy.cfg.rev=p.rev;S.sy.plan=null;syPersist();syChanged();
+    var parts=[];
+    if(res.added)parts.push('новых '+res.added);
+    if(res.updated)parts.push('обновлено '+res.updated);
+    if(res.removed)parts.push('удалено '+res.removed);
+    var mg=res.merged+(S.sy.merged||0);S.sy.merged=0;
+    if(mg)parts.push('синонимов дополнено у '+mg);
+    if(res.kept)parts.push('оставлено ваше '+res.kept);
+    syMsg('pull','ok','Применено: '+(parts.join(', ')||'ничего не менялось')+' · '+nowHm());
+    if(S.active&&!S.recipes[S.active]){S.active=null;}
+    layRefresh();
+    renderAll();flash('Общая база получена');
+  });
 }
 
 /* ---------- отправка своих правок ---------- */
@@ -8580,7 +8727,8 @@ function syCloudHow(){
 /*BULK-START*/
 /* ---------- массовая загрузка карт из «ТТК в облаке» в общую базу (технолог) ----------
    Читает файлы библиотеки, создаёт только те карты, которых ещё нет, и публикует их пачками. Ничего не удаляет и не заменяет:
-   карты, которые уже есть в базе, пропускаются; файлы .docx в облаке остаются как есть (заново они не загружаются). */
+   карты, которые уже есть в базе, не создаются заново; файлы .docx в облаке остаются как есть (заново они не загружаются).
+   Тексты разделов (технология, подача, срок хранения) у уже загруженных карт можно обновить из исправленных файлов: показывается «было → станет», рецептура и цены не меняются. */
 var BULK_FZ=0.85;                     /* похожесть названий, начиная с которой сырьё из карты связывается с базой само */
 var BULK_PAR=4;                       /* файлов читается одновременно */
 function bulkShow(){return S.mode==='local'&&syAdmin()&&syFilesOn()&&syFReady();}
@@ -8608,15 +8756,36 @@ function bulkRead(f){
     return new Promise(function(ok){setTimeout(ok,1200);}).then(once);
   });
 }
+var BULK_TXT=['t42','t41','s51','s52','s53','s54'];
+var BULK_TXT_N={t41:'4.1',t42:'4.2',s51:'5.1',s52:'5.2',s53:'5.3',s54:'5.4'};
+function bulkNorm(x){return String(x==null?'':x).replace(/\r/g,'').split('\n').map(function(l){return l.replace(/\s+/g,' ').trim();}).filter(Boolean).join('\n');}
+/* что в тексте разделов карты отличается от файла; раздел, которого в файле нет или он пустой, не трогается */
+function bulkTxtDiff(rid,t,f){
+  var r=S.recipes[rid],fl=t.fields||{},d=[];
+  if(!r||t.fieldsErr)return null;
+  BULK_TXT.forEach(function(k){
+    var nw=fl[k],old;
+    if(nw===undefined||!bulkNorm(nw))return;
+    old=ttkVal(r,k);
+    if(bulkNorm(old)!==bulkNorm(nw))d.push({k:k,old:String(old==null?'':old),nw:String(nw)});
+  });
+  return d.length?{rid:rid,name:r.name||'',file:f.name,diffs:d}:null;
+}
 function bulkWhy(e){var m=String((e&&(e.msg||e.message))||e||'');return(!m||/^(zip|xml|nodoc)$/i.test(m))?'файл повреждён или это не документ Word':m.slice(0,160);}
 /* 1. проверка: файлы читаются, ничего не создаётся */
 function bulkScan(){
+  if(!bulkOn()||bulkBusy()||S.sy.bulkPre||S.sy.busy.send||S.sy.busy.fup)return;
+  /* файлы в облаке могли заменить с прошлого просмотра: список берётся заново, а не из памяти */
+  S.sy.bulkPre=1;bulkMsg('busy','Обновляю список файлов…');bulkPaint();
+  syFilesLoad(true,true).then(function(){S.sy.bulkPre=0;bulkScan2();},function(){S.sy.bulkPre=0;bulkScan2();});
+}
+function bulkScan2(){
   if(!bulkOn()||bulkBusy()||S.sy.busy.send||S.sy.busy.fup)return;
   if(typeof DecompressionStream==='undefined'){flash('Этот браузер не открывает .docx. Нужен современный Chrome, Edge, Firefox или Safari.');return;}
   var files=bulkFiles(),B,i=0,run=0;
   if(!files.length){S.sy.bulk=null;bulkMsg('warn','В «ТТК в облаке» нет файлов .docx.');scheduleRender();return;}
   files.sort(function(a,b){return(b.at||0)-(a.at||0);});     /* свежие раньше: из двух одинаковых карт берётся новая */
-  B=S.sy.bulk={st:'scan',total:files.length,done:0,got:[],stop:false,plan:null,res:null};
+  B=S.sy.bulk={st:'scan',total:files.length,done:0,got:[],stop:false,plan:null,res:null,exU:{}};
   bulkMsg('busy','Сверяю с общей базой…');bulkPaint();scheduleRender();
   syPull(true).then(function(){
     bulkMsg('busy','Читаю файлы…');bulkPaint();
@@ -8643,7 +8812,7 @@ function bulkScan(){
 }
 /* 2. план: что создастся, что пропустится, что с файлом не так. Сырьё сопоставляется по названию; всё сомнительное заводится новым, а не подставляется чужое */
 function bulkPlan(B){
-  var V={},memo={},newIngs={},nOrder=[],cards=[],probs=[],skips=[],dups=[],warns=[],doubt=[],k=0;
+  var V={},memo={},newIngs={},nOrder=[],cards=[],probs=[],skips=[],dups=[],warns=[],doubt=[],upds=[],updSeen={},k=0;
   Object.keys(S.ings).forEach(function(id){V[id]={name:S.ings[id].name,aliases:S.ings[id].aliases};});
   function nameOf(id){return V[id]?V[id].name:'';}
   function sameInRun(t,reg){
@@ -8665,7 +8834,11 @@ function bulkPlan(B){
       if(!String(t.dish||'').trim()){probs.push({name:f.name,why:'не найдено название блюда («Наименование блюда:»)'});continue;}
       reg=bulkReg(f);
       same=findSameRecipe(t,reg);
-      if(same){skips.push({name:f.name,as:S.recipes[same].name||''});continue;}
+      if(same){
+        skips.push({name:f.name,as:S.recipes[same].name||''});
+        if(!updSeen[same]){updSeen[same]=1;var u0=bulkTxtDiff(same,t,f);if(u0)upds.push(u0);}      /* из нескольких файлов одной карты берётся самый свежий */
+        continue;
+      }
       twin=sameInRun(t,reg);
       if(twin){dups.push({name:f.name,as:twin.f.name});continue;}
       rows=[];bad=0;
@@ -8698,7 +8871,7 @@ function bulkPlan(B){
     var seenIn={};
     cards.forEach(function(c){c.rows.forEach(function(r){if(r.ing&&r.ing.indexOf('n:')===0&&!seenIn[c.f.id+'|'+r.ing]){seenIn[c.f.id+'|'+r.ing]=1;newIngs[r.ing.slice(2)].cards++;}});});
     nOrder.forEach(function(key){if(newIngs[key].guess)doubt.push(newIngs[key]);});
-    B.plan={cards:cards,newIngs:newIngs,nOrder:nOrder,probs:probs,skips:skips,dups:dups,warns:warns,doubt:doubt,files:B.got.length};
+    B.plan={upds:upds,cards:cards,newIngs:newIngs,nOrder:nOrder,probs:probs,skips:skips,dups:dups,warns:warns,doubt:doubt,files:B.got.length};
     B.got=null;B.st='ready';
     bulkMsg('ok','Проверено файлов: '+B.plan.files+'. Ничего пока не создано.');
     scheduleRender();
@@ -8773,6 +8946,38 @@ function bulkApply(){
     return syFilesLoad(true).then(null,function(){});
   }).then(function(){scheduleRender();},function(e){B.st='done';B.pub=0;B.left=['публикация не завершилась'];bulkMsg('err',syErrText(e)||bulkWhy(e));scheduleRender();});
 }
+/* 3б. обновить тексты разделов у уже загруженных карт из файлов; только эти разделы, публикация пачками */
+function bulkUpdApply(){
+  var B=S.sy.bulk,P=B&&B.plan,sel,ids={},dirty,big=[];
+  if(!B||B.st!=='ready'||!P||!P.upds||S.sy.busy.send||!bulkOn())return;
+  sel=P.upds.filter(function(u){return!B.exU[u.rid]&&S.recipes[u.rid];});
+  if(!sel.length)return;
+  sel.forEach(function(u){
+    var r=S.recipes[u.rid];
+    if(!r.ttk)r.ttk={};
+    u.diffs.forEach(function(d){r.ttk[d.k]=d.nw;});
+    queueSave('recipes',u.rid);ids['rec|'+u.rid]=1;
+  });
+  B.st='apply';B.upd=sel.length;B.made=0;B.newIng=0;B.big=[];bulkMsg('busy','Обновляю разделы…');bulkPaint();
+  dirty=syDirtyUi().filter(function(d){return ids[sySelKey(d)];});
+  dirty=dirty.filter(function(d){
+    var n=0;try{n=JSON.stringify(syCur(syCtx(),'rec',d.id).shared).length;}catch(e){n=0;}
+    if(n>40000){big.push(S.recipes[d.id].name);return false;}
+    return true;
+  });
+  B.big=big;S.sy.pt={};syPersist();renderAll();
+  Promise.resolve(dirty.length?sySend(true,dirty,'imp',{guard:1,noDoc:1,light:1,chunk:100}):null).then(function(){
+    var ctx=syCtx(),pubd=0,left=[];
+    sel.forEach(function(u){
+      var e=syMap(ctx,'rec')[u.rid],cur;
+      if(!S.recipes[u.rid])return;
+      try{cur=syCur(ctx,'rec',u.rid);}catch(x){cur=null;}
+      if(e&&e.rev>0&&cur&&e.h===cur.h)pubd++;else left.push(S.recipes[u.rid].name);
+    });
+    B.pub=pubd;B.left=left;B.st='done';
+    bulkMsg(left.length?'warn':'ok','Обновлено карт: '+sel.length+', опубликовано: '+pubd+(left.length?'. Остальные — в «Мои изменения»: опубликуйте их кнопкой там.':'.'));
+  }).then(function(){scheduleRender();},function(e){B.st='done';B.pub=0;B.left=['публикация не завершилась'];bulkMsg('err',syErrText(e)||bulkWhy(e));scheduleRender();});
+}
 function bulkStop(){var B=S.sy.bulk;if(B&&B.st==='scan'){B.stop=true;bulkMsg('busy','Останавливаю…');bulkPaint();}}
 function bulkClose(){if(bulkBusy())return;S.sy.bulk=null;syMsg('imp','','');scheduleRender();}
 function bulkList(title,items,fmt,open){
@@ -8795,11 +9000,40 @@ function bulkText(B){
   if(B.big&&B.big.length)add('Слишком большие карты',B.big,function(x){return x;});
   return L.join('\n');
 }
+function bulkUpdHtml(B){
+  var U=(B.plan&&B.plan.upds)||[],sel,n=0;
+  if(!U.length)return'';
+  sel=U.filter(function(u){return!B.exU[u.rid];});
+  return'<details class="pgroup" open><summary>Обновить тексты из файлов · '+sel.length+' из '+U.length+'</summary><p class="hint" style="margin:6px 0">Заменяются только перечисленные разделы, и только если в файле они заполнены. Если вы правили этот текст прямо в приложении, он будет заменён текстом из файла. Лишнюю карту можно снять.</p><div class="sylist">'
+    +U.slice(0,200).map(function(u){
+      return'<div class="syrow" style="display:block"><label class="chkl" style="margin:0"><input type="checkbox" data-act="bulkExU" data-id="'+esc(u.rid)+'"'+(B.exU[u.rid]?'':' checked')+'><span><b>'+esc(u.name)+'</b> <span class="sysub">файл: '+esc(u.file)+'</span></span></label>'
+        +u.diffs.map(function(d){return'<div class="sysub" style="margin:2px 0 0 26px">'+BULK_TXT_N[d.k]+': '+bulkFrag(d.old,d.nw)+'</div>';}).join('')+'</div>';
+    }).join('')+(U.length>200?'<p class="hint">Показаны первые 200 из '+U.length+'; применятся все отмеченные.</p>':'')
+    +'</div><div class="btns" style="margin-top:10px"><button class="btn primary" data-act="bulkUpd"'+(sel.length?'':' disabled')+'>Обновить тексты в '+sel.length+' '+plural(sel.length,['карте','картах','картах'])+' и опубликовать</button></div></details>';
+}
+/* показывает только изменившееся место с небольшим окружением: «…не более <24> → <36> часов…» */
+function bulkFrag(o,n){
+  o=String(o).replace(/\s+/g,' ').trim();n=String(n).replace(/\s+/g,' ').trim();
+  if(!o)return'пусто → <ins>'+esc(tbCutB(n,140))+'</ins>';
+  var p=0,q=0,lo=o.length,ln=n.length,C=28,om,nm,pre,suf;
+  while(p<lo&&p<ln&&o.charAt(p)===n.charAt(p))p++;
+  while(q<lo-p&&q<ln-p&&o.charAt(lo-1-q)===n.charAt(ln-1-q))q++;
+  om=o.slice(p,lo-q);nm=n.slice(p,ln-q);
+  pre=o.slice(Math.max(0,p-C),p);suf=o.slice(lo-q,Math.min(lo,lo-q+C));
+  return(p>C?'…':'')+esc(pre)+(om?'<del>'+esc(tbCutB(om,120))+'</del>':'')+' → <ins>'+(nm?esc(tbCutB(nm,120)):'(удалено)')+'</ins> '+esc(suf)+(lo-q+C<lo?'…':'');
+}
+function tbCutB(t,n){t=String(t).replace(/\s+/g,' ').trim();return t?(t.length>n?t.slice(0,n)+'…':t):'пусто';}
+function bulkChange(act,t){
+  if(act!=='bulkExU')return false;
+  var B=S.sy.bulk,id=t.getAttribute('data-id');
+  if(B&&B.exU){if(t.checked)delete B.exU[id];else B.exU[id]=1;bulkPaint();}
+  return true;
+}
 function bulkInnerHtml(){
   var B=S.sy.bulk,P=B&&B.plan,h='',reg={};
   h+='<summary>Загрузить все карты из облака в общую базу</summary>';
   if(!B){
-    return h+'<p class="hint" style="margin-top:0">Для первого наполнения: программа прочитает файлы .docx из «ТТК в облаке» и покажет, что получится. Сначала только проверка, ничего не создаётся. Карты, которые уже есть в базе, не трогаются; файлы в облаке остаются как есть.</p>'
+    return h+'<p class="hint" style="margin-top:0">Для первого наполнения и для обновления текстов: программа прочитает файлы .docx из «ТТК в облаке» и покажет, что получится: какие карты создадутся и в каких изменится технология, подача или срок хранения. Сначала только проверка, ничего не создаётся. Карты, которые уже есть в базе, не трогаются; файлы в облаке остаются как есть.</p>'
       +'<div class="btns"><button class="btn primary" data-act="bulkScan">Проверить библиотеку</button></div>'+syMsgHtml('imp');
   }
   if(B.st==='scan')return h+'<p class="hint" style="margin-top:0">Читаю файлы: '+B.done+' из '+B.total+'. Это займёт несколько минут; страницу можно не закрывать.</p>'
@@ -8811,12 +9045,14 @@ function bulkInnerHtml(){
       +'<span class="sysub"> '+Object.keys(reg).map(function(n){return esc(n)+': '+reg[n];}).join(' · ')+'</span></div></div>'
       +'<div class="syrow"><div class="syn">Новое сырьё без КБЖУ: <b>'+P.nOrder.length+'</b><span class="sysub"> (заведено нулями. После загрузки в «Базе сырья» одним нажатием объединяется с вашим похожим сырьём, остальное заполните вручную)</span></div></div>'
       +'<div class="syrow"><div class="syn">Уже есть в базе, пропущено: <b>'+P.skips.length+'</b></div></div>'
+      +'<div class="syrow"><div class="syn">Тексты разделов отличаются от файла: <b>'+((P.upds||[]).length)+'</b><span class="sysub"> (технология, подача, срок хранения; рецептура и цены не меняются)</span></div></div>'
       +'<div class="syrow"><div class="syn">Дубли файлов в облаке: <b>'+P.dups.length+'</b></div></div>'
       +'<div class="syrow"><div class="syn">Файлы с проблемами, не будут загружены: <b>'+P.probs.length+'</b></div></div></div>';
     h+=bulkList('Файлы с проблемами',P.probs,function(x){return'<b>'+esc(x.name)+'</b> <span class="sysub">'+esc(x.why)+'</span>';},P.probs.length<=15);
     h+=bulkList('Замечания по картам (карты создадутся)',P.warns,function(x){return'<b>'+esc(x.name)+'</b> <span class="sysub">'+esc(x.why)+'</span>';},false);
     h+=bulkList('Новое сырьё без КБЖУ',P.nOrder.map(function(k){return P.newIngs[k];}),function(x){return'<b>'+esc(x.name)+'</b> <span class="sysub">в картах: '+x.cards+(x.guess?' · похоже на «'+esc(x.guess)+'»':'')+'</span>';},false);
     h+=bulkList('Дубли файлов (берётся более новый)',P.dups,function(x){return'<b>'+esc(x.name)+'</b> <span class="sysub">то же, что '+esc(x.as)+'</span>';},false);
+    h+=bulkUpdHtml(B);
     h+=bulkList('Уже есть в базе',P.skips,function(x){return'<b>'+esc(x.name)+'</b> <span class="sysub">'+esc(x.as)+'</span>';},false);
     h+='<div class="btns" style="margin-top:12px">'+(P.cards.length?'<button class="btn primary" data-act="bulkGo">Создать и опубликовать: '+P.cards.length+'</button>':'')
       +'<button class="btn" data-act="bulkCopy">Скопировать список</button><button class="btn" data-act="bulkClose">Закрыть</button></div>'
@@ -8824,7 +9060,7 @@ function bulkInnerHtml(){
     return h;
   }
   if(B.st==='done'){
-    h+='<div class="sylist"><div class="syrow"><div class="syn"><b>Создано карт: '+(B.made||0)+', опубликовано: '+(B.pub||0)+'</b>'
+    h+='<div class="sylist"><div class="syrow"><div class="syn"><b>'+(B.upd?'Обновлено карт: '+B.upd:'Создано карт: '+(B.made||0))+', опубликовано: '+(B.pub||0)+'</b>'
       +(B.newIng?'<span class="sysub"> · нового сырья без КБЖУ: '+B.newIng+'</span>':'')+'</div></div></div>';
     h+=bulkList('Не опубликованы (остались в «Мои изменения»)',B.left||[],function(x){return'<b>'+esc(x)+'</b>';},true);
     h+=bulkList('Слишком большие для одной ячейки таблицы',B.big||[],function(x){return'<b>'+esc(x)+'</b>';},true);
@@ -8847,6 +9083,7 @@ function bulkClick(act,b){
     case'bulkScan':bulkScan();return true;
     case'bulkStop':bulkStop();return true;
     case'bulkGo':bulkApply();return true;
+    case'bulkUpd':bulkUpdApply();return true;
     case'bulkClose':bulkClose();return true;
     case'bulkCopy':if(S.sy.bulk)copyText(bulkText(S.sy.bulk),b);return true;
   }
@@ -9142,6 +9379,7 @@ function syStateTag(p){
   if(p.del)return['bad','Удалено в общей базе'];
   if(p.state==='new')return['ok','Новое'];
   if(p.state==='update')return['warn','Обновится'];
+  if(p.state==='migrate')return['warn','Обновится, ваш вариант сохранится'];
   if(p.state==='merge')return['warn','Объединится'];
   return['bad',p.adopt?'Отличается от вашего':'Конфликт'];
 }
@@ -9499,6 +9737,7 @@ function bkYes(){
 }
 function bkClick(act,b){
   switch(act){
+    case'dfOut':dfOut();return true;
     case'bkPull':bkAsk('pull');return true;
     case'bkPullPrev':bkAsk('prev');return true;
     case'bkSaveNow':bkAsk('push');return true;
@@ -9552,6 +9791,12 @@ function bkBarHtml(){
   if(st==='none')return bar('Ваши данные хранятся только в этом браузере.','<button class="btn mini primary" data-act="bkSaveNow">Сохранить на Диск</button>');
   return'';
 }
+/* данные одним файлом: сырьё, ТТК, настройки. Без кода доступа, адреса общей базы и связей с ней — файл можно безопасно передать в тестовую версию */
+function dfOut(){
+  var s=bkTake();
+  delete s.sync;s.file='kbzhu-data';
+  anchorSave(JSON.stringify(s),'Не_на_глазок_данные_'+new Date().toISOString().slice(0,10)+'.json');
+}
 function bkCardHtml(){
   var bk=bkS(),c=S.sy.cfg,st=bkSt(),at=bkUndoAt(),busy=bk.busy||st==='old',cls=(st==='behind'||st==='conflict'||st==='free'||st==='old')?'warn':(st==='ok'?'ok':'');
   var h='<h2>Мои данные на Диске</h2>'
@@ -9561,6 +9806,7 @@ function bkCardHtml(){
     +'<div class="btns"><button class="btn primary" data-act="bkPull"'+(busy?' disabled':'')+'>Обновить с Диска</button>'
     +'<button class="btn" data-act="bkSaveNow"'+(busy?' disabled':'')+'>Сохранить на Диск</button>'
     +(bk.info&&bk.info.prev?'<button class="btn" data-act="bkPullPrev"'+(busy?' disabled':'')+'>Вернуть предыдущую копию с Диска</button>':'')
+    +'<button class="btn" data-act="dfOut">Скачать файл с данными</button>'
     +(at?'<button class="btn" data-act="bkUndo"'+(bk.busy?' disabled':'')+'>Вернуть прежние данные браузера ('+esc(syWhen(at))+')</button>':'')
     +'</div>'
     +'<label class="trem"><input type="checkbox" data-act="bkAuto"'+(c.bkAuto===false?'':' checked')+'>Сохранять на Диск автоматически: через минуту после правок и когда вы уходите из окна</label>'
@@ -10272,7 +10518,8 @@ function upBarHtml(){
   h+=gsBarHtml();
   if(n.base&&S.sy.plan)h+='<div class="upbar" role="alert"><div class="upt"><b>Есть расхождения с общей базой</b><span>Выберите, что оставить: ваше или общее, и нажмите «Применить».</span></div><button class="btn big" data-act="upGo">Разобрать</button></div>';
   else if((n.base||n.files)&&S.sy.autoErr)h+='<div class="upbar" role="alert"><div class="upt"><b>Не удалось получить обновления</b><span>'+(n.base?'В общей базе изменились данные: ТТК, сырьё или цены.':'')+(n.files?(n.base?' ':'')+'В «ТТК в облаке» изменились файлы.':'')+'</span></div><button class="btn big" data-act="upGo">Обновить сейчас</button></div>';
-  if(S.sy.hold&&!syAdmin())h+=syHoldBarHtml();
+  if(S.sy.backupErr)h+='<div class="upbar rev" role="alert"><div class="upt"><b>Общая база не применена</b><span>'+esc(S.sy.backupErr)+'</span></div><span class="upbtns"><button class="btn big" data-act="syRetryLoad">Повторить загрузку</button></span></div>';
+  if(S.sy.hold)h+=syHoldBarHtml();
   if(n.pend||n.pendF){
     var parts=[];
     if(n.pend)parts.push('предложений в общей базе: '+n.pend);
@@ -10785,7 +11032,7 @@ function usClick(act,b){
   return false;
 }
 /* единый номер выпуска: приложение (APP_REL) и скрипт общей базы (нужна версия не ниже SRV_NEED); обновление репозитория не обновляет скрипт */
-var APP_REL=87,SRV_NEED=28;
+var APP_REL=88,SRV_NEED=28;
 function syRelHtml(){
   var i=S.sy.info,v=i&&Number(i.v)||0;
   if(!syLinked()||!i||!syAdmin())return'';
@@ -11018,6 +11265,15 @@ function acKv(mode,fn){
 }
 function acKvGet(k){return acKv('readonly',function(os){return os.get(k);}).then(function(r){return r?r.v:null;});}
 function acKvPut(k,v){return acKv('readwrite',function(os){return os.put({k:k,v:v});});}
+function acKvPutMany(pairs){return acKv('readwrite',function(os){var last;pairs.forEach(function(p){last=os.put({k:p[0],v:p[1]});});return last;});}
+function acKvGetMany(keys){
+  return acKvOpen().then(function(db){return new Promise(function(res,rej){
+    var out={},tx;
+    try{tx=db.transaction('kv','readonly');var os=tx.objectStore('kv');keys.forEach(function(k){var rq=os.get(k);rq.onsuccess=function(){if(rq.result)out[k]=rq.result.v;};});}catch(e){rej(e);return;}
+    tx.oncomplete=function(){res(out);};
+    tx.onerror=tx.onabort=function(){rej(tx.error||new Error('idb tx'));};
+  });});
+}
 function acKvDel(k){return acKv('readwrite',function(os){return os['delete'](k);});}
 function acClone(o){return JSON.parse(JSON.stringify(o));}
 
@@ -11140,7 +11396,7 @@ function acClear(){
   var keep=S.cfg.regions;
   S.ings={};S.recipes={};S.cfg={};if(keep)S.cfg.regions=keep;
   S.active=null;S.newDraft=null;
-  S.sy.map={ing:{},rec:{}};S.sy.gone={};S.sy.del={};S.sy.phSeen={};S.sy.dq={};S.sy.pt={};S.sy.rv=null;S.sy.fr=null;S.sy.hold=null;S.sy.plan=null;S.sy.pub={};S.sy.pend=null;S.sy.log=null;S.sy.files=null;
+  S.sy.map={ing:{},rec:{}};S.sy.gone={};S.sy.del={};S.sy.phSeen={};S.sy.dq={};S.sy.pt={};S.sy.rv=null;S.sy.fr=null;S.sy.hold=null;S.sy.bs=0;S.sy.bases={};S.sy.plan=null;S.sy.pub={};S.sy.pend=null;S.sy.log=null;S.sy.files=null;
   var c=S.sy.cfg;c.rev=0;c.mapUrl='';c.bkRev=0;c.bkWho='';c.bkAt=0;c.bkDirty=false;
   BK_LS.concat([AC_HDRS]).forEach(function(k){try{localStorage.removeItem(k);}catch(e){}});
   phDirty={};
@@ -11158,7 +11414,7 @@ function acLoad(d){
   Object.keys(cf).forEach(function(k){if(isPhId(k)){S.cfg[k]=normPh(cf[k]);phDirty[k]=1;}});
   var y=d.sy||{};
   S.sy.map={ing:(y.map&&y.map.ing)||{},rec:(y.map&&y.map.rec)||{}};S.sy.gone=y.gone||{};S.sy.del=y.del||{};S.sy.phSeen=y.ph||{};S.sy.dq=y.dq||{};S.sy.pt=y.pt||{};
-  S.sy.rv=y.rv||null;S.sy.fr=y.fr||null;S.sy.hold=y.hd||null;S.sy.cfg.rev=Number(y.rev)||0;S.sy.cfg.mapUrl=String(y.mapUrl||'');
+  S.sy.rv=y.rv||null;S.sy.fr=y.fr||null;S.sy.hold=y.hd||null;S.sy.bs=0;S.sy.bases={};S.sy.cfg.rev=Number(y.rev)||0;S.sy.cfg.mapUrl=String(y.mapUrl||'');
   if(d.hdrs)lsSet(AC_HDRS,d.hdrs);
   Object.keys(d.ls||{}).forEach(function(k){lsSet(k,d.ls[k]);});
   if(d.region)S.region=d.region;
@@ -14248,11 +14504,47 @@ function hmAbc(h){
     +'<details class="hmtbl hmcf"><summary>Таблица и метод</summary><p class="hint">Классификация по выручке, ₽ за период. Границы классов: A до '+fmt(cf.a,0)+' %, B до '+fmt(cf.b,0)+' % накопленной доли. На графике '+n+' блюд с наибольшей выручкой.</p><table><thead><tr><th>Блюдо</th><th>Класс</th><th class="num">Выручка, ₽</th></tr></thead><tbody>'
     +d.rows.slice(0,30).map(function(x){return'<tr><td>'+esc(x.name)+'</td><td>'+esc(x.cls||x.class||x.abc||'')+'</td><td class="num">'+esc(fmt(Math.round(x.v),0))+'</td></tr>';}).join('')+'</tbody></table></details>';
 }
+/* главная по роли: рабочие очереди из подключённой базы (черновики, возвраты, проверка); без подключения блока нет, чисел «для вида» нет */
+function hmRoleKey(){return(S.mode==='local'&&syLinked())?S.sy.cfg.role:'';}
+function hmFin(){return!NOPRICE&&hmRoleKey()!=='viewer';}
+function hmTile(n,label,go,seg,hint){
+  var on=n>0&&go;
+  return'<li class="hmtask'+(n>0?' has':'')+'"><b>'+n+'</b><span>'+esc(label)+(hint?'<small>'+esc(hint)+'</small>':'')+'</span>'
+    +(on?'<button class="btn mini" data-act="hmGo" data-t="'+go+'"'+(seg?' data-s="'+seg+'"':'')+'>Открыть</button>':'<i class="hmz" aria-hidden="true">'+(n>0?'':'✓')+'</i>')+'</li>';
+}
+function hmRole(h){
+  var r=hmRoleKey(),t=[],title='',sub='',d,sent,drafts,rv,rj,pend,rw;
+  if(!r)return'';
+  if(r==='editor'||r==='finance'){
+    try{d=syDirtyUi();}catch(e){d=[];}
+    sent=d.filter(function(x){return syIsSent(x);}).length;drafts=d.length-sent;
+    rv=(S.sy.inbox||[]).length;rj=(S.sy.inboxR||[]).length;
+    title=r==='editor'?'Мои ТТК':'Мои задачи';
+    sub=r==='editor'?'Черновики, возвраты и ответы технолога':'Цены и правки по вашей точке; решение за технологом';
+    t.push(hmTile(drafts,'Черновики: не отправлены на проверку','sync','tasks'));
+    t.push(hmTile(sent,'Отправлено, ждёт решения технолога','sync','review'));
+    t.push(hmTile(rv,'Вернули на доработку','sync','tasks'));
+    t.push(hmTile(rj,'Отклонено технологом','sync','tasks'));
+  }else if(r==='admin'){
+    pend=S.sy.info&&S.sy.info.pending||0;rw=(S.sy.rework||[]).length;
+    title='Согласование';sub='Очередь проверки и возвраты авторам';
+    t.push(hmTile(pend,'Ждут проверки','sync','review'));
+    t.push(hmTile(rw,'На доработке у авторов','sync','tasks'));
+    t.push(hmTile(h.noOut+h.noKbzhu,'Качество данных: нет выхода или КБЖУ не рассчитано','menu','','список ниже'));
+  }else if(r==='viewer'){
+    title='Меню и ТТК';sub='Утверждённые карты вашей точки; только просмотр';
+    t.push(hmTile(h.n,'ТТК в меню региона «'+regionName(h.g)+'»','menu',''));
+    t.push(hmTile(h.n-h.noKbzhu,'Рассчитаны полностью','menu',''));
+    t.push(hmTile(h.noKbzhu,'КБЖУ рассчитано не полностью','menu',''));
+  }
+  if(!t.length)return'';
+  return'<section class="card hmc hmrole" aria-label="'+esc(title)+'"><div class="hmch"><h3>'+esc(title)+'</h3><span class="hmsub">'+esc(sub)+'</span></div><ul class="hmtasks">'+t.join('')+'</ul></section>';
+}
 function hmAttention(h){
   var l=[];
   function row(n,txt,act,f,label){if(n>0)l.push('<li><span>'+esc(txt)+'</span><button class="btn mini" data-act="'+act+'"'+(f?' data-f="'+f+'"':'')+'>'+n+' · '+esc(label)+'</button></li>');}
   row(h.noOut,'ТТК без выхода порции','hmGo','','Открыть меню');
-  if(!NOPRICE){
+  if(hmFin()){
     row(h.incomplete,'Себестоимость неполная: нет цены сырья','hmFilter','inc','Показать');
     row(h.noPrice,'Нет цены продажи','hmFilter','noprice','Показать');
   }
@@ -14264,21 +14556,167 @@ function hmAttention(h){
 function viewHome(){
   var h=hmData(),d=h.fin,f=curAbc(),k='',src;
   if(!h.n)return'<div class="card empty"><h2>ТТК пока нет</h2><p>Здесь появятся показатели, когда в приложении будут ТТК.</p><div class="btns"><button class="btn primary" data-act="gotoCalc">Открыть ТТК</button></div></div>';
-  if(NOPRICE){
+  if(hmRoleKey()==='viewer'){k='';}
+  else if(!hmFin()){
     k=hmKpi('ТТК в меню',String(h.n),'регион «'+esc(regionName(h.g))+'»','',HM_IC.doc)+hmKpi('КБЖУ не рассчитано',String(h.noKbzhu),h.noKbzhu?'проверьте карты':'все рассчитаны',h.noKbzhu?'warn':'good',h.noKbzhu?HM_IC.warn:HM_IC.chk);
   }else{
     k=hmKpi('Выручка',d&&d.tot.nRev?esc(hmRub(d.tot.rev)):'<span class="hmdash">Нет данных</span>',d&&d.tot.nRev?(f.period?esc(f.period)+' · ':'')+'по '+d.tot.nRev+' блюдам':'нужны продажи за период','good',HM_IC.rub)
       +hmKpi('Фудкост',h.fc!==null?fmt(h.fc,1)+' %':'<span class="hmdash">Нет данных</span>',h.fc!==null?'по рецептурам · '+h.fcN+' '+plural(h.fcN,['блюдо','блюда','блюд']):'нужны продажи, цены продажи и сырья','',HM_IC.pct)
       +hmKpi('Требуют внимания',String(h.incomplete+h.noPrice+h.noOut),'нет цены, выхода, сырья',(h.incomplete+h.noPrice+h.noOut)?'warn':'good',(h.incomplete+h.noPrice+h.noOut)?HM_IC.warn:HM_IC.chk)
-      +hmKpi('На проверке',String(syAdmin()&&syLinked()&&S.sy.info?(S.sy.info.pending||0):(syInboxOn()&&S.sy.inbox?S.sy.inbox.length:0)),syAdmin()?'ждут решения технолога':'возвраты на доработку','',HM_IC.doc);
+      +(hmRoleKey()&&hmRoleKey()!=='audit'?'':hmKpi('На проверке',String(syAdmin()&&syLinked()&&S.sy.info?(S.sy.info.pending||0):(syInboxOn()&&S.sy.inbox?S.sy.inbox.length:0)),syAdmin()?'ждут решения технолога':'возвраты на доработку','',HM_IC.doc));
   }
   src='Источник: ТТК и цены региона «'+esc(regionName(h.g))+'», продажи введены на вкладке «ABC-анализ»'+(f.period?' за '+esc(f.period):'')+'. Продажи в приложении вводятся по региону, не по точке. Фудкост расчётный: себестоимость по рецептурам проданных блюд, не фактический расход по учёту. Динамика фудкоста, потери и учётные остатки в приложение не загружаются, поэтому здесь не показаны.';
-  return'<section class="hm"><div class="hmhead"><h2>Обзор</h2><p>Продажи, себестоимость и качество данных</p></div>'
-    +'<div class="hmkpi">'+k+'</div>'
-    +(NOPRICE?'':'<div class="hmrow"><section class="card hmc">'+hmAbc(h)+'</section><section class="card hmc">'+hmComposition(h)+'</section></div>')
+  return'<section class="hm"><div class="hmhead"><h2>Обзор</h2><p>'+(hmRoleKey()==='viewer'?'Меню и утверждённые ТТК':'Продажи, себестоимость и качество данных')+'</p></div>'
+    +hmRole(h)
+    +(k?'<div class="hmkpi">'+k+'</div>':'')
+    +(!hmFin()?'':'<div class="hmrow"><section class="card hmc">'+hmAbc(h)+'</section><section class="card hmc">'+hmComposition(h)+'</section></div>')
     +'<section class="card hmc"><div class="hmch"><h3>Требуют внимания</h3></div>'+hmAttention(h)+'</section>'
-    +(NOPRICE?'':'<details class="hmsrc"><summary>Как считаются показатели</summary><p>'+src+'</p></details>')+'</section>';
+    +(!hmFin()?'':'<details class="hmsrc"><summary>Как считаются показатели</summary><p>'+src+'</p></details>')+'</section>';
 }
+/* Массовое обновление разделов ТТК региона: технология, подача, срок хранения.
+   Сначала предпросмотр «было → станет» по каждой ТТК, снять можно любую; применение идёт обычными правками (черновики/проверка по роли); последнее применение можно отменить. */
+var TB_KEYS=[['t42','4.2. Технология приготовления'],['t41','4.1. Предварительная подготовка'],['s51','5.1. Оформление и подача'],['s52','5.2. Температура подачи'],['s53','5.3. Доставка'],['s54','5.4. Срок хранения']];
+var TB_MODES=[['all','Заменить текст целиком'],['find','Заменить фрагмент'],['add','Добавить в конец (новые пункты)'],['addb','Добавить в начало']];
+function tb(){if(!S.tb)S.tb={k:'s54',mode:'all',text:'',find:'',repl:'',ex:{},arch:false,undo:null,open:false};return S.tb;}
+function tbOn(){return!uiRO()&&!guestOn()&&!syMgr();}
+function tbLabel(k){for(var i=0;i<TB_KEYS.length;i++)if(TB_KEYS[i][0]===k)return TB_KEYS[i][1];return k;}
+/* новый текст раздела для одной ТТК или null, если менять нечего */
+function tbNew(r,s){
+  var cur=String(ttkVal(r,s.k)==null?'':ttkVal(r,s.k)),t=String(s.text||'').replace(/\s+$/,'').replace(/^\s+/,''),n;
+  if(s.mode==='all'){if(!t)return null;n=t;}
+  else if(s.mode==='find'){if(!s.find||cur.indexOf(s.find)<0)return null;n=cur.split(s.find).join(s.repl||'');}
+  else if(s.mode==='add'){if(!t)return null;if(cur.trim()&&cur.replace(/\s+$/,'').slice(-t.length)===t)return null;n=cur.trim()?cur.replace(/\s+$/,'')+'\n'+t:t;}
+  else if(s.mode==='addb'){if(!t)return null;if(cur.replace(/^\s+/,'').slice(0,t.length)===t)return null;n=cur.trim()?t+'\n'+cur.replace(/^\s+/,''):t;}
+  else return null;
+  return n===cur?null:n;
+}
+function tbList(){
+  var s=tb();
+  return visIds().filter(function(id){return s.arch||!S.recipes[id].arch;}).map(function(id){var r=S.recipes[id];return{id:id,r:r,cur:String(ttkVal(r,s.k)==null?'':ttkVal(r,s.k)),nw:tbNew(r,s)};});
+}
+function tbCut(t,n){t=String(t).replace(/\s+/g,' ').trim();return t?(t.length>n?t.slice(0,n)+'…':t):'пусто';}
+function tbPrevHtml(){
+  var s=tb(),l=tbList(),ch=l.filter(function(x){return x.nw!==null;}),sel=ch.filter(function(x){return!s.ex[x.id];}),h;
+  var ready=s.mode==='find'?!!s.find:!!String(s.text||'').trim();
+  if(!ready)return'<p class="hint" role="status">Введите текст — ниже появится список ТТК, которые изменятся.</p>';
+  h='<p class="hint" role="status"><b>Изменится: '+sel.length+' из '+l.length+'</b> '+plural(l.length,['ТТК','ТТК','ТТК'])+' региона «'+esc(regionName(curRegion()))+'»'+(ch.length-sel.length?' · снято вручную: '+(ch.length-sel.length):'')+(l.length-ch.length?' · без изменений: '+(l.length-ch.length)+(s.mode==='find'?' (фрагмент не найден)':' (уже так)'):'')+'.</p>';
+  if(ch.length){
+    h+='<div class="tbtab"><table><thead><tr><th></th><th>ТТК</th><th>Было</th><th>Станет</th></tr></thead><tbody>'+ch.slice(0,200).map(function(x){
+      var num=ttkVal(x.r,'num');
+      return'<tr><td><input type="checkbox" data-act="tbEx" data-id="'+esc(x.id)+'" aria-label="Изменить эту ТТК"'+(s.ex[x.id]?'':' checked')+'></td><td><b>'+esc(x.r.name||'Без названия')+'</b>'+(num?'<small>ТТК №'+esc(num)+'</small>':'')+'</td><td>'+esc(tbCut(x.cur,140))+'</td><td>'+esc(tbCut(x.nw,140))+'</td></tr>';
+    }).join('')+'</tbody></table></div>'+(ch.length>200?'<p class="hint">Показаны первые 200 из '+ch.length+'; применятся все отмеченные.</p>':'');
+  }
+  h+='<div class="btns" style="margin-top:10px"><button class="btn primary" data-act="tbGo" data-edit'+(sel.length?'':' disabled')+'>Применить к '+sel.length+' ТТК</button>'
+    +'<button class="btn" data-act="tbUndo" data-edit'+(s.undo?'':' hidden')+'>Отменить последнее применение'+(s.undo?' ('+s.undo.n+')':'')+'</button></div>';
+  return h;
+}
+function tbHtml(){
+  if(!tbOn())return'';
+  var s=tb(),hint=(s.k==='t42'||s.k==='t41')?'Каждая строка — отдельный пункт: номера 4.2.1, 4.2.2… проставятся сами, пунктов может быть сколько нужно. ':'';
+  var f=s.mode==='find'
+    ?'<div class="fgrid"><label class="field grow"><span class="lbl">Найти (точно, с учётом регистра)</span><input type="text" data-act="tbF" data-k="find" value="'+esc(s.find)+'" autocomplete="off" spellcheck="false"></label>'
+     +'<label class="field grow"><span class="lbl">Заменить на (пусто — удалить)</span><input type="text" data-act="tbF" data-k="repl" value="'+esc(s.repl)+'" autocomplete="off" spellcheck="false"></label></div>'
+    :'<label class="field"><span class="lbl">'+(s.mode==='all'?'Новый текст раздела':'Текст для добавления')+'</span><textarea class="prose" rows="4" data-act="tbF" data-k="text">'+esc(s.text)+'</textarea></label>';
+  return'<details class="pgroup" id="tbBox"'+(s.open?' open':'')+'><summary>Массовое обновление разделов ТТК</summary>'
+    +'<p class="hint" style="margin:8px 0">Меняет один раздел сразу во всех ТТК региона «'+esc(regionName(curRegion()))+'». '+hint+'<code>{блюдо}</code> подставит название блюда. Перед применением виден список «было → станет».</p>'
+    +'<div class="fgrid"><label class="field grow"><span class="lbl">Раздел</span><select data-act="tbF" data-k="k" data-full="1">'+TB_KEYS.map(function(x){return'<option value="'+x[0]+'"'+(x[0]===s.k?' selected':'')+'>'+esc(x[1])+'</option>';}).join('')+'</select></label>'
+    +'<label class="field grow"><span class="lbl">Как менять</span><select data-act="tbF" data-k="mode" data-full="1">'+TB_MODES.map(function(x){return'<option value="'+x[0]+'"'+(x[0]===s.mode?' selected':'')+'>'+esc(x[1])+'</option>';}).join('')+'</select></label></div>'
+    +f+'<label class="chkl"><input type="checkbox" data-act="tbF" data-k="arch" data-full="1"'+(s.arch?' checked':'')+'> Включая ТТК из архива</label>'
+    +'<div id="tbPrev">'+tbPrevHtml()+'</div></details>';
+}
+function tbPaint(full){
+  var b=$('#tbBox'),p=$('#tbPrev');
+  if(full&&b){b.outerHTML=tbHtml();return;}
+  if(p)p.innerHTML=tbPrevHtml();
+}
+function tbInput(act,t){
+  if(act!=='tbF')return false;
+  var s=tb(),k=t.getAttribute('data-k');
+  s[k]=t.type==='checkbox'?t.checked:t.value;
+  if(k==='k'||k==='mode')s.ex={};
+  tbPaint(!!t.getAttribute('data-full'));
+  return true;
+}
+function tbChange(act,t){
+  if(act==='tbEx'){var s=tb(),id=t.getAttribute('data-id');if(t.checked)delete s.ex[id];else s.ex[id]=1;tbPaint(false);return true;}
+  /* у текстовых полей change приходит при уходе фокуса: перерисовка списка съела бы нажатие на «Применить» */
+  if(act==='tbF'){if(t.tagName==='SELECT'||t.type==='checkbox')tbInput(act,t);return true;}
+  return false;
+}
+function tbClick(act,b){
+  var s,l;
+  if(act==='tbGo'){
+    s=tb();l=tbList().filter(function(x){return x.nw!==null&&!s.ex[x.id];});
+    if(!l.length){flash('Нечего менять');return true;}
+    arm(b,'Изменить '+l.length+' ТТК?',function(){
+      var u=[];
+      l.forEach(function(x){
+        var r=S.recipes[x.id],had=!!(r.ttk&&Object.prototype.hasOwnProperty.call(r.ttk,s.k));
+        u.push({id:x.id,k:s.k,had:had,old:had?r.ttk[s.k]:undefined});
+        if(!r.ttk)r.ttk={};r.ttk[s.k]=x.nw;queueSave('recipes',x.id);
+      });
+      s.undo={n:u.length,k:s.k,list:u};s.ex={};
+      renderAll();flash('Обновлено ТТК: '+u.length+' · раздел «'+tbLabel(s.k)+'»');
+    });
+    return true;
+  }
+  if(act==='tbUndo'){
+    s=tb();if(!s.undo)return true;
+    arm(b,'Отменить для '+s.undo.n+' ТТК?',function(){
+      s.undo.list.forEach(function(u){
+        var r=S.recipes[u.id];if(!r)return;
+        if(u.had){if(!r.ttk)r.ttk={};r.ttk[u.k]=u.old;}else if(r.ttk)delete r.ttk[u.k];
+        queueSave('recipes',u.id);
+      });
+      var n=s.undo.n;s.undo=null;renderAll();flash('Возвращено прежнее: '+n+' ТТК');
+    });
+    return true;
+  }
+  return false;
+}
+/* Тестовая версия (сборка с --test): данные хранятся отдельно от рабочих (префикс «T~» в хранилище браузера, см. начало страницы),
+   рабочий скрипт общей базы заблокирован, сверху плашка «ТЕСТ». Рабочие данные браузера отсюда только читаются и только по кнопке. */
+function testOn(){return typeof window!=='undefined'&&window.KBZHU_TEST===1;}
+function testProd(u){var p=(typeof window!=='undefined'&&window.KBZHU_TEST_PROD)||'';return!!(p&&String(u||'').indexOf(p)>-1);}
+/* Перенос данных в тестовую версию — только явным файлом: из рабочей версии «Скачать файл с данными» (Личный кабинет → «Мои данные»),
+   здесь «Загрузить файл данных». В файле нет кодов доступа, адреса общей базы и связей с ней; доступа к хранилищу рабочего сайта у этой страницы нет. */
+function testLoadFile(file){
+  if(!file)return;
+  readTextFile(file,function(err,text){
+    var r,plan,bad;
+    if(err){flash('Не удалось прочитать файл');return;}
+    r=bkCheck(text);
+    if(!r.ok){flash('Это не файл с данными «Не на глазок»: '+String(r.msg||'').replace(/Копия на Диске /,'')); return;}
+    var nc=bkCounts(r.snap);
+    if(!window.confirm('Заменить тестовые данные данными из файла (сырьё: '+nc.ings+', ТТК: '+nc.recipes+')? Тестовые данные будут заменены, рабочие не затрагиваются, прежние тестовые можно вернуть кнопкой «Вернуть прежние данные браузера».'))return;
+    delete r.snap.sync;       /* связи с общей базой и подключение в тест не переносятся */
+    plan=bkApply(r.snap,{cfg:{},map:{ing:{},rec:{}},gone:{}},{rev:0,who:'',at:0,dirty:false});
+    plan.sync=JSON.stringify(plan.sync);
+    bad=bkWriteAll(plan);
+    if(bad){flash(bad);return;}
+    location.reload();
+  });
+}
+function testReset(){
+  if(!window.confirm('Очистить все тестовые данные? Рабочие данные не затрагиваются.'))return;
+  localStorage.clear();
+  try{indexedDB.deleteDatabase('kbzhu-ph');indexedDB.deleteDatabase('kbzhu-park');}catch(e){}
+  location.reload();
+}
+function testBar(){
+  var b;
+  if(!testOn()||document.getElementById('testBar'))return;
+  document.documentElement.classList.add('testmode');
+  b=document.createElement('div');b.id='testBar';b.setAttribute('role','status');
+  b.innerHTML='<b>ТЕСТ<u>ОВАЯ ВЕРСИЯ</u></b><span>свои данные, рабочая общая база заблокирована</span>'
+    +'<button type="button" id="testLoad"><i class="lg">Загрузить файл данных</i><i class="sh">Из файла</i></button><button type="button" id="testSave"><i class="lg">Скачать данные</i><i class="sh">В файл</i></button><input type="file" id="testFile" accept=".json,application/json" hidden><button type="button" id="testReset"><i class="lg">Очистить тест</i><i class="sh">Очистить</i></button>';
+  document.body.insertBefore(b,document.body.firstChild);
+  document.getElementById('testLoad').addEventListener('click',function(){document.getElementById('testFile').click();});
+  document.getElementById('testFile').addEventListener('change',function(e){var f=e.target.files&&e.target.files[0];testLoadFile(f);try{e.target.value='';}catch(x){}});
+  document.getElementById('testSave').addEventListener('click',dfOut);
+  document.getElementById('testReset').addEventListener('click',testReset);
+}
+testBar();
 /* ---------- обработчики ---------- */
 function c1Item(el){var row=el.closest('[data-i]');return S.c1&&row?S.c1.items[Number(row.getAttribute('data-i'))]:null;}
 function p1cClick(act,b){
@@ -15261,6 +15699,7 @@ function onClick(e){
   var act=b.getAttribute('data-act'),r=curRecipe(),id;
   if(uiRO()&&b.hasAttribute('data-edit')){roFlash();return;}
   if(p1cClick(act,b))return;
+  if(tbClick(act,b))return;
   if(aiClick(act,b))return;
   if(bkClick(act,b))return;
   if(usClick(act,b))return;
@@ -15534,7 +15973,7 @@ function onClick(e){
         mOpenCard(id);
       }break;
     case'cabSeg':S.cabSeg=b.getAttribute('data-s')||'tasks';renderAll();window.scrollTo(0,0);break;
-    case'hmGo':S.tab=b.getAttribute('data-t')||'menu';if(!tabOk(S.tab))S.tab='menu';renderAll();window.scrollTo(0,0);break;
+    case'hmGo':S.tab=b.getAttribute('data-t')||'menu';if(b.getAttribute('data-s'))S.cabSeg=b.getAttribute('data-s');if(!tabOk(S.tab))S.tab='menu';renderAll();window.scrollTo(0,0);break;
     case'hmFilter':S.tab='menu';S.mflt=b.getAttribute('data-f')||'all';renderAll();window.scrollTo(0,0);break;
     case'mView':
       id=b.closest('[data-rid]').getAttribute('data-rid');
@@ -15603,6 +16042,7 @@ function onClick(e){
 function onInput(e){
   var t=e.target,act=t.getAttribute('data-act');if(!act||t.tagName==='BUTTON')return;
   if(p1cInput(act,t))return;
+  if(tbInput(act,t))return;
   if(aiInput(act,t))return;
   if(drInput(act,t))return;
   if(revInput(act,t))return;
@@ -15758,6 +16198,8 @@ function onInput(e){
 function onChange(e){
   var t=e.target,act=t.getAttribute('data-act');if(!act)return;
   if(p1cChange(act,t))return;
+  if(tbChange(act,t))return;
+  if(bulkChange(act,t))return;
   if(aiChange(act,t))return;
   if(drChange(act,t))return;
   if(revChange(act,t))return;
@@ -15947,6 +16389,7 @@ $('#view').addEventListener('toggle',function(e){
   else if(id==='cloudSales')S.cloudOpenS=e.target.open;
   else if(id==='syMineList')S.sy.mineOpen=e.target.open;
   else if(id==='syHistBox'){S.sy.histOpen=e.target.open;if(e.target.open)syHistLoad(false);}
+  else if(id==='tbBox')tb().open=e.target.open;
   else if(id==='mgBox'){mg().open=e.target.open;mgPaint();}
   else if(id==='mxBox'){mx().open=e.target.open;mxPaint();}
   else if(id==='sySvc')S.sy.svcOpen=e.target.open;
