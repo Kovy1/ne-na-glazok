@@ -1,0 +1,34 @@
+/* Фудкост и план действий */
+.fchead .segs{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.fcmap{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px 12px;margin:10px 0}
+.fcmap .field{min-width:0}
+.fcmap select{width:100%}
+.fcwh{margin:10px 0}
+.fcwh .chk{display:block;margin:4px 0;font-size:14px}
+.fctab{border-collapse:collapse;width:100%;font-size:13px}
+.fctab th,.fctab td{padding:5px 8px;border-bottom:1px solid var(--line,#ddd);text-align:left;vertical-align:top}
+.fctab td.n,.fctab th.n{text-align:right;font-variant-numeric:tabular-nums}
+.fckv{margin:12px 0}
+.fcrow,.fctrow{display:grid;grid-template-columns:minmax(0,2.2fr) minmax(0,2.6fr) minmax(90px,1fr);gap:8px 12px;align-items:start;padding:8px 0;border-bottom:1px solid var(--line,#e5e5e5)}
+.fcrow .tsel,.fctrow .tsel{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.fcrec{max-width:260px}
+.fcsk{margin:8px 0}
+.w-err{color:var(--bad,#b00020);margin:6px 0}
+@media(max-width:700px){.fcrow,.fctrow{grid-template-columns:1fr}}
+.fcm{border:1px solid var(--line,#ddd);border-radius:8px;padding:10px 12px;margin:12px 0}
+.fcm .h4{margin:0 0 6px}
+.fcitem th{width:190px;text-align:left;vertical-align:top;font-weight:600;white-space:normal}
+.fcitem td,.fcmet td,.fcing td{white-space:normal;overflow-wrap:anywhere}
+.fcitem textarea{width:100%;box-sizing:border-box}
+.fcsrc{margin:4px 0 8px 18px;padding:0}
+.fcdr td{background:var(--soft,#f6f6f6)}
+.fclim{margin:8px 0}
+.fcok{color:var(--ok,#1b6e3a)}
+.fcdl{margin:6px 0}
+.fcnotes{margin:6px 0 10px 18px}
+.fcmet small.c1sub,.fcing small.c1sub{display:block}
+.fcing td.n,.fcmet td.n{white-space:nowrap;overflow-wrap:normal}
+.fcing td:first-child{min-width:130px}
+.fcing th{white-space:normal}
+.fcwrap td,.fcwrap th{white-space:normal;overflow-wrap:anywhere;vertical-align:top}
+.fcwrap td.n{white-space:nowrap}

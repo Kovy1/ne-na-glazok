@@ -1,0 +1,31 @@
+/* импорт КБЖУ: пустые и частично заполненные БЖУ не становятся «достоверными нулями» */
+const { chromium } = require(process.env.PW_MODULE || 'playwright');
+const path = require('path'), assert = require('assert');
+const SRC = process.argv[2] || 'kbzhu.html'; const errs = [];
+(async () => {
+  const browser = await chromium.launch({ executablePath: process.env.PW_CHROMIUM || undefined, args: ['--no-sandbox'] });
+  const page = await (await browser.newContext({ viewport: { width: 1200, height: 900 } })).newPage();
+  page.on('pageerror', e => errs.push(e.message));
+  await page.route(/fonts\.(googleapis|gstatic)\.com/, r => r.abort());
+  await page.goto('file://' + path.resolve(SRC));
+  await page.evaluate(() => { localStorage.clear(); localStorage.setItem('kbzhu:tab', 'base');
+    localStorage.setItem('kbzhu:v1', JSON.stringify({ ings: { i1: { name: 'Мука', p: 10, f: 1, c: 70, kind: 'table', source: '' } }, recipes: {}, cfg: {} })); });
+  await page.reload(); await page.waitForSelector('#view > *');
+  await page.click('[data-act="openImport"]'); await page.waitForSelector('#impText');
+  await page.fill('#impText', ['Соль;0;0;0;Таблица', 'Пустое сырьё;;;;Таблица', 'Только белок;5;;;Таблица', 'Белок и жир;5;3;;Таблица', 'Мука;;;;Таблица', 'Сахар;0;0;99,8;Таблица'].join('\n'));
+  await page.click('[data-act="doImport"]'); await page.waitForFunction(() => /Добавлено/.test(document.body.innerText));
+  await page.waitForTimeout(2000);
+  const ings = await page.evaluate(() => JSON.parse(localStorage.getItem('kbzhu:v1')).ings);
+  const by = n => Object.values(ings).find(x => x.name === n);
+  assert.ok(by('Соль') && by('Соль').kind === 'table' && by('Соль').p === 0, 'явный ноль — это ноль');
+  assert.ok(by('Сахар') && by('Сахар').c === 99.8, 'частично нулевое, но заполненное — загружается');
+  assert.ok(by('Пустое сырьё') && by('Пустое сырьё').kind === 'estimate' && !by('Пустое сырьё').p, 'пустое БЖУ — «КБЖУ неизвестно» (kUnknown)');
+  assert.strictEqual(by('Только белок'), undefined, 'частичное БЖУ не загружено');
+  assert.strictEqual(by('Белок и жир'), undefined, 'частичное БЖУ не загружено (2)');
+  assert.deepStrictEqual([by('Мука').p, by('Мука').f, by('Мука').c, by('Мука').kind], [10, 1, 70, 'table'], 'известное БЖУ не затёрто пустыми клетками');
+  const msg = await page.evaluate(() => document.body.innerText);
+  assert.ok(/частично заполненным БЖУ/.test(msg) && /Без КБЖУ в файле: 1/.test(msg), 'сообщение объясняет: ' + msg.slice(0, 0));
+  assert.ok(await page.evaluate(() => /неизвест/i.test(document.querySelector('#view').innerText)), 'в базе видно «неизвестно»');
+  assert.deepStrictEqual(errs, []);
+  console.log('OK'); await browser.close(); process.exit(0);
+})().catch(e => { console.error(e); process.exit(1); });

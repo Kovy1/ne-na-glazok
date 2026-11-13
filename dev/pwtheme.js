@@ -1,0 +1,36 @@
+/* Переключатель темы: светлая / тёмная / авто; выбор запоминается; по умолчанию светлая */
+const { chromium } = require(process.env.PW_MODULE || 'playwright');
+const path = require('path'), assert = require('assert');
+(async () => {
+  const browser = await chromium.launch({ executablePath: process.env.PW_CHROMIUM || undefined, args: ['--no-sandbox'] });
+  const errs = [];
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 800 }, colorScheme: 'dark' });
+  const page = await ctx.newPage();
+  page.on('pageerror', e => errs.push(e.message));
+  await page.route(/fonts\.(googleapis|gstatic)\.com/, r => r.abort());
+  await page.goto('file://' + path.resolve('out/КБЖУ_калькулятор_автономный.html'));
+  await page.evaluate(() => localStorage.clear());
+  await page.reload(); await page.waitForSelector('#profBtn'); await page.click('#profBtn');
+  const st = () => page.evaluate(() => ({ attr: document.documentElement.getAttribute('data-theme'), ls: localStorage.getItem('kbzhu:theme'), on: Array.from(document.querySelectorAll('#skinBox .th[aria-pressed="true"]')).map(b => b.dataset.th).join(), bg: getComputedStyle(document.body).backgroundColor }));
+  let s = await st(); assert.deepStrictEqual([s.attr, s.on], ['light', 'light'], 'по умолчанию светлая, даже если в системе тёмная тема');
+  assert.strictEqual(await page.locator('#skinBox .th').count(), 3, 'три кнопки темы');
+  const lightBg = s.bg;
+  await page.click('#skinBox [data-th="dark"]'); s = await st();
+  assert.deepStrictEqual([s.attr, s.ls, s.on], ['dark', 'dark', 'dark']); assert.notStrictEqual(s.bg, lightBg, 'фон сменился');
+  const dark = s.bg;
+  await page.reload(); await page.waitForSelector('#profBtn'); await page.click('#profBtn'); s = await st();
+  assert.deepStrictEqual([s.attr, s.on], ['dark', 'dark'], 'выбранная тёмная запомнилась');
+  await page.click('#skinBox [data-th="auto"]'); s = await st();
+  assert.deepStrictEqual([s.attr, s.ls, s.on], [null, 'auto', 'auto']); assert.strictEqual(s.bg, dark, 'при тёмной системе «Авто» = тёмная');
+  await ctx.close();
+  const ctx2 = await browser.newContext({ viewport: { width: 390, height: 800 }, colorScheme: 'light' });
+  const p2 = await ctx2.newPage();
+  await p2.route(/fonts\.(googleapis|gstatic)\.com/, r => r.abort());
+  await p2.goto('file://' + path.resolve('out/КБЖУ_калькулятор_автономный.html'));
+  await p2.evaluate(() => { localStorage.clear(); localStorage.setItem('kbzhu:theme', 'auto'); });
+  await p2.reload(); await p2.waitForSelector('#profBtn'); await p2.click('#profBtn');
+  assert.strictEqual(await p2.evaluate(() => getComputedStyle(document.body).backgroundColor), 'rgb(241, 245, 244)', '«Авто» при светлой системе = светлая');
+  const over = await p2.evaluate(() => document.documentElement.scrollWidth - innerWidth); assert.ok(over <= 1, 'нет горизонтальной прокрутки: ' + over);
+  assert.deepStrictEqual(errs, []);
+  console.log('PWTHEME OK'); await browser.close();
+})().catch(e => { console.error('FAIL', e.message || e); process.exit(1); });

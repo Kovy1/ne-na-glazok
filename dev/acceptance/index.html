@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Приёмка v91: проверка скрипта общей базы</title>
+<style>
+body{font:15px/1.45 system-ui,sans-serif;max-width:900px;margin:0 auto;padding:16px;color:#222}
+h1{font-size:20px} label{display:block;margin:10px 0 4px;font-weight:600} input[type=text],textarea{width:100%;box-sizing:border-box;font:13px monospace;padding:6px}
+textarea{height:110px} button{font:inherit;padding:8px 14px;margin:8px 8px 0 0;cursor:pointer} .row{display:flex;gap:8px;align-items:center}
+table{border-collapse:collapse;width:100%;margin-top:14px} td,th{border:1px solid #ccc;padding:5px 8px;text-align:left;vertical-align:top} .ok{color:#0a6b2d} .bad{color:#b00020;font-weight:600} .skip{color:#777}
+pre{background:#f5f5f5;padding:10px;white-space:pre-wrap} .note{background:#fff8e1;border:1px solid #e0c97a;padding:8px 10px;margin:10px 0}
+</style></head><body>
+<h1>Приёмка v91: проверка скрипта общей базы</h1>
+<div class="note"><b>Только для отдельной тестовой таблицы.</b> Страница пишет тестовые отчёты и план в ту базу, адрес которой вы введёте. Рабочий адрес не вводите. Страница не отправляет данные никуда, кроме указанного адреса.</div>
+<label for="u">Адрес тестового скрипта (оканчивается на /exec)</label><input type="text" id="u" placeholder="https://script.google.com/macros/s/…/exec">
+<label for="a">Тестовые учётные записи (содержимое файла test_accounts.json)</label><textarea id="a" placeholder='{"shared":{…},"users":[…]}'></textarea>
+<div><label><input type="checkbox" id="big"> Проверить лимит размера документа (отправляет около 11 МБ, медленно)</label></div>
+<button id="run">Запустить проверки</button><button id="copy" disabled>Скопировать отчёт</button>
+<div id="st" class="skip"></div><table id="t"><thead><tr><th>Проверка</th><th>Итог</th><th>Подробности</th></tr></thead><tbody></tbody></table>
+<pre id="rep" hidden></pre>
+<script>
+(function(){
+'use strict';
+var $=function(i){return document.getElementById(i);},rows=[],URL_='',ACC=null;
+function sleep(ms){return new Promise(function(r){setTimeout(r,ms);});}
+/* ---- транспорт как в приложении: чтение через JSONP, запись без чтения ответа и опрос результата по номеру запроса ---- */
+function jsonp(q,ms){
+  return new Promise(function(resolve,reject){
+    var name='__acc'+Math.random().toString(36).slice(2,9),sc=document.createElement('script'),done=false,tm;
+    function end(){done=true;clearTimeout(tm);try{delete window[name];}catch(e){window[name]=undefined;}if(sc.parentNode)sc.parentNode.removeChild(sc);}
+    window[name]=function(d){if(done)return;end();resolve(d);};
+    sc.onerror=function(){if(done)return;end();reject(new Error('адрес не отвечает или заблокирован'));};
+    tm=setTimeout(function(){if(done)return;end();reject(new Error('таймаут чтения'));},ms||30000);
+    sc.async=true;sc.src=URL_+(URL_.indexOf('?')>-1?'&':'?')+'callback='+name+q;document.head.appendChild(sc);
+  });
+}
+function qs(o){return Object.keys(o).map(function(k){return'&'+encodeURIComponent(k)+'='+encodeURIComponent(o[k]);}).join('');}
+function G(u,p){return jsonp(qs(Object.assign({code:u.code,who:u.name},p)));}
+var AUTHLESS=0;
+function P(u,body,wait){
+  var rid='q'+Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+  var req=Object.assign({code:u.code,by:u.name,rid:rid},body);
+  return fetch(URL_,{method:'POST',mode:'no-cors',credentials:'omit',cache:'no-store',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(req)})
+    .then(function(){return poll(rid,0,wait||40);});
+}
+function poll(rid,n,max){
+  return sleep(n===0?600:1000).then(function(){return jsonp(qs({a:'result',rid:rid}));}).then(function(d){
+    if(d&&d.done)return d.res;
+    if(n>=max)throw new Error('результат записи не получен за отведённое время');
+    return poll(rid,n+1,max);
+  });
+}
+/* ---- проверки ---- */
+function add(name,ok,info){rows.push({name:name,ok:ok,info:info||''});draw();}
+function eq(name,a,b,info){add(name,JSON.stringify(a)===JSON.stringify(b),(JSON.stringify(a)===JSON.stringify(b)?'':'получено '+JSON.stringify(a)+', ожидалось '+JSON.stringify(b))+(info?' '+info:''));}
+function tr(name,v,info){add(name,!!v,v?'':info);}
+function draw(){
+  var tb=$('t').tBodies[0];tb.innerHTML='';
+  rows.forEach(function(r){var e=document.createElement('tr');
+    [r.name,r.ok===null?'пропущено':(r.ok?'пройдено':'НЕ ПРОЙДЕНО'),r.info].forEach(function(t,i){var td=document.createElement('td');td.textContent=t;if(i===1)td.className=r.ok===null?'skip':(r.ok?'ok':'bad');e.appendChild(td);});
+    tb.appendChild(e);});
+}
+function by(n){var u=ACC.users.filter(function(x){return x.name===n;})[0];if(!u)throw new Error('в test_accounts.json нет пользователя «'+n+'»');return u;}
+var batch=function(id){return{batch:{id:id,type:'receipts',from:'2026-10-01',to:'2026-10-31',n:2},ops:{receipts:[{id:'o1',item:'ТЕСТ Лук',qty:5,sum:100},{id:'o2',item:'ТЕСТ Мясо',qty:2,sum:800}]}};};
+var NS=function(){return{asg:null,st:'new',due:'',cm:[],hist:[],rev:0};};
+function plan(pid,ma,mb,st,extra){var v=[{n:1,at:'2026-11-01',fp:'acc-aaa',items:[{id:ma,title:'ТЕСТ Списания лука'},{id:mb,title:'ТЕСТ Цена мяса'}]}];if(extra)v.push(extra);return{plan:{id:pid,obj:'test-obj',objName:'ТЕСТ Объект',from:'2026-10-01',to:'2026-10-31',createdAt:1,versions:v,state:st}};}
+async function run(){
+  rows=[];draw();URL_=$('u').value.trim();
+  if(!/^https:\/\/script\.google\.com\/.+\/exec$/.test(URL_)&&!/^http:\/\/127\.0\.0\.1:\d+\/exec$/.test(URL_)){$('st').textContent='Адрес должен оканчиваться на /exec';return;}
+  try{ACC=JSON.parse($('a').value);}catch(e){$('st').textContent='Не удалось прочитать учётные записи: '+e.message;return;}
+  $('run').disabled=true;$('st').textContent='Идёт проверка…';
+  var sfx='acc'+Date.now().toString(36),bid='b_main_'+sfx,pid='p_main_'+sfx,ma='m_'+sfx+'a',mb='m_'+sfx+'b',r,d;
+  try{
+    var ed=by('Тест Редактор Волгоград'),mosk=by('Тест Редактор Москва'),fin=by('Тест Управляющий Волгоград'),c1=by('Тест Шеф Волгоград 1'),c2=by('Тест Шеф Волгоград 2'),c3=by('Тест Шеф Москва 1'),none=by('Тест Без Региона'),adm=by('Тест Технолог');
+    /* 1. подключение и права */
+    r=await G({code:'неверный-код',name:'Тест'},{a:'pull',since:0});eq('Неверный код отклоняется',r.err,'code');
+    var pg=await jsonp(qs({a:'ping'}));window.__v=pg&&pg.v;tr('Скрипт отвечает, версия не ниже 30',pg&&pg.v>=30,'версия: '+(pg&&pg.v));
+    for(var u of ACC.users){r=await G(u,{a:'pull',since:0});add('Вход: '+u.name,r.ok===true,r.ok?'':JSON.stringify(r));}
+    r=await G({code:ACC.shared.AUDIT,name:'Аудитор'},{a:'fcidx'});eq('Общий код аудита читает фудкост',r.ok,true);
+    /* 2. сохранение отчёта и чтение с другой учётной записи */
+    r=await P(ed,{op:'fcput',id:bid,reg:'main',obj:'test-obj',objName:'ТЕСТ Объект',data:batch(bid)});add('Редактор Волгограда сохраняет отчёт',r&&r.ok===true&&r.rev===1,JSON.stringify(r));
+    r=await G(c1,{a:'fcget',id:bid});tr('Шеф-повар Волгограда читает отчёт (другая учётная запись)',r.ok&&r.doc&&r.doc.data.ops.receipts.length===2,JSON.stringify(r).slice(0,200));
+    r=await G(mosk,{a:'fcget',id:bid});eq('Редактор Москвы отчёт Волгограда не видит',r.err,'nofile');
+    r=await G(none,{a:'fcidx'});tr('Пользователь без региона не видит документов региона',r.ok&&!r.items.some(function(x){return x.id===bid;}),JSON.stringify(r).slice(0,200));
+    r=await P(c1,{op:'fcput',id:'b_main_'+sfx+'x',reg:'main',data:batch('b_main_'+sfx+'x')});tr('Шеф-повар отчёт записать не может',r&&r.ok===false,JSON.stringify(r));
+    r=await P(mosk,{op:'fcput',id:'b_main_'+sfx+'y',reg:'main',data:batch('b_main_'+sfx+'y')});eq('Редактор Москвы в регион Волгограда писать не может',r&&r.err,'region');
+    r=await P(ed,{op:'fcput',id:'b_main_'+sfx+'z',reg:'main',data:{batch:{},ops:{receipts:5}}});eq('Некорректный документ отклоняется',r&&r.err,'doc');
+    /* 3. повтор после потери ответа */
+    r=await P(ed,{op:'fcput',id:bid,reg:'main',data:batch(bid)});tr('Повторная отправка того же отчёта ничего не меняет',r&&r.same===true&&r.rev===1,JSON.stringify(r));
+    /* 4. план, назначение, видимость у исполнителя */
+    var us=await G(ed,{a:'fcusers'});tr('Список сотрудников для назначения получен, хэшей кодов в нём нет',us.ok&&us.users.length&&!('h' in us.users[0]),JSON.stringify(us).slice(0,160));
+    var id1=(us.users.filter(function(x){return x.name===c1.name;})[0]||{}).id,idN=(us.users.filter(function(x){return x.name===none.name;})[0]||{}).id;
+    tr('Идентификаторы исполнителей найдены',id1&&idN,'идентификаторы не вернулись');
+    var st={};st[ma]=NS();st[mb]=NS();
+    r=await P(ed,{op:'fcput',id:pid,reg:'main',base:0,data:plan(pid,ma,mb,st)});add('Редактор сохраняет план (версия 1)',r&&r.ok===true&&r.rev===1,JSON.stringify(r));
+    r=await P(ed,{op:'fcact',id:pid,mid:ma,base:0,set:{asg:{t:'user',id:id1,name:c1.name},due:'2026-12-01'}});add('Назначение исполнителя по идентификатору',r&&r.ok===true&&r.m.rev===1,JSON.stringify(r).slice(0,200));
+    r=await P(ed,{op:'fcact',id:pid,mid:mb,base:0,set:{asg:{t:'user',id:idN,name:none.name}}});add('Назначение сотруднику без региона',r&&r.ok===true,JSON.stringify(r).slice(0,200));
+    r=await P(ed,{op:'fcact',id:pid,mid:ma,base:1,set:{asg:{t:'user',id:'нет-такого',name:'Призрак'}}});eq('Несуществующий исполнитель отклоняется',r&&r.err,'asg');
+    r=await G(c1,{a:'fcmine'});tr('Назначенный шеф-повар видит своё мероприятие после входа',r.ok&&r.items.length===1&&r.items[0].mid===ma,JSON.stringify(r).slice(0,200));
+    r=await G(c2,{a:'fcmine'});tr('Другой шеф-повар чужого мероприятия не видит',r.ok&&r.items.filter(function(x){return x.mid===ma||x.mid===mb;}).length===0,JSON.stringify(r).slice(0,200));
+    r=await G(none,{a:'fcget',id:pid});d=r.doc;tr('Сотрудник без региона видит только своё мероприятие',r.ok&&d.limited===true&&Object.keys(d.data.plan.state).length===1&&Object.keys(d.data.plan.state)[0]===mb&&JSON.stringify(d).indexOf('ТЕСТ Списания лука')<0,JSON.stringify(r).slice(0,200));
+    r=await G(mosk,{a:'fcget',id:pid});eq('Редактор Москвы план Волгограда не видит',r.err,'nofile');
+    r=await G(c3,{a:'fcmine'});tr('Шеф-повар Москвы мероприятий Волгограда не видит',r.ok&&r.items.length===0,JSON.stringify(r).slice(0,200));
+    /* 5. что может исполнитель */
+    r=await P(c1,{op:'fcact',id:pid,mid:ma,base:1,set:{due:'2026-12-25'}});eq('Исполнитель срок менять не может',r&&r.err,'denied');
+    r=await P(c1,{op:'fcact',id:pid,mid:mb,base:1,set:{st:'work'}});eq('Шеф-повар региона не может менять мероприятие, назначенное другому',r&&r.err,'viewer');
+    r=await P(none,{op:'fcact',id:pid,mid:ma,base:1,set:{st:'work'}});eq('Сотрудник без региона не может менять чужое мероприятие (оно ему не видно)',r&&r.err,'nofile');
+    r=await P(c1,{op:'fcact',id:pid,mid:ma,base:1,set:{st:'work',result:'ТЕСТ Договорился о цене'},cm:[{k:'c-acc-1',at:'2026-11-02',t:'ТЕСТ Позвонил поставщику'}]});
+    add('Исполнитель меняет статус, результат и пишет комментарий',r&&r.ok===true&&r.m.st==='work'&&r.m.cm.length===1&&r.m.cm[0].uid===id1,JSON.stringify(r).slice(0,220));
+    /* 6. одновременное редактирование */
+    r=await P(ed,{op:'fcact',id:pid,mid:ma,base:1,set:{st:'done'}});tr('Одновременная правка: устаревшая отклоняется и возвращает свежее состояние',r&&r.ok===false&&r.err==='newer'&&r.m&&r.m.st==='work',JSON.stringify(r).slice(0,220));
+    r=await P(ed,{op:'fcact',id:pid,mid:ma,base:2,set:{st:'done'},cm:[{k:'c-acc-1',t:'повтор'},{k:'c-acc-2',at:'2026-11-03',t:'ТЕСТ Принято'}]});tr('Правка по свежей ревизии проходит, комментарий с тем же ключом не дублируется',r&&r.ok===true&&r.m.cm.length===2&&r.m.st==='done',JSON.stringify(r).slice(0,220));
+    r=await P(c2,{op:'fcact',id:pid,mid:ma,base:3,set:{st:'closed'}});eq('Шеф-повар без назначения менять не может',r&&r.err,'viewer');
+    r=await P(mosk,{op:'fcact',id:pid,mid:ma,base:3,set:{st:'closed'}});eq('Редактор другого региона менять не может',r&&r.err,'nofile');
+    r=await P(ed,{op:'fcact',id:pid,mid:ma,base:3,set:{st:'взлом'}});eq('Недопустимый статус отклоняется',r&&r.err,'st');
+    /* 7. зафиксированная версия */
+    var cur=(await G(ed,{a:'fcget',id:pid})).doc,st2={};st2[ma]=NS();st2[mb]=NS();st2['m_'+sfx+'c']=NS();
+    var v2={n:2,at:'2026-11-05',fp:'acc-bbb',items:[{id:'m_'+sfx+'c',title:'ТЕСТ Новое'}]},p2=plan(pid,ma,mb,st2,v2);
+    r=await P(ed,{op:'fcput',id:pid,reg:'main',base:0,data:p2});eq('Запись плана по устаревшей ревизии отклоняется',r&&r.err,'newer');
+    r=await P(ed,{op:'fcput',id:pid,reg:'main',base:cur.rev,data:p2});add('Новая версия плана добавляется',r&&r.ok===true,JSON.stringify(r).slice(0,200));
+    d=(await G(ed,{a:'fcget',id:pid})).doc;
+    tr('Выполнение прежних мероприятий не затёрто новой версией',d.data.plan.versions.length===2&&d.data.plan.state[ma].st==='done'&&d.data.plan.state[ma].asg.id===id1,JSON.stringify(d.data.plan.state[ma]).slice(0,200));
+    var p3=JSON.parse(JSON.stringify(p2));p3.plan.versions[0].fp='подмена';
+    r=await P(ed,{op:'fcput',id:pid,reg:'main',base:d.rev,data:p3});eq('Зафиксированная версия 1 не переписывается',r&&r.err,'newer');
+    var p4=JSON.parse(JSON.stringify(p2));p4.plan.versions.pop();
+    r=await P(ed,{op:'fcput',id:pid,reg:'main',base:d.rev,data:p4});eq('Версию из плана удалить нельзя',r&&r.err,'newer');
+    /* 8. снимок */
+    var sid='s_main_'+sfx+'_1';
+    r=await P(ed,{op:'fcput',id:sid,reg:'main',data:{snap:{ops:{sales:[{id:'o1'}]},ings:{}}}});add('Снимок данных версии сохраняется',r&&r.ok===true,JSON.stringify(r).slice(0,200));
+    r=await P(ed,{op:'fcput',id:sid,reg:'main',data:{snap:{ops:{sales:[{id:'подмена'}]}}}});tr('Снимок не перезаписывается',r&&r.same===true,JSON.stringify(r).slice(0,200));
+    r=await G(ed,{a:'fcget',id:sid});tr('Содержимое снимка осталось прежним',r.ok&&r.doc.data.snap.ops.sales[0].id==='o1',JSON.stringify(r).slice(0,200));
+    r=await G(none,{a:'fcget',id:sid});eq('Снимок исполнителю без региона не отдаётся',r.err,'nofile');
+    /* 9. отключённый исполнитель */
+    r=await P(adm,{op:'usroff',id:id1,off:true});tr('Технолог отключает исполнителя',r&&r.ok===true,JSON.stringify(r).slice(0,160));
+    r=await P(ed,{op:'fcact',id:pid,mid:'m_'+sfx+'c',base:0,set:{asg:{t:'user',id:id1,name:c1.name}}});eq('Отключённому исполнителю назначить нельзя',r&&r.err,'asg');
+    r=await P(adm,{op:'usroff',id:id1,off:false});tr('Технолог снова включает исполнителя',r&&r.ok===true,JSON.stringify(r).slice(0,160));
+    r=await P(ed,{op:'fcact',id:pid,mid:'m_'+sfx+'c',base:0,set:{asg:{t:'user',id:id1,name:c1.name}}});tr('После включения исполнителю снова можно назначить мероприятие',r&&r.ok===true,JSON.stringify(r).slice(0,160));
+    r=await G(c1,{a:'fcmine'});tr('Исполнитель видит новое мероприятие после входа',r.ok&&r.items.some(function(x){return x.mid==='m_'+sfx+'c';}),JSON.stringify(r).slice(0,160));
+    /* 10. размер */
+    if($('big').checked){var big={batch:{id:'b_main_'+sfx+'b',type:'sales',from:'2026-10-01',to:'2026-10-31'},ops:{sales:[{x:'я'.repeat(5.5e6)}]}};
+      r=await P(ed,{op:'fcput',id:'b_main_'+sfx+'b',reg:'main',data:big},60);eq('Документ больше 5 МБ отклоняется',r&&r.err,'size');}
+    else add('Лимит размера документа',null,'проверка не запускалась');
+    /* 11. удаление отчёта */
+    r=await P(ed,{op:'fcdel',id:bid});tr('Редактор удаляет тестовый отчёт',r&&r.ok===true,JSON.stringify(r));
+    d=(await G(ed,{a:'fcget',id:bid})).doc;tr('Удалённый отчёт помечен, строки убраны',d&&d.del===1,JSON.stringify(d).slice(0,120));
+    r=await P(ed,{op:'fcput',id:bid,reg:'main',data:batch(bid)});tr('Удалённый отчёт повторной отправкой не возвращается',r&&r.deleted===true,JSON.stringify(r).slice(0,160));
+  }catch(e){add('Проверка прервана',false,String(e&&e.message||e));}
+  var bad=rows.filter(function(x){return x.ok===false;}).length,ok=rows.filter(function(x){return x.ok===true;}).length;
+  $('st').textContent='Готово: пройдено '+ok+', не пройдено '+bad+(rows.some(function(x){return x.ok===null;})?', пропущено '+rows.filter(function(x){return x.ok===null;}).length:'')+'.';
+  $('run').disabled=false;$('copy').disabled=false;
+  $('rep').textContent=['Приёмка v91, '+new Date().toISOString(),'Скрипт: версия '+(window.__v||'?')+', идентификатор развёртывания скрыт',$('st').textContent,''].concat(rows.map(function(x){return(x.ok===null?'[пропущено] ':(x.ok?'[ok] ':'[НЕ ПРОЙДЕНО] '))+x.name+(x.info?' — '+x.info:'');})).join('\n');
+}
+$('run').onclick=run;
+$('copy').onclick=function(){var p=$('rep');p.hidden=false;try{navigator.clipboard.writeText(p.textContent);}catch(e){}var s=getSelection(),r=document.createRange();r.selectNodeContents(p);s.removeAllRanges();s.addRange(r);};
+})();
+</script></body></html>
