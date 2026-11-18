@@ -118,7 +118,7 @@ function usClick(act,b){
   return false;
 }
 /* единый номер выпуска: приложение (APP_REL) и скрипт общей базы (нужна версия не ниже SRV_NEED); обновление репозитория не обновляет скрипт */
-var APP_REL=91,SRV_NEED=28;
+var APP_REL=92,SRV_NEED=28;
 function syRelHtml(){
   var i=S.sy.info,v=i&&Number(i.v)||0;
   if(!syLinked()||!i||!syAdmin())return'';

@@ -4,6 +4,7 @@ const path = require('path'), assert = require('assert'), vm = require('vm');
 const { startGas } = require('./sync/gasserver');
 const SRC = process.argv[2] || 'out/КБЖУ_калькулятор_автономный.html';
 const errs = [];
+const REL = (require('fs').readFileSync(SRC, 'utf8').match(/APP_REL=(\d+)/) || [])[1], RELRE = new RegExp('=' + REL + '$');
 (async () => {
   const gs = await startGas();
   const browser = await chromium.launch({ executablePath: process.env.PW_CHROMIUM || undefined, args: ['--no-sandbox'] });
@@ -34,20 +35,20 @@ const errs = [];
   // 1. первый пользователь (пустой браузер): прежняя история не показывается, ознакомление записано
   const F = await mk('F', 'fresh');
   assert.strictEqual(await shown(F), '', 'первому пользователю окна нет');
-  assert.ok((await key(F)).some(k => /=91$/.test(k)), 'отметка выпуска записана: ' + await key(F));
+  assert.ok((await key(F)).some(k => RELRE.test(k)), 'отметка выпуска записана: ' + await key(F));
   console.log('1 OK');
 
   // 2. прежний пользователь без отметки: видит только выпуск 91, роль «технолог» видит и действие по скрипту
   const L = await mk('L');
   const t = await waitShown(L); console.log(t.replace(/\s+/g, ' ').slice(0, 300));
-  assert.ok(/Версия 91/.test(t) && !/Версия 90/.test(t) && !/Версия 89/.test(t), 'только непрочитанный выпуск журнала');
-  assert.ok(/Установлена версия 91/.test(t), 'сказано, что версия установлена');
+  assert.ok(/Версия 91/.test(t) && new RegExp('Версия ' + REL).test(t) && !/Версия 90/.test(t) && !/Версия 89/.test(t), 'только непрочитанные выпуски журнала (с 91)');
+  assert.ok(new RegExp('Установлена версия ' + REL).test(t), 'сказано, что версия установлена');
   assert.ok(/Понятно/.test(t) && /Вся история/.test(t));
   assert.ok(/обновите скрипт общей базы до версии 30/.test(t), 'технолог видит действие по скрипту');
   // не перекрывает ввод: поле в фокусе — окно не появляется заново
   await L.click('[data-rel="ok"]');
   assert.strictEqual(await shown(L), '', 'после «Понятно» окна нет');
-  assert.ok((await key(L)).some(k => /=91$/.test(k)));
+  assert.ok((await key(L)).some(k => RELRE.test(k)));
   await L.reload(); await L.waitForSelector('#view > *'); await L.waitForTimeout(300);
   assert.strictEqual(await shown(L), '', 'после перезагрузки не повторяется');
   // полная история доступна и после ознакомления
@@ -72,12 +73,12 @@ const errs = [];
   assert.ok(/Версия 91/.test(t1) && /Загрузка цен из 1С/.test(t1) && !/обновите скрипт/.test(t1), 'редактору — его пункты, без действий технолога');
   await D1.click('[data-rel="ok"]');
   await D1.waitForFunction(() => document.querySelector('#relBar').hidden);
-  const srv = post({ op: 'relget', code: c.code, by: 'Петров П.П.' }); assert.strictEqual(srv.v, 91, 'на сервере записано: ' + JSON.stringify(srv));
+  const srv = post({ op: 'relget', code: c.code, by: 'Петров П.П.' }); assert.strictEqual(srv.v, +REL, 'на сервере записано: ' + JSON.stringify(srv));
   const D2 = await mk('D2');          // другое устройство, локальной отметки нет
   await connect(D2, { name: 'Петров П.П.', code: c.code });
   await D2.waitForTimeout(500);
   for (let i = 0; i < 6; i++) { await D2.waitForTimeout(400); assert.strictEqual(await shown(D2), '', 'на втором устройстве окно не повторяется'); }
-  assert.ok((await key(D2)).some(k => /=91$/.test(k)), 'отметка с сервера перенесена на устройство');
+  assert.ok((await key(D2)).some(k => RELRE.test(k)), 'отметка с сервера перенесена на устройство');
   console.log('4 OK');
   if (errs.length) { console.log(errs); process.exit(1); }
   console.log('OK rel');

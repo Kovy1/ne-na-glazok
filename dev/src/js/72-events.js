@@ -4,6 +4,7 @@ function onClick(e){
   if(uiRO()&&b.hasAttribute('data-edit')){roFlash();return;}
   if(p1cClick(act,b))return;
   if(fcClick(act,b))return;
+  if(dsClick(act,b))return;
   if(tbClick(act,b))return;
   if(aiClick(act,b))return;
   if(bkClick(act,b))return;
@@ -522,6 +523,7 @@ function onChange(e){
   var t=e.target,act=t.getAttribute('data-act');if(!act)return;
   if(p1cChange(act,t))return;
   if(fcChange(act,t))return;
+  if(dsChange(act,t))return;
   if(tbChange(act,t))return;
   if(bulkChange(act,t))return;
   if(aiChange(act,t))return;

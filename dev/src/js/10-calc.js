@@ -137,6 +137,20 @@ function normSell(d){
   });
   return n?o:null;
 }
+/* отметки деклараций о соответствии по регионам (см. 33-ui-decl.js) */
+var DS_MAX_G=160,DS_MAX_N=80;
+function normDs(d){
+  if(!d||typeof d!=='object')return null;
+  var o={},n=0;
+  Object.keys(d).forEach(function(k){
+    var x=d[k];if(!REG_ID.test(k)||!x||typeof x!=='object'||n>=16)return;
+    var e={g:String(x.g||'').slice(0,DS_MAX_G),n:String(x.n||'').slice(0,DS_MAX_N)};
+    if(x.src)e.src=String(x.src).slice(0,120);
+    if(x.d&&/^\d{4}-\d{2}-\d{2}$/.test(String(x.d)))e.d=String(x.d);
+    o[k]=e;n++;
+  });
+  return n?o:null;
+}
 function roundUp(v,step){
   if(!(step>0))return Math.ceil(v*100-1e-7)/100;
   return Math.ceil(v/step-1e-9)*step;
@@ -237,6 +251,7 @@ function normRecipe(d){
   };
   if(d.pf===true||d.pf===1)o.pf=true;            /* эту ТТК можно добавлять в другие карты как полуфабрикат */
   var sl=normSell(d.sell);if(sl)o.sell=sl;
+  var dz=normDs(d.ds);if(dz)o.ds=dz;            /* отметки деклараций о соответствии по регионам */
   var qt=normQty(d.qty);if(qt)o.qty=qt;
   if(Array.isArray(d.aliases)&&d.aliases.length)o.aliases=d.aliases.map(function(a){return String(a).slice(0,120);}).filter(Boolean).slice(0,20);
   if(typeof d.reg==='string'&&d.reg)o.reg=d.reg.slice(0,40);

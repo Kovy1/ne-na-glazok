@@ -24,7 +24,7 @@ function sySid(ctx,kind,id,create){
 function syIngClean(j){var o=normIng(j);if(NOPRICE)stripIngPrice(o);return o;}
 function syRecClean(j){
   j=j||{};
-  var b=normRecipe({name:j.name,output:j.output,rows:[],ref:j.ref,ttk:j.ttk,sell:j.sell,aliases:j.aliases,reg:j.reg,pf:j.pf});
+  var b=normRecipe({name:j.name,output:j.output,rows:[],ref:j.ref,ttk:j.ttk,sell:j.sell,ds:j.ds,aliases:j.aliases,reg:j.reg,pf:j.pf});
   var o={name:b.name,output:b.output,
     rows:(Array.isArray(j.rows)?j.rows:[]).slice(0,300).map(function(x){
       x=x||{};
@@ -37,6 +37,7 @@ function syRecClean(j){
       return q;
     }),ref:b.ref,ttk:b.ttk};
   if(b.pf)o.pf=true;
+  if(b.ds)o.ds=b.ds;
   if(b.sell)o.sell=b.sell;   // цена продажи уходит в предложение как есть: принимает или отклоняет её технолог
   if(b.aliases)o.aliases=b.aliases;
   if(b.reg)o.reg=b.reg;
@@ -44,7 +45,7 @@ function syRecClean(j){
 }
 function syRecShared(ctx,id){
   var n=normRecipe(ctx.recipes[id]);
-  return syRecClean({name:n.name,output:n.output,ref:n.ref,ttk:n.ttk,sell:n.sell,aliases:n.aliases,reg:n.reg,pf:n.pf,
+  return syRecClean({name:n.name,output:n.output,ref:n.ref,ttk:n.ttk,sell:n.sell,ds:n.ds,aliases:n.aliases,reg:n.reg,pf:n.pf,
     rows:n.rows.map(function(x){
       var g=x.ing?ctx.ings[x.ing]:null;
       var q={ing:g?sySid(ctx,'ing',x.ing,false):'','in':g?g.name:'',net:x.net,share:x.share,gross:x.gross,tname:x.tname};
@@ -133,7 +134,7 @@ function syRecToLocal(ctx,j){
   var sidIdx=Object.create(null),nameIdx=Object.create(null),m=syMap(ctx,'ing');
   Object.keys(m).forEach(function(id){if(m[id].sid&&ctx.ings[id])sidIdx[m[id].sid]=id;});
   Object.keys(ctx.ings).forEach(function(id){var k=normKey(ctx.ings[id].name);if(k&&!nameIdx[k])nameIdx[k]=id;});
-  var nr=normRecipe({name:j.name,output:j.output,ref:j.ref,ttk:j.ttk,sell:j.sell,aliases:j.aliases,reg:j.reg,pf:j.pf,
+  var nr=normRecipe({name:j.name,output:j.output,ref:j.ref,ttk:j.ttk,sell:j.sell,ds:j.ds,aliases:j.aliases,reg:j.reg,pf:j.pf,
     rows:j.rows.map(function(x){
       var r={rid:uid(),ing:sidIdx[x.ing]||nameIdx[normKey(x['in'])]||'',net:x.net,share:x.share};
       if(x.gross!==undefined)r.gross=x.gross;
@@ -430,6 +431,7 @@ function syDescribe(kind,oldJ,newJ,regName){
     var a=(r1.sell||{})[g],b=(r2.sell||{})[g];
     if(a!==b)out.push('цена продажи ('+regName(g)+') '+(a===undefined?'нет':syNum(a)+' ₽')+' → '+(b===undefined?'нет':syNum(b)+' ₽'));
   });
+  syDsDiff(r1,r2,regName).forEach(function(x){out.push(x[0]+' '+x[1]+' → '+x[2]);});
   var key=function(x){return x.ing||(x.pf?'p:'+x.pf:('n:'+normKey(x['in'])));},nm=function(x){return x['in']||(x.pf?'полуфабрикат «'+(x.pfn||'ТТК')+'»':(x.tname||'?'));};
   var A={},B={},added=[],removed=[],changed=[],altCh=[];
   r1.rows.forEach(function(x){A[key(x)]=x;});
@@ -492,6 +494,14 @@ function syRefStr(f){
   if(!f||[f.p,f.f,f.c,f.kcal].every(function(v){return v===null||v===undefined;}))return'нет';
   return'Б '+syNum(f.p)+' · Ж '+syNum(f.f)+' · У '+syNum(f.c)+' · '+syNum(f.kcal)+' ккал';
 }
+/* отметки деклараций о соответствии: [подпись, было, стало] по регионам */
+function syDsDiff(r1,r2,regName){
+  var gs={},out=[];
+  function t(x){return x?(x.g||'задекларировано')+(x.n?' ('+x.n+')':''):'нет';}
+  Object.keys(r1.ds||{}).concat(Object.keys(r2.ds||{})).forEach(function(g){gs[g]=1;});
+  Object.keys(gs).sort().forEach(function(g){var a=(r1.ds||{})[g],b=(r2.ds||{})[g];if(t(a)!==t(b))out.push(['декларация ('+regName(g)+')',t(a),t(b)]);});
+  return out;
+}
 function syDiffItems(kind,oldJ,newJ,regName){
   regName=regName||function(id){return id;};
   var it=[],i,k;
@@ -541,6 +551,7 @@ function syDiffItems(kind,oldJ,newJ,regName){
     var a=(r1.sell||{})[g],b=(r2.sell||{})[g];
     if(a!==b)ch('цена продажи ('+regName(g)+')',a===undefined?'нет':syNum(a)+' ₽',b===undefined?'нет':syNum(b)+' ₽');
   });
+  syDsDiff(r1,r2,regName).forEach(function(x){ch(x[0],x[1],x[2]);});
   var cmp=syRowCmp(r1.rows,r2.rows);
   cmp.chg.forEach(function(p){ch('состав: '+syRowName(p[1]),syRowQty(p[0]),syRowQty(p[1]));});
   r2.rows.forEach(function(x,j){if(cmp.st[j]==='add')ad('состав: добавлено',syRowName(x)+' — '+syRowQty(x));});

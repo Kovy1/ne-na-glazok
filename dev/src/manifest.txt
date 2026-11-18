@@ -25,6 +25,7 @@ js/30-ui-ttk.js
 js/31-ui-ai.js
 js/32-ui-prices.js
 js/33-ui-menu.js
+js/33-ui-decl.js
 js/34-ui-abc.js
 js/35-import-link.js
 js/40-sync-gas.js

@@ -177,6 +177,8 @@ function menuVisible(items){
     if(f==='inc'&&m.complete)return false;
     if(f==='gpon'&&!gpIs(it.id))return false;
     if(f==='gpoff'&&gpIs(it.id))return false;
+    if(f==='ds'&&!dsOf(it.r))return false;
+    if(f==='nods'&&dsOf(it.r))return false;
     return!q||String(it.r.name).toLowerCase().indexOf(q)>-1||String(ttkVal(it.r,'num')).toLowerCase().indexOf(q)>-1;
   });
   var dir={cost:-1,price:-1,margin:1,markup:1}[key];
@@ -207,8 +209,10 @@ function menuChipsHtml(items){
   function chip(k,l,c){return'<button class="chip" data-act="mFlt" data-f="'+k+'" aria-pressed="'+(f===k)+'">'+l+' · '+c+'</button>';}
   var gx='',gn=0;
   if(gpAdmin()&&gpExp()){items.forEach(function(it){if(gpIs(it.id))gn++;});gx=chip('gpon','Показаны посетителям',gn)+chip('gpoff','Не показаны посетителям',n-gn);}
+  var dn=0;items.forEach(function(it){if(dsOf(it.r))dn++;});
+  var dx=dn?chip('ds','Задекларировано',dn)+chip('nods','Без декларации',n-dn):'';
   if(syLoading())return chip('all','Все',n)+gx;
-  return chip('all','Все',n)+chip('noprice','Без цены',np)+chip('inc','Себестоимость неполная',ic)+gx;
+  return chip('all','Все',n)+chip('noprice','Без цены',np)+chip('inc','Себестоимость неполная',ic)+dx+gx;
 }
 function menuKpiHtml(items){
   var ok=[],priced=0,bl=0;
@@ -244,7 +248,7 @@ function mRowHtml(it){
   var r=it.r,m=it.m,id=it.id,fk='m:'+esc(id)+':',nm=String(r.name||'Без названия'),num=ttkVal(r,'num');
   var dis=m.cost===null?' disabled':'';
   var lsp=NOPRICE?sellEff(r,curRegion()):null;
-  var mn='<span class="mn"><b>'+esc(nm)+'</b><small>'+(num?'ТТК №'+esc(num)+' · ':'')+'выход '+dnum(r.output,2)+' г'+(rdOutCheck(r).length?' <span class="warnt" title="'+esc(rdOutCheck(r)[0].txt)+' Проверьте в «Готовности карт»: исправление подтверждает технолог.">⚠ проверьте выход</span>':'')+(lsp?' · цена продажи <b class="lsell">'+money(lsp)+' ₽</b>':'')+'</small>'+mKbHtml(id,r)
+  var mn='<span class="mn"><b>'+esc(nm)+dsBadge(r)+'</b><small>'+(num?'ТТК №'+esc(num)+' · ':'')+'выход '+dnum(r.output,2)+' г'+(rdOutCheck(r).length?' <span class="warnt" title="'+esc(rdOutCheck(r)[0].txt)+' Проверьте в «Готовности карт»: исправление подтверждает технолог.">⚠ проверьте выход</span>':'')+(lsp?' · цена продажи <b class="lsell">'+money(lsp)+' ₽</b>':'')+'</small>'+mKbHtml(id,r)
       +'<span class="mctl">'+gpRowHtml(it)+(menuCats().length&&!layOn()?'<select class="mcat" data-act="mCat" data-edit data-fk="mcat:'+esc(id)+'" aria-label="Папка: '+esc(nm)+'" title="Папка меню">'+catOptionsHtml(r.cat)+'</select>':'')
       +(uiRO()?'':'<button class="btn mini" data-act="mArch" data-edit title="Убрать из меню: блюдо уйдёт в архив, его ТТК останется">В архив</button>')+'</span></span>';
   if(NOPRICE)return'<div class="mrow mlite" data-rid="'+esc(id)+'">'+mn+''+mOpenBtn()+'</div>';
@@ -691,6 +695,7 @@ function menuXlsxTable(){
     ['Блюдо','text',250,function(x){return x.r.name||'Без названия';}],
     ['ТТК №','text',70,function(x){var n=String(ttkVal(x.r,'num')||'').trim();return n==='__'?'':n;}],
     ['Папка','text',150,function(x){return(catOf(x.r)||{name:''}).name;}],
+    ['Декларация о соответствии','text',200,function(x){var d=dsOf(x.r,g);return d?(d.n||'да, номер не указан'):'';}],
     ['Выход порции, г','g',90,function(x){return rd(x.r.output,2);}],
     ['Цена продажи, ₽','money',100,function(x){return rd(x.m.price,2);}]
   ];
@@ -722,7 +727,7 @@ function viewMenuLite(){
   return menuXlsxBtnHtml()+recsCardHtml()
     +'<p class="rgnote" style="margin-top:0">'+(syLinked()?'Закупочные цены и себестоимость для вашего кода не показываются. Цены продажи блюд видны, менять их может технолог или тер. управляющий.':'Закупочные цены и себестоимость закрыты. Чтобы открыть их, подключитесь на вкладке «Личный кабинет» с вашим кодом доступа. <button class="btn mini" data-act="syGoSync">Подключиться</button>')+'</p>'
     +'<div class="tools" style="margin-top:12px"><label class="field grow"><span class="lbl">Поиск по названию или номеру ТТК</span><input id="msearch" data-act="mQ" data-fk="msearch" autocomplete="off" value="'+esc(S.mq||'')+'" placeholder="Например: котлета"></label></div>'
-    +mFoldersHtml()
+    +mFoldersHtml()+dsPanelHtml()
     +'<div id="mList">'+mListHtml()+'</div>';
 }
 function viewMenu(){
@@ -739,7 +744,7 @@ function viewMenu(){
 
   h+='<div class="tools mtools" style="margin-top:14px"><label class="field grow"><span class="lbl">Поиск по названию или номеру ТТК</span><input id="msearch" data-act="mQ" data-fk="msearch" autocomplete="off" value="'+esc(S.mq||'')+'" placeholder="Поиск по названию или номеру ТТК"></label>'+'</div>'
     +'<div class="chips" id="mChips" style="margin-bottom:12px">'+menuChipsHtml(items)+'</div>'
-    +'<details class="mextra" id="mExtra"'+(S.mExtra?' open':'')+'><summary>Дополнительные действия</summary><div class="mxbody">'+ex+sortH+menuToneHtml()+mFoldersHtml()+tbHtml()+'</div></details>'
+    +'<details class="mextra" id="mExtra"'+(S.mExtra?' open':'')+'><summary>Дополнительные действия</summary><div class="mxbody">'+ex+sortH+menuToneHtml()+mFoldersHtml()+dsPanelHtml()+tbHtml()+'</div></details>'
     +'<div id="mList">'+mListHtml()+'</div>'
     +'<p class="hint">Себестоимость порции — только сырьё по брутто, без зарплаты и накладных расходов. Наценка = (цена − себестоимость) / себестоимость. Маржинальность = (цена − себестоимость) / цена. «Сырьё, %» — доля сырья в цене. Цена продажи и цены сырья должны быть на одной базе: обе с НДС или обе без. Меняя цену, наценку или маржинальность, вы меняете цену продажи: остальные показатели пересчитываются сами. Цена продажи подставляется в калькуляцию ОП-1 как наценка.</p>'
     ;
