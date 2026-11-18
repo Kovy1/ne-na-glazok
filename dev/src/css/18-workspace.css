@@ -236,3 +236,7 @@ dialog.dg .btns{margin-top:16px}
 .dslist li{margin:2px 0}
 .dspaste{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
 .dspaste textarea{width:100%;font:inherit}
+.dsb.dsx{border-color:var(--bad,#b42318);color:var(--bad,#b42318);background:transparent}
+.dsb.dss{box-shadow:0 0 0 2px var(--warn-soft,#fdecc8)}
+.dswarn{color:var(--bad,#b42318);font-weight:600}
+.dsauto .dslist{flex-basis:100%;margin:6px 0 0}

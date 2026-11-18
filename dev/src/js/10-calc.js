@@ -146,7 +146,7 @@ function normDs(d){
     var x=d[k];if(!REG_ID.test(k)||!x||typeof x!=='object'||n>=16)return;
     var e={g:String(x.g||'').slice(0,DS_MAX_G),n:String(x.n||'').slice(0,DS_MAX_N)};
     if(x.src)e.src=String(x.src).slice(0,120);
-    if(x.d&&/^\d{4}-\d{2}-\d{2}$/.test(String(x.d)))e.d=String(x.d);
+    ['d','v','r'].forEach(function(q){if(x[q]&&/^\d{4}-\d{2}-\d{2}$/.test(String(x[q])))e[q]=String(x[q]);});   /* d — дата отметки, v — действует по, r — дата регистрации */
     o[k]=e;n++;
   });
   return n?o:null;

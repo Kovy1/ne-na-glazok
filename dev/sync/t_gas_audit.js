@@ -14,7 +14,7 @@ vm.runInContext('setup()', g.ctx);
 assert.deepStrictEqual(core(post({ op: 'auth', code: U })), { ok: true, role: 'audit', price: true });
 assert.deepStrictEqual(core(post({ op: 'auth', code: U, by: '' })), { ok: true, role: 'audit', price: true });
 assert.deepStrictEqual(core(post({ op: 'auth', code: V })), { ok: true, role: 'viewer', price: true }, 'шеф-повар как был');
-assert.strictEqual(get(null, { a: 'ping' }).v, 30);
+assert.strictEqual(get(null, { a: 'ping' }).v, 31);
 
 // технолог публикует блюдо с ценами и кладёт файл; редактор присылает файл на проверку
 const prices = { price: 120, priceUnit: 'kg', packG: 1000, priceSrc: '1С' };

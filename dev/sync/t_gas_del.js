@@ -8,7 +8,7 @@ const ing = (name, extra = {}) => Object.assign({ name, p: 1, f: 2, c: 3, kind: 
 const rec = (name, rows, extra = {}) => Object.assign({ name, output: 200, rows, ref: {}, ttk: {} }, extra);
 const D = { _del: 1 };
 
-assert.strictEqual(get(null, { a: "ping" }).v, 30);
+assert.strictEqual(get(null, { a: "ping" }).v, 31);
 let r = post({ op: 'publish', code: A, by: 'Технолог', items: [
   { kind: 'ing', sid: 'i-lukk', name: 'Лук', json: ing('Лук', { price: 40 }) },
   { kind: 'ing', sid: 'i-svek', name: 'Свёкла', json: ing('Свёкла') },

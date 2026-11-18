@@ -8,7 +8,7 @@ const g = createGas();
 const get = (code, p) => g.parseOut(g.get(Object.assign({ code }, p))).data;
 const post = b => JSON.parse(g.post(b).text);
 vm.runInContext('setup()', g.ctx);
-assert.strictEqual(get(A, { a: 'ping' }).v, 30);
+assert.strictEqual(get(A, { a: 'ping' }).v, 31);
 
 // редактор предлагает два файла
 const d1 = mkDocx(3000, 'one'), d2 = mkDocx(2500, 'two');

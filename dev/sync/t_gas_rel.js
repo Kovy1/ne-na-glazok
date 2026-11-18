@@ -4,7 +4,7 @@ const A = 'adm-5678', E = 'ed-1234';
 const g = createGas();
 const post = b => JSON.parse(g.post(Object.assign({ rid: 'rid-' + Math.random().toString(36).slice(2) + '-abcdef' }, b)).text);
 vm.runInContext('setup()', g.ctx);
-assert.strictEqual(vm.runInContext('VERSION', g.ctx), 30);
+assert.strictEqual(vm.runInContext('VERSION', g.ctx), 31);
 // общий код: имени нет, ничего не пишется
 let r = post({ op: 'relget', code: E, by: 'Ред' }); assert.strictEqual(r.ok, true); assert.strictEqual(r.shared, true);
 r = post({ op: 'relput', code: E, by: 'Ред', v: 90 }); assert.strictEqual(r.shared, true);

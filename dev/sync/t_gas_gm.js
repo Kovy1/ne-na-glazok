@@ -18,7 +18,7 @@ const items = [
 assert.ok(post({ op: 'publish', code: A, by: 'Технолог', items }).ok);
 const names = m => m.items.map(x => x.n).sort();
 // 1. до включения всё как раньше: видно каждое блюдо с ценой
-assert.strictEqual(get(null, { a: 'ping' }).v, 30);
+assert.strictEqual(get(null, { a: 'ping' }).v, 31);
 let m = get(null, { a: 'menu' }), l = get(A, { a: 'lay' });
 assert.strictEqual(m.exp, false);
 assert.deepStrictEqual(names(m), ['В проработке', 'Салат', 'Суп с луком', 'Только Москва']);

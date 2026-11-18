@@ -18,7 +18,7 @@ const live = g => Object.values(g.drive.items).filter(x => x.kind === 'file' && 
 // ---------- версия и пустое состояние ----------
 {
   const { g, get } = mk();
-  assert.strictEqual(get(null, { a: 'ping' }).v, 30, 'версия скрипта 30');
+  assert.strictEqual(get(null, { a: 'ping' }).v, 31, 'версия скрипта 31');
   let r = get(null, { a: 'bkinfo', by: 'Технолог' });
   assert.strictEqual(r.err, 'code', 'без кода копию не показывают');
   r = get('плохой', { a: 'bkget', by: 'Технолог' }); assert.strictEqual(r.err, 'code');

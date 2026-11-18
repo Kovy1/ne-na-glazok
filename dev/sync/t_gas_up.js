@@ -6,7 +6,7 @@ const get = (code, p) => g.parseOut(g.get(Object.assign(code === null ? {} : { c
 const post = b => JSON.parse(g.post(Object.assign({ rid: 'rid-' + Math.random().toString(36).slice(2) + '-abcdef' }, b)).text);
 const mkDocx = (size = 500, tag = 'x') => { const b = Buffer.alloc(size, 7); b[0] = 0x50; b[1] = 0x4b; b[2] = 3; b[3] = 4; b.write(tag, 10); return b.toString('base64'); };
 vm.runInContext('setup()', g.ctx);
-assert.strictEqual(get(null, { a: 'ping' }).v, 30);
+assert.strictEqual(get(null, { a: 'ping' }).v, 31);
 const fv0 = get(null, { a: 'ping' }).fv; assert.strictEqual(typeof fv0, 'number');
 assert.strictEqual(get(null, { a: 'ping' }).fv, fv0, 'без записей версия не меняется');
 post({ op: 'upload', code: E, by: 'Кузя', name: 'Борщ.docx', b64: mkDocx() });

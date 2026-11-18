@@ -5,7 +5,7 @@ const EXEC = 'https://script.google.com/macros/s/AKfycbxTESTdeploymentIDabcdefgh
 const EXEC2 = 'https://script.google.com/macros/s/AKfycbyNEWdeploymentIDabcdefghijklmnopqrstuvwxyz0123456789/exec';
 (function () {
   const g = createGas({ strictExec: true });
-  assert.strictEqual(g.parseOut(g.get({ a: 'ping' })).data.v, 30, 'версия скрипта 30');
+  assert.strictEqual(g.parseOut(g.get({ a: 'ping' })).data.v, 31, 'версия скрипта 31');
   assert.strictEqual(g.parseOut(g.get({ a: 'ping' })).data.ptr, '', 'до подключения файла нет');
   // редактор не может записывать адрес
   let r = post(g, { op: 'addr', code: 'ed-1234', url: EXEC });

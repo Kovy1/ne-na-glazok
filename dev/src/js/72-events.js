@@ -165,6 +165,8 @@ function onClick(e){
     case'incMore':(function(){var x=b.parentNode.querySelector('.incx'),o;if(!x)return;o=x.hidden;x.hidden=!o;b.setAttribute('aria-expanded',o?'true':'false');b.textContent=o?'Скрыть':'Почему это важно';})();break;
     case'syPropose':sySend(false);break;
     case'gmRetry':GM.err='';gmLoad(true);renderAll();break;
+    case'gmF':GM.f=b.getAttribute('data-f')||'all';renderAll();break;
+    case'gmXlsx':exportFile(xlsxPack([gmXlsxTable()]),'Меню'+(GM.f==='ds'?' (задекларированные)':'')+'.xlsx');break;
     case'gmLogin':S.tab='sync';renderAll();window.scrollTo(0,0);break;
     case'syCardSend':syCardSend(false);break;
     case'syCardPub':syCardSend(true);break;

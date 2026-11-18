@@ -5,7 +5,7 @@ const g = createGas();
 const get = (code, p) => g.parseOut(g.get(Object.assign(code === null ? {} : { code }, p))).data;
 const post = b => JSON.parse(g.post(Object.assign({ rid: 'rid-' + Math.random().toString(36).slice(2) + '-abcdef' }, b)).text);
 vm.runInContext('setup()', g.ctx);
-assert.strictEqual(get(null, { a: 'ping' }).v, 30);
+assert.strictEqual(get(null, { a: 'ping' }).v, 31);
 let m = get(null, { a: 'menu' });
 assert.strictEqual(m.ok, true); assert.deepStrictEqual(m.items, []); assert.ok(m.regs.length >= 1 && m.regs[0].id && m.regs[0].name);
 const ing = (name, o) => Object.assign({ name, p: 1, f: 1, c: 1, kind: 'table', source: '' }, o);

@@ -22,7 +22,7 @@ const A = 'adm-5678', E = 'ed-1234', V = 'view-3456', F = 'fin-9012';
   });
   const ask = (o) => post(g, Object.assign({ op: 'ai', code: E, system: 'Ты технолог.', user: 'Блюдо: Гуляш' }, o));
   // 1. до настройки
-  let p = get(g, { a: 'ping' }); assert.strictEqual(p.v, 30, 'версия скрипта 30'); assert.strictEqual(p.ai, 0); assert.strictEqual(p.aip, 'openrouter', 'по умолчанию OpenRouter');
+  let p = get(g, { a: 'ping' }); assert.strictEqual(p.v, 31, 'версия скрипта 31'); assert.strictEqual(p.ai, 0); assert.strictEqual(p.aip, 'openrouter', 'по умолчанию OpenRouter');
   let r = ask({}); assert.strictEqual(r.ok, false); assert.strictEqual(r.err, 'aikey');
   assert.strictEqual(g.fetchLog.length, 0, 'без ключа наружу ничего не уходит');
   // 2. роли

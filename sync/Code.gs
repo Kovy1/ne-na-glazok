@@ -23,6 +23,8 @@
  *   код аудита (необязательный): то же, что у шеф-повара (смотрит и выгружает данные, ничего не меняет и не отправляет), но входит одним кодом, ФИО не нужно.
  * Данные общей базы отдаются только по коду (любой роли).
  *
+ * Версия 31 (выпуск приложения 92): в меню без входа (действие «menu») у блюда есть отметка декларации о соответствии по регионам:
+ *   номер декларации и срок её действия. Отметку ставит технолог в ТТК, она хранится в данных карты.
  * Версия 30 (выпуск приложения 91): фудкост на сервере. Отчёты, версии плана, ответственные, сроки, статусы и комментарии
  * лежат файлами в папке «Фудкост ТехнолоГии» на Диске (создаётся при первой записи, адрес папки хранится в свойствах скрипта).
  * Доступ проверяется здесь: роль, объект и регион, а исполнитель мероприятия определяется по идентификатору пользователя, а не по ФИО.
@@ -111,7 +113,7 @@ var VIEW_CODE = 'ЗАМЕНИТЕ-код-шеф-повара';        // нео�
 
 /* ---------------------------------------------------------------------------------------------- */
 
-var VERSION = 30;
+var VERSION = 31;
 var PTR_NAME = 'ТехнолоGия — адрес подключения';
 var PRICE_KEYS = { ing: ['price', 'priceUnit', 'packG', 'priceSrc', 'px'], rec: [] };   // вырезаются у кода без права на цены (сейчас права на цены есть у всех кодов)
 var LOCK_KEYS = { ing: [], rec: ['sell'] };                                              // цена продажи: у кода без права на цены её тоже нельзя менять
@@ -645,7 +647,7 @@ function layClean_(list) {
    Состава, сырья, закупочных цен и себестоимости здесь нет. */
 function menu_() {
   var pr = PropertiesService.getScriptProperties(), rev = Number(pr.getProperty('rev') || 0), lay = Number(pr.getProperty('layRev') || 0),
-    cache = CacheService.getScriptCache(), key = 'menu:' + rev + ':' + lay + ':2', hit = null, items = [], regs = [], out, doc, pub = null, cats, have = {}, hold = null;
+    cache = CacheService.getScriptCache(), key = 'menu:' + rev + ':' + lay + ':3', hit = null, items = [], regs = [], out, doc, pub = null, cats, have = {}, hold = null;
   try { hit = cache.get(key); } catch (e0) { hit = null; }
   if (hit) { var c = parse_(hit); if (c) { c.pgb = pgBld_(); return c; } }
   doc = layDoc_();
@@ -666,7 +668,15 @@ function menu_() {
       if (REG_RE.test(g) && isFinite(v) && v > 0) { p[g] = Math.round(v * 100) / 100; any = true; }
     });
     if (!any) return;
-    items.push({ s: String(r[0]), n: String(r[2]).slice(0, 140), o: Number(j.output) > 0 ? Number(j.output) : 0, t: String(j.ttk && j.ttk.num || '').slice(0, 20), g: REG_RE.test(String(j.reg || '')) ? String(j.reg) : '', p: p });
+    var it = { s: String(r[0]), n: String(r[2]).slice(0, 140), o: Number(j.output) > 0 ? Number(j.output) : 0, t: String(j.ttk && j.ttk.num || '').slice(0, 20), g: REG_RE.test(String(j.reg || '')) ? String(j.reg) : '', p: p }, ds = {}, dn = 0;
+    Object.keys(j.ds && typeof j.ds === 'object' ? j.ds : {}).forEach(function (g) {      // декларация о соответствии по регионам (версия 31): номер и срок
+      var x = j.ds[g];
+      if (!REG_RE.test(g) || !x || typeof x !== 'object' || dn >= 16) return;
+      ds[g] = { n: String(x.n || '').slice(0, 80) }; dn++;
+      if (/^\d{4}-\d{2}-\d{2}$/.test(String(x.v || ''))) ds[g].v = String(x.v);
+    });
+    if (dn) it.d = ds;
+    items.push(it);
   });
   try { regsOf_(folders_(false)).forEach(function (g) { regs.push({ id: g.id, name: g.name }); }); } catch (e1) { regs = []; }
   if (!regs.length) regs = TREG_DEFAULT.map(function (g) { return { id: g.id, name: g.name }; });

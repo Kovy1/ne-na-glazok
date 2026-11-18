@@ -7,7 +7,7 @@ const post = b => JSON.parse(g.post(Object.assign({ rid: 'rid-' + Math.random().
 const page = bld => '<!doctype html><html><head><meta charset="utf-8"></head><body><script>window.KBZHU_SEED={};window.KBZHU_RELEASE=1;' + (bld ? 'window.KBZHU_BUILD=' + bld + ';' : '') + '</script>' + 'Борщ · '.repeat(9000) + '<script>var x=1;</script></body></html>';
 const put = (html, code) => post({ op: 'pagePut', code: code || A, by: 'Технолог', html });
 
-assert.strictEqual(get(null, { a: 'ping' }).v, 30, 'версия скрипта 30');
+assert.strictEqual(get(null, { a: 'ping' }).v, 31, 'версия скрипта 31');
 // до загрузки страницы номера нет
 let p = get(null, { a: 'ping' }); assert.strictEqual(p.pgb, 0); assert.strictEqual(p.pga, 0);
 assert.strictEqual(get(null, { a: 'menu' }).pgb, 0);

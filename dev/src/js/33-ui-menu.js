@@ -168,7 +168,7 @@ function menuItems(){
 }
 function menuVisible(items){
   var q=(S.mq||'').trim().toLowerCase(),f=S.mflt||'all',key=S.msort||'name';
-  if(NOPRICE){f='all';key='name';}
+  if(NOPRICE){if(f!=='ds'&&f!=='nods'&&f!=='dsx')f='all';key='name';}
   if((f==='gpon'||f==='gpoff')&&!(gpAdmin()&&gpExp()))f='all';
   var out=items.filter(function(it){
     var m=it.m;
@@ -177,8 +177,9 @@ function menuVisible(items){
     if(f==='inc'&&m.complete)return false;
     if(f==='gpon'&&!gpIs(it.id))return false;
     if(f==='gpoff'&&gpIs(it.id))return false;
-    if(f==='ds'&&!dsOf(it.r))return false;
-    if(f==='nods'&&dsOf(it.r))return false;
+    if(f==='ds'&&!dsValid(dsOf(it.r)))return false;
+    if(f==='nods'&&dsValid(dsOf(it.r)))return false;
+    if(f==='dsx'&&!dsExpired(dsOf(it.r)))return false;
     return!q||String(it.r.name).toLowerCase().indexOf(q)>-1||String(ttkVal(it.r,'num')).toLowerCase().indexOf(q)>-1;
   });
   var dir={cost:-1,price:-1,margin:1,markup:1}[key];
@@ -209,8 +210,8 @@ function menuChipsHtml(items){
   function chip(k,l,c){return'<button class="chip" data-act="mFlt" data-f="'+k+'" aria-pressed="'+(f===k)+'">'+l+' · '+c+'</button>';}
   var gx='',gn=0;
   if(gpAdmin()&&gpExp()){items.forEach(function(it){if(gpIs(it.id))gn++;});gx=chip('gpon','Показаны посетителям',gn)+chip('gpoff','Не показаны посетителям',n-gn);}
-  var dn=0;items.forEach(function(it){if(dsOf(it.r))dn++;});
-  var dx=dn?chip('ds','Задекларировано',dn)+chip('nods','Без декларации',n-dn):'';
+  var dn=0,de=0;items.forEach(function(it){var x=dsOf(it.r);if(dsValid(x))dn++;else if(x)de++;});
+  var dx=(dn||de)?chip('ds','Задекларировано',dn)+chip('nods','Без декларации',n-dn)+(de?chip('dsx','Срок декларации истёк',de):''):'';
   if(syLoading())return chip('all','Все',n)+gx;
   return chip('all','Все',n)+chip('noprice','Без цены',np)+chip('inc','Себестоимость неполная',ic)+dx+gx;
 }
@@ -695,7 +696,8 @@ function menuXlsxTable(){
     ['Блюдо','text',250,function(x){return x.r.name||'Без названия';}],
     ['ТТК №','text',70,function(x){var n=String(ttkVal(x.r,'num')||'').trim();return n==='__'?'':n;}],
     ['Папка','text',150,function(x){return(catOf(x.r)||{name:''}).name;}],
-    ['Декларация о соответствии','text',200,function(x){var d=dsOf(x.r,g);return d?(d.n||'да, номер не указан'):'';}],
+    ['Декларация о соответствии','text',200,function(x){var d=dsOf(x.r,g);return d?(d.n||'да, номер не указан')+(dsExpired(d)?' (срок истёк)':''):'';}],
+    ['Декларация действует по','text',110,function(x){var d=dsOf(x.r,g);return d&&d.v?dsIsoRu(d.v):'';}],
     ['Выход порции, г','g',90,function(x){return rd(x.r.output,2);}],
     ['Цена продажи, ₽','money',100,function(x){return rd(x.m.price,2);}]
   ];
@@ -723,10 +725,18 @@ function menuXlsxBtnHtml(){
 }
 function regSuffix(){return regionList().length>1?' ('+safeName(regionName(curRegion()))+')':'';}
 /* меню без финансов (нет права на цены): блюда по папкам, архив и поиск */
+/* фильтр по декларациям для меню без финансов (шеф-повар, меню на доставку) */
+function dsChipsLite(){
+  var items=menuItems(),n=items.length,dn=0,de=0,f=S.mflt||'all';
+  items.forEach(function(it){var x=dsOf(it.r);if(dsValid(x))dn++;else if(x)de++;});
+  if(!dn&&!de)return'';
+  function chip(k,l,c){return'<button class="chip" data-act="mFlt" data-f="'+k+'" aria-pressed="'+(f===k)+'">'+l+' · '+c+'</button>';}
+  return'<div class="chips" style="margin:10px 0 0">'+chip('all','Все',n)+chip('ds','Задекларировано',dn)+chip('nods','Без декларации',n-dn)+(de?chip('dsx','Срок декларации истёк',de):'')+'</div>';
+}
 function viewMenuLite(){
   return menuXlsxBtnHtml()+recsCardHtml()
     +'<p class="rgnote" style="margin-top:0">'+(syLinked()?'Закупочные цены и себестоимость для вашего кода не показываются. Цены продажи блюд видны, менять их может технолог или тер. управляющий.':'Закупочные цены и себестоимость закрыты. Чтобы открыть их, подключитесь на вкладке «Личный кабинет» с вашим кодом доступа. <button class="btn mini" data-act="syGoSync">Подключиться</button>')+'</p>'
-    +'<div class="tools" style="margin-top:12px"><label class="field grow"><span class="lbl">Поиск по названию или номеру ТТК</span><input id="msearch" data-act="mQ" data-fk="msearch" autocomplete="off" value="'+esc(S.mq||'')+'" placeholder="Например: котлета"></label></div>'
+    +'<div class="tools" style="margin-top:12px"><label class="field grow"><span class="lbl">Поиск по названию или номеру ТТК</span><input id="msearch" data-act="mQ" data-fk="msearch" autocomplete="off" value="'+esc(S.mq||'')+'" placeholder="Например: котлета"></label></div>'+dsChipsLite()
     +mFoldersHtml()+dsPanelHtml()
     +'<div id="mList">'+mListHtml()+'</div>';
 }
@@ -737,7 +747,7 @@ function viewMenu(){
   var items=menuItems(),g=curRegion();
   var h=sxCardHtml(),ex=menuXlsxBtnHtml()+(S.sx?'':'<div class="btns" style="margin-bottom:12px"><button class="btn" data-act="pickSx" data-edit title="Прейскурант: наименование блюда, единица, стоимость. Цены попадут в выбранный регион">Загрузить цены продажи из файла</button></div>')+'<p class="rgtag">Цены региона «'+esc(regionName(g))+'»'+(sellPtKey(g)?' · точка «'+esc((drPt(drCurPtId())||{}).name||'')+'»: у блюда без своей цены точки берётся цена региона':'')+'</p><p class="rgnote">Себестоимость считается по ценам сырья этого региона, цена продажи хранится отдельно для каждого региона. Регион выбирается вверху страницы.</p>';
   h+=syLimited()?'':recsCardHtml();
-  h+=menuIncBarHtml(items);
+  h+=menuIncBarHtml(items)+dsAutoBarHtml();
   ex+=gpPanelHtml();
 
   var sortH='<label class="field w180" style="flex:0 0 190px"><span class="lbl">Сортировка</span><select data-act="mSort" data-fk="msort">'+[['name','По названию'],['cost','Сначала дорогие по себестоимости'],['price','Сначала дорогие по цене'],['margin','Сначала с низкой маржой'],['markup','Сначала с низкой наценкой']].map(function(x){return'<option value="'+x[0]+'"'+((S.msort||'name')===x[0]?' selected':'')+'>'+x[1]+'</option>';}).join('')+'</select></label>';

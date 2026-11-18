@@ -54,7 +54,7 @@ const baseSeed = () => ({
   assert.ok(/Подключено: технолог/.test(t), 'подключение к скрипту 30');
   await P90.waitForFunction(() => /скрипт общей базы/.test((document.querySelector('[data-seg="sys"]') || {}).textContent || ''), null, { timeout: 15000 });
   const verTxt = await P90.evaluate(() => (document.querySelector('[data-seg="sys"] .cmsg') || {}).textContent || '');
-  console.log('версии:', verTxt.slice(0, 200)); assert.ok(/скрипт общей базы: 30/.test(verTxt), 'версия скрипта видна: ' + verTxt);
+  console.log('версии:', verTxt.slice(0, 200)); assert.ok(/скрипт общей базы: 3[01]/.test(verTxt), 'версия скрипта видна: ' + verTxt);
   assert.ok(!/устарел|обновите скрипт/i.test(verTxt), 'для скрипта 30 предупреждения об устаревании нет');
   await P90.waitForSelector('#syMine'); await msg(P90, 'pull', /Всё актуально/);
   // 2. технолог (приложение 90) публикует базу

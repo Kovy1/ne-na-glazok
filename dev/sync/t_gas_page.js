@@ -15,7 +15,7 @@ const files = g => Object.values(g.drive.items).filter(x => x.kind === 'file' &&
 // ---------- до загрузки: заглушка, а не ошибка ----------
 {
   const { g, get } = mk();
-  assert.strictEqual(get(null, { a: 'ping' }).v, 30, 'версия скрипта 30');
+  assert.strictEqual(get(null, { a: 'ping' }).v, 31, 'версия скрипта 31');
   const o = g.get({});
   assert.strictEqual(o.mime, 'HTML'); assert.ok(/ещё не загружена/.test(o.text), 'заглушка с подсказкой'); assert.strictEqual(o.title, 'ТехнолоGия');
   assert.strictEqual(o.meta.viewport, 'width=device-width, initial-scale=1'); assert.strictEqual(o.xf, 'ALLOWALL');

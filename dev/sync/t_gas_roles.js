@@ -22,7 +22,7 @@ assert.strictEqual(post({ op: 'auth', code: 'нет' }).err, 'code');
   assert.strictEqual(get('', { a }).err, 'code', a + ' с пустым кодом');
 });
 assert.strictEqual(get(null, { a: 'ping' }).ok, true, 'проверка связи открыта');
-assert.strictEqual(get(null, { a: 'ping' }).v, 30);
+assert.strictEqual(get(null, { a: 'ping' }).v, 31);
 
 // технолог публикует сырьё и блюдо с ценами
 const prices = { price: 120, priceUnit: 'kg', packG: 1000, priceSrc: '1С', px: { r2: { price: 150 } } };

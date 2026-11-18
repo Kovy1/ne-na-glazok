@@ -7,7 +7,7 @@ const post = b => JSON.parse(g.post(Object.assign({ rid: 'rid-' + Math.random().
 const A = 'adm-5678';
 const mk = (name, role, regs) => { const r = post({ op: 'usradd', code: A, by: 'Технолог', name, role, own: false, regs }); assert.strictEqual(r.ok, true, JSON.stringify(r)); return { code: r.code, name, id: r.user.id }; };
 const vm = require('vm');
-assert.strictEqual(vm.runInContext('VERSION', g.ctx), 30);
+assert.strictEqual(vm.runInContext('VERSION', g.ctx), 31);
 const ivan = mk('Иванов И.И.', 'editor', ['main']), petr = mk('Петров П.П.', 'viewer', ['main']), mosk = mk('Москвин М.М.', 'editor', ['msk']), fin = mk('Финансов Ф.Ф.', 'finance', ['main', 'msk']);
 const P = (u, b) => post(Object.assign({ code: u.code, by: u.name }, b));
 const G = (u, p) => get(u.code, u.name, p);
