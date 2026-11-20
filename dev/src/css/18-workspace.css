@@ -240,3 +240,13 @@ dialog.dg .btns{margin-top:16px}
 .dsb.dss{box-shadow:0 0 0 2px var(--warn-soft,#fdecc8)}
 .dswarn{color:var(--bad,#b42318);font-weight:600}
 .dsauto .dslist{flex-basis:100%;margin:6px 0 0}
+/* правки редактора: закреплённая плашка внизу справа, страницу не сдвигает */
+#edBar{position:fixed;right:16px;bottom:16px;z-index:40;max-width:min(440px,calc(100vw - 32px))}
+#edBar[hidden]{display:none}
+.edcard{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--warn,#b54708);border-radius:14px;box-shadow:var(--sh2,0 8px 24px rgba(0,0,0,.14));padding:12px 14px}
+.edcard p{margin:6px 0 0;font-size:13px;line-height:1.45}
+.edcard .btns{margin-top:10px;display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
+.edmini{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;font-size:13px}
+.edmini>span{flex:1 1 220px}
+.edmini .btns{margin-top:0}
+@media (max-width:999.98px){#edBar{right:8px;left:8px;max-width:none;bottom:calc(88px + env(safe-area-inset-bottom,0px))}}

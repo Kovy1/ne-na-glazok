@@ -39,6 +39,7 @@ js/47-review.js
 js/50-guest.js
 js/51-skin-pwa.js
 js/52-topbar.js
+js/52-edbar.js
 js/53-price-files-ui.js
 js/54-users.js
 js/55-op1.js

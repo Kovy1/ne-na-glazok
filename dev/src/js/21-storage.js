@@ -10,11 +10,11 @@ function renderStatus(){
   else if(S.save==='saving'){s='saving';t='Сохраняю…';}
   else{s='ok';t='Данные сохранены';}
   el.setAttribute('data-s',s);el.textContent=t;el.hidden=guestOn();
-  el.setAttribute('data-short',s==='ok'?'Сохранено':(s==='saving'?'Сохраняется':(s==='error'?'Ошибка':(s==='warn'?(/^Нет сети/.test(t)?'Нет сети':'Не отправлено'):(S.readOnly?'Просмотр':(S.mode==='init'?'Подключение':'Только здесь'))))));
+  el.setAttribute('data-short',s==='ok'?'Сохранено':(s==='saving'?'Сохраняется':(s==='error'?'Ошибка':(s==='warn'?(/^Нет сети/.test(t)?'Нет сети':(/^На проверке/.test(t)?'На проверке':'Не отправлено')):(S.readOnly?'Просмотр':(S.mode==='init'?'Подключение':'Только здесь'))))));
   el.setAttribute('data-hint',el.title||t);
   var pc=$('#periodChip'),pf=(typeof curAbc==='function'&&S.cfg&&S.cfg.abc&&S.cfg.abc.period)?String(S.cfg.abc.period):'';
   if(pc){pc.hidden=!(pf&&(S.tab==='home'||S.tab==='abc'))||guestOn();pc.textContent=pc.hidden?'':'Период: '+pf;}
-  bkBarUpdate();rvBarUpdate();upBarUpdate();
+  bkBarUpdate();rvBarUpdate();upBarUpdate();edBarUpdate();
 }
 /* состояние обмена с общей базой: «Сохранено» только если изменений, не ушедших на сервер, нет и последний обмен прошёл */
 function syStatusInfo(){
@@ -23,7 +23,15 @@ function syStatusInfo(){
   if(sy.busy&&(sy.busy.send||sy.busy.pull||sy.busy.csend))return{s:'saving',t:'Сохраняется…'};
   if(e)return{s:'error',t:'Ошибка — повторить',retry:true,hint:String(e)};
   if(!sy.loaded)return{s:'saving',t:'Загружаю общую базу…'};
-  try{n=syDirtyUi().length;}catch(x){n=0;}
+  var d=[],sent=0;
+  try{d=syDirtyUi();d.forEach(function(x){if(syIsSent(x))sent++;});}catch(x){d=[];}
+  n=d.length-sent;
+  if(!syAdmin()&&syCanSend()){
+    /* редактор: правка в общей базе только после того, как технолог её примет; до этого она лежит в этом браузере */
+    if(n>0)return{s:'warn',t:'Не отправлено: '+n,hint:'Эти правки есть только на этом устройстве. Отправьте их технологу на проверку: в общей базе они появятся, когда он их примет.'};
+    if(sent>0)return{s:'warn',t:'На проверке: '+sent,hint:'Отправлено технологу, ждёт решения. Пока он не примет, эти правки есть только на этом устройстве: другие пользователи их не видят, а очистка данных браузера их сотрёт.'};
+  }
+  n=d.length;
   if(n>0)return{s:'warn',t:'Не отправлено: '+n,hint:'Эти правки есть только на этом устройстве: отправьте их на проверку или в общую базу.'};
   return{s:'ok',t:'Сохранено',hint:'Все правки на сервере, общая база получена.'};
 }
@@ -113,6 +121,7 @@ function queueSave(kind,id){
     clearTimeout(localTimer);
     localTimer=setTimeout(function(){
       localTimer=null;
+      if(kind!=='settings')edTouch();
       var ok=lsSet('kbzhu:v1',JSON.stringify(localBlob()));
       phFlush();
       setSave(ok?'ok':'error',ok?'':'Браузер не даёт сохранить данные');

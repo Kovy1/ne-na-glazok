@@ -87,7 +87,7 @@ function rvClick(act,b){
 }
 function rvStart(){
   var bar=$('#rvBar');
-  rvValidate();upStart();
+  rvValidate();upStart();edInit();
   if(bar){
     bar.addEventListener('click',function(e){var b=e.target.closest('button[data-act]');if(b)rvClick(b.getAttribute('data-act'),b);});
     bar.addEventListener('input',function(e){var t=e.target;if(t.id==='rvNote')S.sy.rvNote=t.value;else if(t.id==='rwNote')S.sy.rwNote=t.value;else if(t.id==='frNote')S.sy.frNote=t.value;});
