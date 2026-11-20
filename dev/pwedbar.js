@@ -61,6 +61,8 @@ const seed = () => ({
   await T('«Понятно»: объяснение больше не показывается', async () => assert.strictEqual(await bar(E), ''));
   // ещё правки подряд: напоминания нет, пока человек правит
   await edit(E, 'i4', '1.5');
+  await T('пауза 4 минуты: напоминания ещё нет', async () => { await E.evaluate(() => { window.kbzhuEd.S.edAt = Date.now() - 4 * 60000; }); assert.strictEqual(await bar(E), ''); });
+  await E.evaluate(() => { window.kbzhuEd.S.edAt = Date.now(); });
   await T('правки подряд: напоминание не появляется', async () => { assert.strictEqual(await bar(E), ''); assert.strictEqual((await status(E)).t, 'Не отправлено: 2'); });
   // человек остановился, но курсор в поле — тоже не мешаем
   await E.evaluate(I => { window.kbzhuEd.S.edAt = Date.now() - I - 1000; }, await E.evaluate(() => window.kbzhuEd.IDLE));
@@ -73,7 +75,7 @@ const seed = () => ({
   await edit(E, 'i2', '19');
   await T('правка при видимом напоминании: оно остаётся, число обновилось', async () => assert.ok(/Не отправлено: 3 правки/.test(await bar(E))));
   await E.click('[data-act="edLater"]');
-  await T('«Позже»: напоминание скрыто на 30 минут', async () => { await E.evaluate(I => { window.kbzhuEd.S.edAt = Date.now() - I - 1000; }, 90000); assert.strictEqual(await bar(E), ''); });
+  await T('«Позже»: напоминание скрыто на 30 минут', async () => { await E.evaluate(I => { window.kbzhuEd.S.edAt = Date.now() - I - 1000; }, await E.evaluate(() => window.kbzhuEd.IDLE)); assert.strictEqual(await bar(E), ''); });
   await E.evaluate(() => { window.kbzhuEd.S.edSnooze = 0; });
   await T('через 30 минут напоминание возвращается', async () => assert.ok(/Не отправлено: 3/.test(await bar(E))));
   // телефон: плашка над нижним меню и без горизонтальной прокрутки

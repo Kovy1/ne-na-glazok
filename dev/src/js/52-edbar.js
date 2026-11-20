@@ -4,7 +4,7 @@
    1) Первый раз, когда появилась неотправленная правка, — короткое объяснение с кнопкой «Понятно» (один раз на устройстве).
    2) Дальше — тихое напоминание «Отправить на проверку», но только когда человек перестал править (нет правок ED_IDLE мс
       и курсор не в поле ввода). «Позже» прячет его на ED_SNOOZE. Плашка закреплена внизу и не сдвигает страницу. */
-var ED_IDLE=90000,ED_SNOOZE=30*60000,edLast='',edTimer=0;
+var ED_IDLE=5*60000,ED_SNOOZE=30*60000,edLast='',edTimer=0;
 function edOn(){return S.mode==='local'&&syLinked()&&!S.readOnly&&S.sy.loaded&&syCanSend()&&!syAdmin()&&!guestOn();}
 function edCounts(){
   var d=[],sent=0;
