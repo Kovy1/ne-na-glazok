@@ -90,7 +90,7 @@ function revPriceFor(ingId,unit,g,region){
 }
 function revPackG(ingId,region){var ing=S.ings[ingId],q=ing&&regRec(ing,region||curRegion());return(q&&q.priceUnit==='pack'&&q.packG>0)?q.packG:0;}
 function revUnit(s){
-  var t=String(s==null?'':s).toLowerCase().replace(/ё/g,'е').replace(/[.\s]/g,'');
+  var t=String(s==null?'':s).toLowerCase().replace(/ё/g,'е').replace(/\((дм3|дм³|куб\.?\s*дм|см3|см³|г|кг)\)/g,'').replace(/[.\s]/g,'');   /* 1С: «л (дм3)», «мл (см3)» */
   var m={'кг':'кг','килограмм':'кг','kg':'кг','г':'г','гр':'г','грамм':'г','g':'г','л':'л','литр':'л','l':'л','мл':'мл','миллилитр':'мл','ml':'мл','шт':'шт','штука':'шт','штук':'шт','pcs':'шт','уп':'уп','упак':'уп','упаковка':'уп','пач':'уп','пачка':'уп'};
   return m[t]||'';
 }

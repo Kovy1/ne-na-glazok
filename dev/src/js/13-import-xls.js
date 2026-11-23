@@ -74,8 +74,8 @@ function xlsDec(bytes,cp){
   try{return new TextDecoder(cp===65001?'utf-8':(cp===1252?'windows-1252':'windows-1251')).decode(bytes);}catch(e){var s='',i;for(i=0;i<bytes.length;i++)s+=String.fromCharCode(bytes[i]);return s;}
 }
 function xlsDateFmt(id,fmts){
-  if((id>=14&&id<=22)||(id>=27&&id<=36)||(id>=45&&id<=47)||(id>=50&&id<=58))return true;
-  var f=fmts[id];if(!f)return false;
+  var f=fmts[id];          /* сначала свой формат книги: 1С кладёт «0.000» под номером 50, который у встроенных — дата */
+  if(f==null)return(id>=14&&id<=22)||(id>=27&&id<=36)||(id>=45&&id<=47)||(id>=50&&id<=58);
   f=f.replace(/"[^"]*"/g,'').replace(/\[[^\]]*\]/g,'').replace(/\\./g,'');
   return/[dmyhs]/i.test(f)&&!/[0#]/.test(f);
 }

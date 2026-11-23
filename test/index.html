@@ -1795,7 +1795,7 @@ try{
 }catch(e){fail=1;}
 window.__realLS=real;window.KBZHU_TEST=1;
 if(fail){window.stop();document.documentElement.innerHTML='<body style="font:16px sans-serif;padding:24px"><h2>Тестовая версия остановлена</h2><p>Браузер не дал отделить тестовые данные от рабочих, поэтому ничего не запущено. Рабочие данные не тронуты.</p></body>';throw new Error('test-isolation');}
-})();window.KBZHU_TEST_PROD="";window.KBZHU_SEED={"ings":{},"recipes":{}};window.KBZHU_BUILD=202611230718;</script>
+})();window.KBZHU_TEST_PROD="";window.KBZHU_SEED={"ings":{},"recipes":{}};window.KBZHU_BUILD=202611230802;</script>
 <script>
 (function(){
 'use strict';
@@ -3645,8 +3645,8 @@ function xlDateStyles(xml){
   while((m=re.exec(xml)))custom[m[1]]=xlUnesc(m[2]);
   function isDateFmt(id){
     id=Number(id);
-    if((id>=14&&id<=22)||(id>=27&&id<=36)||(id>=45&&id<=47)||(id>=50&&id<=58))return true;
-    var f=custom[String(id)];if(!f)return false;
+    var f=custom[String(id)];   /* свой формат книги важнее встроенного номера */
+    if(f==null)return(id>=14&&id<=22)||(id>=27&&id<=36)||(id>=45&&id<=47)||(id>=50&&id<=58);
     f=f.replace(/"[^"]*"/g,'').replace(/\[[^\]]*\]/g,'').replace(/\\./g,'');
     return/[dmyhs]/i.test(f)&&!/[0#]/.test(f);
   }
@@ -4097,8 +4097,8 @@ function xlsDec(bytes,cp){
   try{return new TextDecoder(cp===65001?'utf-8':(cp===1252?'windows-1252':'windows-1251')).decode(bytes);}catch(e){var s='',i;for(i=0;i<bytes.length;i++)s+=String.fromCharCode(bytes[i]);return s;}
 }
 function xlsDateFmt(id,fmts){
-  if((id>=14&&id<=22)||(id>=27&&id<=36)||(id>=45&&id<=47)||(id>=50&&id<=58))return true;
-  var f=fmts[id];if(!f)return false;
+  var f=fmts[id];          /* сначала свой формат книги: 1С кладёт «0.000» под номером 50, который у встроенных — дата */
+  if(f==null)return(id>=14&&id<=22)||(id>=27&&id<=36)||(id>=45&&id<=47)||(id>=50&&id<=58);
   f=f.replace(/"[^"]*"/g,'').replace(/\[[^\]]*\]/g,'').replace(/\\./g,'');
   return/[dmyhs]/i.test(f)&&!/[0#]/.test(f);
 }
@@ -12884,7 +12884,7 @@ function revPriceFor(ingId,unit,g,region){
 }
 function revPackG(ingId,region){var ing=S.ings[ingId],q=ing&&regRec(ing,region||curRegion());return(q&&q.priceUnit==='pack'&&q.packG>0)?q.packG:0;}
 function revUnit(s){
-  var t=String(s==null?'':s).toLowerCase().replace(/ё/g,'е').replace(/[.\s]/g,'');
+  var t=String(s==null?'':s).toLowerCase().replace(/ё/g,'е').replace(/\((дм3|дм³|куб\.?\s*дм|см3|см³|г|кг)\)/g,'').replace(/[.\s]/g,'');   /* 1С: «л (дм3)», «мл (см3)» */
   var m={'кг':'кг','килограмм':'кг','kg':'кг','г':'г','гр':'г','грамм':'г','g':'г','л':'л','литр':'л','l':'л','мл':'мл','миллилитр':'мл','ml':'мл','шт':'шт','штука':'шт','штук':'шт','pcs':'шт','уп':'уп','упак':'уп','упаковка':'уп','пач':'уп','пачка':'уп'};
   return m[t]||'';
 }

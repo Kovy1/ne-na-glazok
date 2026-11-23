@@ -216,8 +216,8 @@ function xlDateStyles(xml){
   while((m=re.exec(xml)))custom[m[1]]=xlUnesc(m[2]);
   function isDateFmt(id){
     id=Number(id);
-    if((id>=14&&id<=22)||(id>=27&&id<=36)||(id>=45&&id<=47)||(id>=50&&id<=58))return true;
-    var f=custom[String(id)];if(!f)return false;
+    var f=custom[String(id)];   /* свой формат книги важнее встроенного номера */
+    if(f==null)return(id>=14&&id<=22)||(id>=27&&id<=36)||(id>=45&&id<=47)||(id>=50&&id<=58);
     f=f.replace(/"[^"]*"/g,'').replace(/\[[^\]]*\]/g,'').replace(/\\./g,'');
     return/[dmyhs]/i.test(f)&&!/[0#]/.test(f);
   }
