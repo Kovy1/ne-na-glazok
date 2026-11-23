@@ -176,8 +176,8 @@ function sxOnFile(file){
     fr2.readAsArrayBuffer(file);
   }else if(ext==='csv'||ext==='tsv'||ext==='txt'){
     readTextFile(file,function(err,text){if(err){bad();return;}done(c1Rows(text));});
-  }else if(ext==='xls')flash('Старый формат .xls не читается. Сохраните файл как .xlsx и загрузите снова.');
-  else flash('Нужен файл .xlsx, .ods или .csv с прейскурантом.');
+  }else if(ext==='xls')xlsReadFile(file,done,function(m){flash(m);});
+  else flash('Нужен файл .xlsx, .xls, .ods или .csv с прейскурантом.');
 }
 function sxChanges(){
   var x=S.sx;

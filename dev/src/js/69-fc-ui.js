@@ -20,8 +20,8 @@ function fcReadFile(file,cb){
     f2.readAsArrayBuffer(file);
   }else if(ext==='csv'||ext==='tsv'||ext==='txt'){
     readTextFile(file,function(err,text){if(err){bad();return;}cb(c1Rows(text));});
-  }else if(ext==='xls')bad('Старый формат .xls не читается: пересохраните файл как .xlsx или .csv.');
-  else bad('Нужен файл .xlsx, .ods, .csv или .txt.');
+  }else if(ext==='xls')xlsReadFile(file,cb,bad);
+  else bad('Нужен файл .xlsx, .xls, .ods, .csv или .txt.');
 }
 /* ---------- загрузка файла ---------- */
 function fcImpOpen(type,rows,name){

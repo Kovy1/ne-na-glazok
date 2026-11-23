@@ -159,10 +159,10 @@ function c1OnFile(file){
   }else if(ext==='csv'||ext==='tsv'||ext==='txt'){
     readTextFile(file,function(err,text){if(err){bad();return;}done(c1Rows(text));});
   }else if(ext==='xls'){
-    flash('Старый формат .xls не читается. Пересохраните файл как .xlsx (Файл → Сохранить как → Книга Excel) или вставьте строки таблицы в поле ниже.');
+    xlsReadFile(file,done,function(m){flash(m);});
   }else if(ext==='pdf'){
     flash('PDF не читается. Сохраните тот же отчёт из 1С в Excel (.xlsx) и загрузите его.');
-  }else flash('Нужен файл .xlsx, .ods, .csv или .txt с отчётом 1С.');
+  }else flash('Нужен файл .xlsx, .xls, .ods, .csv или .txt с отчётом 1С.');
 }
 function c1PasteGo(){
   var ta=$('#c1Text'),text=ta?ta.value:'';

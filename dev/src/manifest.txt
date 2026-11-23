@@ -16,6 +16,7 @@ js/10-calc.js
 js/11-import-table.js
 js/12-sync-core.js
 js/13-import-1c.js
+js/13-import-xls.js
 js/14-price-files-core.js
 js/15-backup-core.js
 js/20-state.js

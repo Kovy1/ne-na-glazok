@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">
+<Worksheet ss:Name="Лист1"><Table>
+<Row><Cell><Data ss:Type="String">Дата</Data></Cell><Cell><Data ss:Type="String">Номенклатура</Data></Cell><Cell ss:Index="4"><Data ss:Type="String">Количество</Data></Cell></Row>
+<Row><Cell><Data ss:Type="DateTime">2026-10-05T00:00:00.000</Data></Cell><Cell><Data ss:Type="String">Морковь</Data></Cell><Cell ss:Index="4"><Data ss:Type="Number">12.5</Data></Cell></Row>
+</Table></Worksheet></Workbook>

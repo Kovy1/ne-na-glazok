@@ -479,8 +479,8 @@ function revReadFile(file){
     fr.readAsArrayBuffer(file);
   }else if(ext==='csv'||ext==='tsv'||ext==='txt'){
     readTextFile(file,function(err,text){if(err){bad();return;}done(c1Rows(text));});
-  }else if(ext==='xls')flash('Старый формат .xls не читается. Пересохраните файл как .xlsx или .csv.');
-  else flash('Нужен файл .xlsx, .ods, .csv или .txt.');
+  }else if(ext==='xls')xlsReadFile(file,done,function(m){flash(m);});
+  else flash('Нужен файл .xlsx, .xls, .ods, .csv или .txt.');
 }
 
 /* ---- события ---- */
