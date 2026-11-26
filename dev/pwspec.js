@@ -26,6 +26,8 @@ const errs = [];
   // капуста по запомненному названию — совпала; морковь/свекла/сахар — похожие, нужно подтвердить; остальное не найдено
   const st = await page.evaluate(() => { const S = kbzhuSpec.S, o = {}; Object.keys(S.spec.ing).forEach(k => { const e = S.spec.ing[k]; o[e.name] = kbzhuSpec.ingSt(e); }); return o; });
   assert.strictEqual(st['Капуста свеж цел н/очищ н/мыт вес'], 'ok');
+  const kapRow = await page.textContent('#specCard .sprow:has-text("Капуста свеж")');
+  assert.ok(/в блюде: Борщ тест 250\/10 \(ТТК №381\)/.test(kapRow), 'видно, в каком блюде сырьё: ' + kapRow);
   // подтверждаем все предложенные, остальные — новым сырьём
   while (await page.$('#specCard [data-act="specTake"]')) await page.click('#specCard [data-act="specTake"]');
   await page.click('[data-act="specNewAll"]');

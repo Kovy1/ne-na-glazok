@@ -46,9 +46,9 @@ function specStart(P,file){
       var mt=c1Match(x.raw,S.ings),pick=mt.id;
       if(mt.how==='fuzzy'&&mt.score<0.6)pick='';
       var sure=!!pick&&(mt.how==='alias'||mt.how==='exact'||(mt.how==='fuzzy'&&mt.score>=0.8&&!mt.pct&&!mt.extra));
-      e=ing[x.k]={k:x.k,raw:x.raw,name:x.name,n:0,ing:pick,guess:mt.id,how:pick?mt.how:'none',sure:sure,add:false,skip:false,edit:false};
+      e=ing[x.k]={k:x.k,raw:x.raw,name:x.name,n:0,ds:[],ing:pick,guess:mt.id,how:pick?mt.how:'none',sure:sure,add:false,skip:false,edit:false};
     }
-    e.n++;
+    e.n++;if(e.ds.indexOf(d.name)<0)e.ds.push(d.name);
   });});
   var ds=P.dishes.map(function(d,i){
     var ex=specFind(d),er=ex?S.recipes[ex]:null,st=!ex?'new':(specNoTtk(er)?'upd':'has');
@@ -74,7 +74,13 @@ function specIngRow(e){
   else if(st==='ok'&&!e.edit)sel='<span class="c1cur">'+esc(S.ings[e.ing].name)+'</span><button class="btn mini" data-act="specEdit" data-k="'+k+'">Другое сырьё</button>';
   else sel=((st==='check'||st==='none')&&e.guess&&S.ings[e.guess]?'<span class="tsub">'+(e.ing?'Предложено: ':'Похоже: ')+'<b>'+esc(S.ings[e.guess].name)+'</b> <button class="btn mini" data-act="specTake" data-edit data-k="'+k+'">Подтвердить</button></span>':'')
     +pickerHtml('specIng','sp:'+e.k,e.ing||'','Сырьё из базы для «'+e.name+'»','Поиск по базе…','new|c1')+btns();
-  return'<div class="trow sprow" data-k="'+k+'"><span class="tn">'+esc(e.name)+'<small class="c1sub">в блюдах: '+e.n+'</small></span><span class="tsel">'+sel+'</span><span class="tst"><span class="tstat '+SPEC_ST[st][0]+'">'+SPEC_ST[st][1]+'</span></span></div>';
+  return'<div class="trow sprow" data-k="'+k+'"><span class="tn">'+esc(e.name)+''+specInDishes(e)+'</span><span class="tsel">'+sel+'</span><span class="tst"><span class="tstat '+SPEC_ST[st][0]+'">'+SPEC_ST[st][1]+'</span></span></div>';
+}
+/* в каких блюдах сырьё: до трёх — сразу, больше — раскрывающимся списком */
+function specInDishes(e){
+  var l=(e.ds||[]).slice().sort(function(a,b){return a.localeCompare(b,'ru');});
+  if(l.length<=3)return'<small class="c1sub">'+(l.length===1?'в блюде: ':'в блюдах: ')+l.map(esc).join('; ')+'</small>';
+  return'<details class="spin"><summary>в блюдах: '+l.length+'</summary><ul>'+l.map(function(n){return'<li>'+esc(n)+'</li>';}).join('')+'</ul></details>';
 }
 function specDishRow(x){
   var d=S.spec.P.dishes[x.i],st={'new':['ok','Новая карта'],upd:['warn','Обновится (карта без ТТК)'],has:['neutral','Есть ТТК: не меняется']}[x.st];
