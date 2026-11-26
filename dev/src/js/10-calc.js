@@ -251,7 +251,8 @@ function normRecipe(d){
   };
   if(d.pf===true||d.pf===1)o.pf=true;            /* эту ТТК можно добавлять в другие карты как полуфабрикат */
   var sl=normSell(d.sell);if(sl)o.sell=sl;
-  var dz=normDs(d.ds);if(dz)o.ds=dz;            /* отметки деклараций о соответствии по регионам */
+  var dz=normDs(d.ds);if(dz)o.ds=dz;
+  if(d.spec&&typeof d.spec==='object'){o.spec={f:String(d.spec.f||'').slice(0,200),d:String(d.spec.d||'').slice(0,10),sh:String(d.spec.sh||'').slice(0,60),at:num(d.spec.at)};if(d.spec.sk)o.spec.sk=String(d.spec.sk).slice(0,400);}   /* состав из ресурсной спецификации 1С, документа ТТК нет */            /* отметки деклараций о соответствии по регионам */
   var qt=normQty(d.qty);if(qt)o.qty=qt;
   if(Array.isArray(d.aliases)&&d.aliases.length)o.aliases=d.aliases.map(function(a){return String(a).slice(0,120);}).filter(Boolean).slice(0,20);
   if(typeof d.reg==='string'&&d.reg)o.reg=d.reg.slice(0,40);

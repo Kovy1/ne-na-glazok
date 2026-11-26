@@ -148,3 +148,30 @@ td.sups b{font-weight:500}
 .c1cr.c1ch{border-top:0;font-size:12px;color:var(--ink-2);position:sticky;top:0;background:inherit}
 .c1cr .r{text-align:right}
 @media(max-width:640px){.c1cr{grid-template-columns:1fr 1fr;row-gap:2px}.c1cr.c1ch{display:none}}
+/* сверка цен: подозрительные строки и все закупки позиции */
+.c1row.c1warn{background:color-mix(in srgb,var(--bad) 7%,transparent)}
+.c1row .c1p small.c1bad{color:var(--bad);white-space:normal;font-weight:600}
+.c1ln{margin-top:4px;font-size:12px;color:var(--ink-2)}
+.c1ln summary{cursor:pointer}
+.c1l{display:grid;grid-template-columns:18px 72px minmax(0,1fr) 92px 74px 82px;gap:6px;align-items:center;padding:2px 0;font-family:var(--font-num)}
+.c1l .c1lsup{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:var(--font-ui)}
+.c1l .r{text-align:right}
+.c1l.bad{color:var(--bad);font-weight:600}
+.c1l.off{opacity:.5;text-decoration:line-through}
+.c1cr.big span:last-child,.c1cr.big span:first-child{color:var(--bad);font-weight:600}
+@media (max-width:700px){.c1l{grid-template-columns:18px 64px minmax(0,1fr) 80px}.c1l>span:nth-child(5),.c1l>span:nth-child(6){display:none}}
+/* спецификация 1С */
+.sprow{grid-template-columns:minmax(0,1.2fr) minmax(0,1.6fr) minmax(0,.6fr)}
+.spd{grid-template-columns:minmax(0,1fr) auto;cursor:pointer}
+.spd input{margin-right:6px}
+.specstrip .ssl{align-items:flex-start}
+.spnottk{margin-top:14px;text-align:left}
+.sprow .c1sub,.spd .c1sub{display:block;color:var(--ink-2);font-size:12px}
+.spd .warnt{display:block}
+/* «Начать заново» */
+.wipe .btn.danger{color:var(--bad);border-color:color-mix(in srgb,var(--bad) 45%,var(--line))}
+.wipe .btn.danger:not(:disabled){background:var(--bad);color:#fff;border-color:var(--bad)}
+.wipe .chk{display:block;margin:4px 0}
+.wsteps{margin:10px 0;padding-left:20px}
+.wsteps li{margin:6px 0}
+.c1row .c1ln{grid-column:1/-1;max-width:640px}

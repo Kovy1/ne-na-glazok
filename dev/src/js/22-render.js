@@ -54,12 +54,13 @@ function ttkHomeHtml(note){
     +(n?'<button class="tlink" id="ttkSavedLink" data-act="ttkSaved">Открыть сохранённую ('+n+')</button>':'')
     +(n&&!syLimited()?(function(){var k=rdCounts(rdAll());return'<button class="tlink" id="ttkReadyLink" data-act="ttkReady">Готовность карт'+(k.all>k.ready?' · не готовы: '+(k.all-k.ready):' · все готовы')+'</button>';})():'')
     +(cl?'<button class="tlink" id="ttkLoad" data-act="pickTtk" data-edit>Загрузить файл .docx</button>':'')
-    +'</div></section>';
+    +(syLimited()?'':'<button class="tlink" id="specLoad" data-act="pickSpec" data-edit title="Отчёт 1С «Список сырья по Спецификации»: блюда с составом, ТТК можно привязать позже">Загрузить блюда из спецификации 1С</button>')
+    +'</div>'+(syLimited()?'':specHomeHtml())+'</section>';
 }
 /* сохранённые карты: папка и блюдо; выбор сразу открывает карту */
 function ttkSavedHtml(){
   var ids=visIds();
-  function ropt(id){return'<option value="'+esc(id)+'">'+esc(recLabel(S.recipes[id])+(compute(S.recipes[id],S.ings).unk.length?' · КБЖУ не заполнено':''))+'</option>';}
+  function ropt(id){return'<option value="'+esc(id)+'">'+esc(recLabel(S.recipes[id])+(compute(S.recipes[id],S.ings).unk.length?' · КБЖУ не заполнено':'')+(S.recipes[id].spec?' · нет ТТК':''))+'</option>';}
   var idsA=ids.filter(function(id){return!S.recipes[id].arch;}),idsZ=ids.filter(function(id){return S.recipes[id].arch;});
   var cats=menuCats(),fcat=S.calcCat||'';
   if(fcat&&fcat!=='__none__'&&!catById(fcat))fcat=S.calcCat='';
@@ -220,6 +221,7 @@ function renderAll(){
     abDrawChart();
   }else if(S.tab==='calc'||S.tab==='op1'){
     if(S.tab==='op1')v.innerHTML=localNotice()+viewOp1();
+    else if(S.spec&&!S.ttk){v.innerHTML=localNotice()+specHtml();}
     else if(S.ttkHome==='saved'&&!S.ttk){v.innerHTML=localNotice()+ttkSavedHtml();}
     else if(S.ttkHome==='ready'&&!S.ttk&&!syLimited()){v.innerHTML=localNotice()+rdHtml();}
     else if(S.ttkHome&&!S.ttk){v.innerHTML=localNotice()+ttkHomeHtml();}

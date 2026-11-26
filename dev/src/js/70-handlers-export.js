@@ -30,6 +30,7 @@ function p1cClick(act,b){
       if(S.c1)S.c1.items.forEach(function(x,i){if(!x.ing&&!x.skip&&S.c1.parsed.items[i].lines.length){x.add=true;x.how='new';x.remember=false;x.edit=false;}});
       renderAll();return true;
     case'c1Edit':x=c1Item(b);if(x){x.edit=true;x.skip=false;S.focusFk='c1i:'+x.i;renderAll();}return true;
+    case'c1PriceOk':x=c1Item(b);if(x){var rr=c1Row(x);if(rr.pr!==null)x.okPr=rr.pr;renderAll();}return true;
     case'c1DensOk':x=c1Item(b);if(x){x.densAsm=true;renderAll();}return true;
     case'c1DensNo':x=c1Item(b);if(x){x.densAsm=false;renderAll();}return true;
     case'c1Take':x=c1Item(b);if(x&&x.guess){x.skip=false;x.ing=x.guess;x.how='manual';x.remember=true;x.edit=false;renderAll();}return true;
@@ -68,6 +69,7 @@ function p1cChange(act,t){
     case'c1Pack':x=c1Item(t);if(x){var p=parseNum(t.value);x.packUser=(p.ok&&p.v>0)?p.v:0;S.focusFk='c1p:'+x.i;renderAll();}return true;
     case'c1Dens':x=c1Item(t);if(x){var dp=parseNum(t.value);x.densUser=(dp.ok&&dp.v>=0.2&&dp.v<=3)?dp.v:0;if(x.densUser>0)x.densAsm=false;S.focusFk='c1d:'+x.i;renderAll();}return true;
     case'c1Rem':x=c1Item(t);if(x)x.remember=t.checked;return true;
+    case'c1Drop':x=c1Item(t);if(x){var k=Number(t.getAttribute('data-k'));x.drop=x.drop||{};if(t.checked)delete x.drop[k];else x.drop[k]=1;if(!Object.keys(x.drop).length)delete x.drop;renderAll();}return true;
     case'pSort':S.psort=t.value;S.focusFk='psort';renderAll();return true;
     case'pCur':S.pan=S.pan||{};S.pan.a=t.value;S.pan.b=null;S.focusFk='pcur';renderAll();return true;
     case'pObjF':S.pobj=t.value;S.pan=S.pan||{};S.pan.a=null;S.pan.b=null;S.focusFk='pobjf';renderAll();return true;

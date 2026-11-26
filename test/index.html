@@ -846,6 +846,33 @@ td.sups b{font-weight:500}
 .c1cr.c1ch{border-top:0;font-size:12px;color:var(--ink-2);position:sticky;top:0;background:inherit}
 .c1cr .r{text-align:right}
 @media(max-width:640px){.c1cr{grid-template-columns:1fr 1fr;row-gap:2px}.c1cr.c1ch{display:none}}
+/* сверка цен: подозрительные строки и все закупки позиции */
+.c1row.c1warn{background:color-mix(in srgb,var(--bad) 7%,transparent)}
+.c1row .c1p small.c1bad{color:var(--bad);white-space:normal;font-weight:600}
+.c1ln{margin-top:4px;font-size:12px;color:var(--ink-2)}
+.c1ln summary{cursor:pointer}
+.c1l{display:grid;grid-template-columns:18px 72px minmax(0,1fr) 92px 74px 82px;gap:6px;align-items:center;padding:2px 0;font-family:var(--font-num)}
+.c1l .c1lsup{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:var(--font-ui)}
+.c1l .r{text-align:right}
+.c1l.bad{color:var(--bad);font-weight:600}
+.c1l.off{opacity:.5;text-decoration:line-through}
+.c1cr.big span:last-child,.c1cr.big span:first-child{color:var(--bad);font-weight:600}
+@media (max-width:700px){.c1l{grid-template-columns:18px 64px minmax(0,1fr) 80px}.c1l>span:nth-child(5),.c1l>span:nth-child(6){display:none}}
+/* спецификация 1С */
+.sprow{grid-template-columns:minmax(0,1.2fr) minmax(0,1.6fr) minmax(0,.6fr)}
+.spd{grid-template-columns:minmax(0,1fr) auto;cursor:pointer}
+.spd input{margin-right:6px}
+.specstrip .ssl{align-items:flex-start}
+.spnottk{margin-top:14px;text-align:left}
+.sprow .c1sub,.spd .c1sub{display:block;color:var(--ink-2);font-size:12px}
+.spd .warnt{display:block}
+/* «Начать заново» */
+.wipe .btn.danger{color:var(--bad);border-color:color-mix(in srgb,var(--bad) 45%,var(--line))}
+.wipe .btn.danger:not(:disabled){background:var(--bad);color:#fff;border-color:var(--bad)}
+.wipe .chk{display:block;margin:4px 0}
+.wsteps{margin:10px 0;padding-left:20px}
+.wsteps li{margin:6px 0}
+.c1row .c1ln{grid-column:1/-1;max-width:640px}
 /*SKIN-START*/
 :root{--hero-a:#0b5a53; --hero-b:#118074; --r:14px;
   --sh1:0 1px 2px rgba(16,40,50,.05),0 10px 28px -14px rgba(16,40,50,.20);
@@ -1776,6 +1803,7 @@ html.testmode .tabs{top:82px}
 <input type="file" id="priceFile" accept=".odt,.csv,.tsv,.txt,application/vnd.oasis.opendocument.text,text/csv,text/plain" hidden>
 <input type="file" id="salesFile" accept=".csv,.tsv,.txt,text/csv,text/plain" hidden>
 <input type="file" id="revFile" accept=".xlsx,.xlsm,.xls,application/vnd.ms-excel,.ods,.csv,.tsv,.txt,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv,text/plain" hidden>
+<input type="file" id="specFile" accept=".xlsx,.xlsm,.xls,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden>
 <input type="file" id="ttkFile" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" hidden>
 <input type="file" id="pgFile" accept=".html,.htm,text/html" hidden>
 <input type="file" id="syUpFile" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" multiple hidden>
@@ -1795,7 +1823,7 @@ try{
 }catch(e){fail=1;}
 window.__realLS=real;window.KBZHU_TEST=1;
 if(fail){window.stop();document.documentElement.innerHTML='<body style="font:16px sans-serif;padding:24px"><h2>Тестовая версия остановлена</h2><p>Браузер не дал отделить тестовые данные от рабочих, поэтому ничего не запущено. Рабочие данные не тронуты.</p></body>';throw new Error('test-isolation');}
-})();window.KBZHU_TEST_PROD="";window.KBZHU_SEED={"ings":{},"recipes":{}};window.KBZHU_BUILD=202611230802;</script>
+})();window.KBZHU_TEST_PROD="";window.KBZHU_SEED={"ings":{},"recipes":{}};window.KBZHU_BUILD=202611261320;</script>
 <script>
 (function(){
 'use strict';
@@ -2053,7 +2081,8 @@ function normRecipe(d){
   };
   if(d.pf===true||d.pf===1)o.pf=true;            /* эту ТТК можно добавлять в другие карты как полуфабрикат */
   var sl=normSell(d.sell);if(sl)o.sell=sl;
-  var dz=normDs(d.ds);if(dz)o.ds=dz;            /* отметки деклараций о соответствии по регионам */
+  var dz=normDs(d.ds);if(dz)o.ds=dz;
+  if(d.spec&&typeof d.spec==='object'){o.spec={f:String(d.spec.f||'').slice(0,200),d:String(d.spec.d||'').slice(0,10),sh:String(d.spec.sh||'').slice(0,60),at:num(d.spec.at)};if(d.spec.sk)o.spec.sk=String(d.spec.sk).slice(0,400);}   /* состав из ресурсной спецификации 1С, документа ТТК нет */            /* отметки деклараций о соответствии по регионам */
   var qt=normQty(d.qty);if(qt)o.qty=qt;
   if(Array.isArray(d.aliases)&&d.aliases.length)o.aliases=d.aliases.map(function(a){return String(a).slice(0,120);}).filter(Boolean).slice(0,20);
   if(typeof d.reg==='string'&&d.reg)o.reg=d.reg.slice(0,40);
@@ -3577,11 +3606,23 @@ function c1Conv(item,packG,dens){
   if(item.unit==='pc')f=packG>0?packG/1000:0;
   if(!(f>0))return{ok:false,lines:[],skipped:0};
   var ls=[],sk=0;
-  item.lines.forEach(function(l){
+  item.lines.forEach(function(l,k){
     if(!(l.p>0)||!(l.q>0)){sk++;return;}
-    ls.push({d:l.d,wh:l.wh||'',sup:l.sup,pk:Math.round(l.p/f*10000)/10000,kg:Math.round(l.q*f*10000)/10000,p:l.p,q:l.q});
+    ls.push({d:l.d,wh:l.wh||'',sup:l.sup,pk:Math.round(l.p/f*10000)/10000,kg:Math.round(l.q*f*10000)/10000,p:l.p,q:l.q,ix:k});
   });
   return{ok:ls.length>0,lines:ls,skipped:sk,assumed:asm};
+}
+/* проверка цены на ошибку прихода (лук за 1000 ₽): скачок к цене в базе и строки, выбивающиеся из закупок той же позиции */
+var C1_JUMP_UP=1.5,C1_JUMP_DN=0.6,C1_SPREAD=1.8;
+function c1Sanity(lines,pr,old){
+  var w=[],out={},pks=lines.map(function(l){return l.pk;}).sort(function(a,b){return a-b;}),med=0;
+  if(pks.length)med=pks.length%2?pks[(pks.length-1)/2]:(pks[pks.length/2-1]+pks[pks.length/2])/2;
+  if(lines.length>=2&&med>0)lines.forEach(function(l){if(l.pk>=med*C1_SPREAD||l.pk<=med/C1_SPREAD)out[l.ix]=1;});
+  var nOut=Object.keys(out).length;
+  if(lines.length===2&&nOut)out={};   /* из двух закупок не понять, какая ошибочная: отмечаем разброс без выделения строки */
+  if(lines.length>=2&&pks[0]>0&&pks[pks.length-1]/pks[0]>=C1_SPREAD)w.push('закупки по разной цене: от '+money(pks[0])+' до '+money(pks[pks.length-1])+' ₽/кг');
+  if(old>0&&pr>0&&(pr>=old*C1_JUMP_UP||pr<=old*C1_JUMP_DN))w.push((pr>old?'выше':'ниже')+' цены в базе в '+fmt(pr>old?pr/old:old/pr,1)+' раза');
+  return{w:w,out:out,med:med};
 }
 /* цена за кг по правилу: avg — средневзвешенная по количеству, last — последняя закупка периода, min — самая низкая */
 function c1Pick(lines,rule){
@@ -4102,7 +4143,7 @@ function xlsDateFmt(id,fmts){
   f=f.replace(/"[^"]*"/g,'').replace(/\[[^\]]*\]/g,'').replace(/\\./g,'');
   return/[dmyhs]/i.test(f)&&!/[0#]/.test(f);
 }
-function xlsBiff(wb){
+function xlsBiff(wb,all){
   var recs=[],o=0,t,l;
   while(o+4<=wb.length){t=xlsU16(wb,o);l=xlsU16(wb,o+2);recs.push({t:t,o:o,d:wb.subarray(o+4,o+4+l)});o+=4+l;}
   if(!recs.length||recs[0].t!==0x0809)throw new Error('Это не таблица Excel');
@@ -4128,13 +4169,16 @@ function xlsBiff(wb){
     }
   }
   if(!sheets.length)throw new Error('В книге нет листов');
-  var sh=sheets.filter(function(s){return!s.hid;})[0]||sheets[0],start=-1;
+  function isDate(xf){var f=xfs[xf];return f!=null&&xlsDateFmt(f,fmts);}
+  function num(xf,v){return isDate(xf)&&v>0&&v<2958466?xlSerial(v):xlNumStr(v);}
+  if(all)return sheets.filter(function(s){return!s.hid;}).map(function(s){return{name:s.name,rows:one(s)};});
+  return one(sheets.filter(function(s){return!s.hid;})[0]||sheets[0]);
+  function one(sh){
+  var start=-1,i,r,dat;
   for(i=0;i<recs.length;i++)if(recs[i].o===sh.pos){start=i;break;}
   if(start<0)throw new Error('Не найден лист «'+sh.name+'»');
   var rows=[],lastF=null;
-  function isDate(xf){var f=xfs[xf];return f!=null&&xlsDateFmt(f,fmts);}
   function put(row,col,v){(rows[row]||(rows[row]=[]))[col]=v;}
-  function num(xf,v){return isDate(xf)&&v>0&&v<2958466?xlSerial(v):xlNumStr(v);}
   for(i=start+1;i<recs.length;i++){
     r=recs[i];dat=r.d;
     if(r.t===0x000A)break;
@@ -4160,6 +4204,7 @@ function xlsBiff(wb){
     if(a.some(function(x){return x!=='';}))out.push(a);
   });
   return out;
+  }
 }
 /* «.xls», который на деле HTML-таблица или XML 2003 */
 function xlsText(u8){
@@ -4198,26 +4243,101 @@ function xlsMarkupRows(t){
   });
   return rows;
 }
-function xlsRows(buf){
+function xlsRows(buf,all){
   var u8=new Uint8Array(buf),wb=xlsCfb(u8,['Workbook','Book']);
-  if(wb)return xlsBiff(wb);
+  if(wb)return xlsBiff(wb,all);
   if(u8.length>4&&u8[0]===0x50&&u8[1]===0x4B)throw new Error('Это файл .xlsx с расширением .xls: переименуйте его в .xlsx');
   var head=xlsText(u8.subarray(0,Math.min(u8.length,4096)));
-  if(/^\s*(﻿)?\s*</.test(head))return xlsMarkupRows(xlsText(u8));
+  if(/^\s*(﻿)?\s*</.test(head)){var mr=xlsMarkupRows(xlsText(u8));return all?[{name:'',rows:mr}]:mr;}
   throw new Error('Не удалось прочитать .xls');
 }
 /* общий вход для всех загрузок: ok(rows) или fail(сообщение) */
-function xlsReadFile(file,ok,fail){
+function xlsReadFile(file,ok,fail,all){
   var fr=new FileReader();
   fr.onerror=function(){fail('Не удалось открыть файл');};
   fr.onload=function(){
     var rows;
-    try{rows=xlsRows(fr.result);}catch(e){fail((e&&e.message?e.message+'. ':'')+'Можно пересохранить файл как .xlsx (Файл → Сохранить как → Книга Excel).');return;}
+    try{rows=xlsRows(fr.result,all);}catch(e){fail((e&&e.message?e.message+'. ':'')+'Можно пересохранить файл как .xlsx (Файл → Сохранить как → Книга Excel).');return;}
     ok(rows);
   };
   fr.readAsArrayBuffer(file);
 }
 try{window.kbzhuXls={rows:xlsRows};}catch(e){}      /* для проверок */
+/* ---------- ресурсная спецификация 1С («Список сырья по Спецификации»): блюдо и сырьё на 1 шт ----------
+   Блоки повторяются: шапка «Выходные изделия» → строка блюда (выход в кг) → «Сырьё:» → шапка «Наименование товара» → строки сырья → итог в кг */
+var SPEC_TOO_MUCH=2.5;
+function specDate(s){var m=/(\d{1,2})\.(\d{1,2})\.(\d{4})/.exec(String(s||''));return m?m[3]+'-'+('0'+m[2]).slice(-2)+'-'+('0'+m[1]).slice(-2):'';}
+function specCols(cells){
+  var c={n:-1,u:-1,q:-1,kg:-1};
+  cells.forEach(function(x,i){
+    x=String(x||'').trim().toLowerCase().replace(/ё/g,'е');
+    if(c.n<0&&/^(выходные изделия|наименование товара|наименование|номенклатура)/.test(x))c.n=i;
+    else if(c.u<0&&/^ед\.?\s*изм/.test(x))c.u=i;
+    else if(c.kg<0&&/количество\s+в\s+кг/.test(x))c.kg=i;
+    else if(c.q<0&&/^количество$/.test(x))c.q=i;
+  });
+  return c;
+}
+function specClean(s){return String(s||'').replace(/(\s+[-–])+\s*$/,'').replace(/\s+/g,' ').trim();}
+/* «СМ Борщ с курицей 250/10 ТТК №381» → номер ТТК и название без номера */
+function specDishName(raw){
+  var s=String(raw||'').replace(/\s+/g,' ').trim(),m=/(?:^|\s)\(?\s*т?тк\s*№?\s*(\d+)\s*\)?/i.exec(s),num='';
+  if(m){num=m[1];s=(s.slice(0,m.index)+' '+s.slice(m.index+m[0].length)).replace(/\s+/g,' ').trim();}
+  return{num:num,dish:specClean(s)};
+}
+/* sheets: [{name, rows}] — строки листов как в выгрузке (ячейки по колонкам) */
+function specParse(sheets){
+  var out={dishes:[],from:'',d:'',issues:[],raw:0};
+  function issue(t){if(out.issues.length<30)out.issues.push(t);}
+  sheets.forEach(function(sh){
+    var mode='',cols=null,cur=null,from='';
+    (sh.rows||[]).forEach(function(raw,ri){
+      var cells=(raw||[]).map(function(x){return x==null?'':String(x).trim();}),f=cells.filter(function(x){return x!=='';});
+      if(!f.length)return;
+      var c0=f[0].toLowerCase().replace(/ё/g,'е');
+      if(/^список сырья/.test(c0)){mode='';return;}
+      if(/^на дату/.test(c0)){if(!out.d)out.d=specDate(f.slice(1).join(' '));return;}
+      if(/^действует с/.test(c0)){from=specDate(f.slice(1).join(' '));if(from&&(!out.from||from>out.from))out.from=from;return;}
+      if(/^сырье:?$/.test(c0))return;
+      if(cells.some(function(x){return/^выходные изделия/i.test(x);})){mode='dish';cols=specCols(cells);return;}
+      if(cells.some(function(x){return/^наименование товара/i.test(x);})){mode='raw';cols=specCols(cells);return;}
+      if(!cols||cols.n<0)return;
+      var nm=cells[cols.n]||'';
+      if(!nm||c1Num(nm)!==null)return;                    /* итог блока: только количество в кг */
+      var u=String(cells[cols.u]||'').toLowerCase(),q=cols.q>-1?c1Num(cells[cols.q]):null,kg=cols.kg>-1?c1Num(cells[cols.kg]):null;
+      if(mode==='dish'){
+        var dn=specDishName(nm);
+        cur={raw:nm,num:dn.num,dish:dn.dish,qty:q>0?q:1,kg:kg,sheet:sh.name||'',from:from,rows:[],sk:[]};
+        out.dishes.push(cur);
+        if(!(kg>0))issue('«'+nm+'»: не указан выход в кг');
+        return;
+      }
+      if(mode==='raw'){
+        if(!cur){issue('Строка '+(ri+1)+' листа «'+(sh.name||'')+'»: сырьё без блюда');return;}
+        var lit=false,g=kg>0?kg*1000:(/^кг/.test(u)&&q>0?q*1000:(/^г/.test(u)&&q>0?q:null));
+        if(g===null&&q>0&&/^(л|дм)/.test(u)){g=q*1000;lit=true;}       /* литры без массы: 1 л ≈ 1 кг, отмечается */
+        else if(g===null&&q>0&&/^мл/.test(u)){g=q;lit=true;}
+        if(g===null){cur.sk.push({name:specClean(nm),q:q,u:u||'шт'});return;}     /* штуки без массы (упаковка, лаваш поштучно): в состав не переносятся, список виден */
+        g=g/(cur.qty||1);
+        var k=normKey(nm),ex=cur.rows.filter(function(x){return x.k===k;})[0];
+        if(ex)ex.g+=g;else cur.rows.push({k:k,raw:nm,name:specClean(nm),g:g,u:u,q:q,lit:lit});
+        out.raw++;
+      }
+    });
+  });
+  /* общая приставка объекта («СМ ») у большинства блюд убирается из названия */
+  var pre={},n=out.dishes.length;
+  out.dishes.forEach(function(d){var m=/^([А-ЯЁA-Z]{2,3})\s+(?=[А-ЯЁA-Z«"])/.exec(d.dish);if(m)pre[m[1]]=(pre[m[1]]||0)+1;});
+  Object.keys(pre).forEach(function(p){if(n&&pre[p]/n>=0.6)out.dishes.forEach(function(d){if(d.dish.indexOf(p+' ')===0)d.dish=d.dish.slice(p.length+1).trim();});});
+  out.dishes.forEach(function(d){
+    d.out=d.kg>0?Math.round(d.kg*1000/(d.qty||1)*10)/10:null;
+    d.rows.forEach(function(x){x.g=Math.round(x.g*1000)/1000;});
+    d.name=d.dish+(d.num?' (ТТК №'+d.num+')':'');
+    d.sum=Math.round(d.rows.reduce(function(a,x){return a+x.g;},0)*10)/10;
+    if(d.out>0&&d.sum>d.out*SPEC_TOO_MUCH)d.bad='сырья '+Math.round(d.sum)+' г на выход '+Math.round(d.out)+' г';   /* ошибка в спецификации (20 кг сгущёнки на порцию) */
+  });
+  return out;
+}
 /*PF-START*/
 /* ---- файлы цен региона на Диске: «Цены продажи» (открытый файл) и «Себестоимость и закупка» (закрытый) ----
    Чистые функции: состояние страницы им передаётся параметрами. Заголовки PF_H читает скрипт (Code.gs, PF_HEAD),
@@ -5156,12 +5276,13 @@ function ttkHomeHtml(note){
     +(n?'<button class="tlink" id="ttkSavedLink" data-act="ttkSaved">Открыть сохранённую ('+n+')</button>':'')
     +(n&&!syLimited()?(function(){var k=rdCounts(rdAll());return'<button class="tlink" id="ttkReadyLink" data-act="ttkReady">Готовность карт'+(k.all>k.ready?' · не готовы: '+(k.all-k.ready):' · все готовы')+'</button>';})():'')
     +(cl?'<button class="tlink" id="ttkLoad" data-act="pickTtk" data-edit>Загрузить файл .docx</button>':'')
-    +'</div></section>';
+    +(syLimited()?'':'<button class="tlink" id="specLoad" data-act="pickSpec" data-edit title="Отчёт 1С «Список сырья по Спецификации»: блюда с составом, ТТК можно привязать позже">Загрузить блюда из спецификации 1С</button>')
+    +'</div>'+(syLimited()?'':specHomeHtml())+'</section>';
 }
 /* сохранённые карты: папка и блюдо; выбор сразу открывает карту */
 function ttkSavedHtml(){
   var ids=visIds();
-  function ropt(id){return'<option value="'+esc(id)+'">'+esc(recLabel(S.recipes[id])+(compute(S.recipes[id],S.ings).unk.length?' · КБЖУ не заполнено':''))+'</option>';}
+  function ropt(id){return'<option value="'+esc(id)+'">'+esc(recLabel(S.recipes[id])+(compute(S.recipes[id],S.ings).unk.length?' · КБЖУ не заполнено':'')+(S.recipes[id].spec?' · нет ТТК':''))+'</option>';}
   var idsA=ids.filter(function(id){return!S.recipes[id].arch;}),idsZ=ids.filter(function(id){return S.recipes[id].arch;});
   var cats=menuCats(),fcat=S.calcCat||'';
   if(fcat&&fcat!=='__none__'&&!catById(fcat))fcat=S.calcCat='';
@@ -5322,6 +5443,7 @@ function renderAll(){
     abDrawChart();
   }else if(S.tab==='calc'||S.tab==='op1'){
     if(S.tab==='op1')v.innerHTML=localNotice()+viewOp1();
+    else if(S.spec&&!S.ttk){v.innerHTML=localNotice()+specHtml();}
     else if(S.ttkHome==='saved'&&!S.ttk){v.innerHTML=localNotice()+ttkSavedHtml();}
     else if(S.ttkHome==='ready'&&!S.ttk&&!syLimited()){v.innerHTML=localNotice()+rdHtml();}
     else if(S.ttkHome&&!S.ttk){v.innerHTML=localNotice()+ttkHomeHtml();}
@@ -11991,7 +12113,7 @@ function cabParts(){
     tasks:syInboxHtml()+syMineHtml()+syReworkHtml()+syPullHtml()+syFilesHintHtml(),
     review:S.sy.cfg.role==='viewer'?'':syPendHtml()+syLogHtml(),
     admin:syUsrHtml(),
-    sys:syRelHtml()+syPgHtml()+syAiHtml()+sySvcHtml(),
+    sys:syRelHtml()+syPgHtml()+syAiHtml()+sySvcHtml()+wipeHtml(),
     prof:syConnHtml()
   };
 }
@@ -12002,7 +12124,7 @@ function cabCount(k){
   return n;
 }
 function viewSync(){
-  if(!syLinked())return syConnHtml();
+  if(!syLinked())return syConnHtml()+wipeHtml();
   var parts=cabParts(),segs=CAB_SEGS.filter(function(x){return parts[x[0]];}),cur=S.cabSeg;
   if(!segs.some(function(x){return x[0]===cur;}))cur=(syAdmin()&&S.sy.info&&S.sy.info.pending&&parts.review)?'review':'tasks';
   if(!segs.some(function(x){return x[0]===cur;}))cur=segs.length?segs[0][0]:'prof';
@@ -12792,6 +12914,81 @@ function drChange(act,t){
   }
   return false;
 }
+/* ---------- «Начать заново»: удалить ТТК, цены с историей и отчёты фудкоста, чтобы загрузить всё заново. База сырья (КБЖУ, потери, названия) остаётся ---------- */
+var WIPE_WORD='ОЧИСТИТЬ';
+function wpS(){return S.wipe||(S.wipe={open:false,rec:true,price:true,fc:true,saved:false,word:'',busy:false});}
+/* очищать может технолог; без общей базы — владелец этого браузера */
+function wpOn(){return S.mode==='local'&&!S.readOnly&&!guestOn()&&(!syLinked()||syAdmin());}
+function wpCounts(){
+  var n={rec:Object.keys(S.recipes).length,price:0,ph:Object.keys(S.cfg).filter(isPhId).length,fc:S.fc&&S.fc.batches?Object.keys(S.fc.batches).length:0};
+  Object.keys(S.ings).forEach(function(id){var g=S.ings[id];if(g.price!=null||g.px)n.price++;});
+  return n;
+}
+function wipeHtml(){
+  if(!wpOn())return'';
+  var w=wpS(),n=wpCounts(),shared=syLinked();
+  if(!w.open)return'<section class="card wipe" id="wipeCard"><h3 class="h3">Начать заново</h3><p class="hint">Удалить ТТК, цены с историей и отчёты фудкоста, чтобы загрузить всё заново. База сырья остаётся.</p><div class="btns"><button class="btn" data-act="wpOpen" data-edit>Очистить данные…</button></div></section>';
+  if(S.fc&&!S.fc.ld&&!S.fc.loading)fcLoad().then(function(){if(S.wipe&&S.wipe.open)wpPaint();});
+  var ok=(w.rec||w.price||w.fc)&&w.saved&&w.word.trim().toUpperCase()===WIPE_WORD&&!w.busy;
+  function ck(k,t){return'<label class="chk"><input type="checkbox" data-act="wpSel" data-edit data-k="'+k+'"'+(w[k]?' checked':'')+'> '+t+'</label>';}
+  return'<section class="card wipe" id="wipeCard"><h3 class="h3">Начать заново</h3>'
+    +'<p class="w-bad" style="margin:0 0 8px">'+(shared?'Данные удалятся из общей базы у всех пользователей, а не только у вас. Вернуть их можно только из копии, которую вы скачаете ниже.':'Данные удалятся из этого браузера. Вернуть их можно только из копии, которую вы скачаете ниже.')+'</p>'
+    +ck('rec','ТТК и блюда меню: '+n.rec+' (вместе с ценами продажи и отметками деклараций)')
+    +ck('price','Закупочные цены сырья: '+n.price+' поз., история цен: '+n.ph+' загр.')
+    +ck('fc','Отчёты фудкоста: '+(S.fc&&S.fc.ld?n.fc+' загр.':'загружаю…')+' (планы мероприятий остаются)')
+    +'<p class="hint">Остаётся: база сырья с КБЖУ, нормами потерь и запомненными названиями из 1С, папки меню, пользователи и настройки.</p>'
+    +'<ol class="wsteps"><li><button class="btn'+(w.saved?'':' primary')+'" data-act="wpSave">Скачать копию данных (.json)</button>'+(w.saved?' <span class="tstat ok">копия скачана</span>':'')+'</li>'
+    +'<li><label class="field w280"><span class="lbl">Введите слово '+WIPE_WORD+'</span><input data-act="wpWord" data-edit data-fk="wpword" autocomplete="off" value="'+esc(w.word)+'"'+(w.saved?'':' disabled')+'></label></li></ol>'
+    +'<div class="btns"><button class="btn danger" data-act="wpGo" data-edit'+(ok?'':' disabled')+'>'+(w.busy?'Удаляю…':'Удалить выбранное')+'</button><button class="btn" data-act="wpClose">Отмена</button></div></section>';
+}
+function wpPaint(){var el=$('#wipeCard');if(el)el.outerHTML=wipeHtml();}
+function wpBackup(){
+  var d={kind:'ne-na-glazok-backup',at:new Date().toISOString(),ings:S.ings,recipes:S.recipes,cfg:S.cfg};
+  if(S.fc&&S.fc.ld)d.fc={batches:S.fc.batches,ops:S.fc.ops};
+  exportFile(JSON.stringify(d),'Не на глазок — копия перед очисткой '+new Date().toISOString().slice(0,10)+'.json');
+}
+function wpRun(){
+  var w=wpS(),n={rec:0,price:0,ph:0,fc:0},jobs=[];
+  w.busy=true;wpPaint();
+  if(w.rec)Object.keys(S.recipes).forEach(function(id){syForgetRec(id);removeDoc('recipes',id);n.rec++;});
+  if(w.rec){setActive(null);S.spec=null;S.ttk=null;}
+  if(w.price){
+    Object.keys(S.ings).forEach(function(id){
+      var g=S.ings[id],had=g.price!=null||!!g.px;
+      ['price','priceUnit','packG','priceSrc','px'].forEach(function(k){delete g[k];});
+      if(had){queueSave('ingredients',id);n.price++;}
+    });
+    Object.keys(S.cfg).filter(isPhId).forEach(function(id){jobs.push(function(){return phDelete(id).then(function(ok){if(ok)n.ph++;});});});
+    S.c1=null;
+  }
+  if(w.fc)jobs.push(function(){return fcLoad().then(function(){Object.keys(S.fc.batches).forEach(function(id){fcRemoveBatch(id);n.fc++;});});});
+  return jobs.reduce(function(p,f){return p.then(f);},Promise.resolve()).then(function(){
+    S.wipe=null;renderAll();
+    flash('Удалено: ТТК '+n.rec+', цен сырья '+n.price+', записей истории цен '+n.ph+', загрузок фудкоста '+n.fc+(syLinked()?'. Изменения уйдут в общую базу при синхронизации':''));
+    return n;
+  });
+}
+function wpClick(act,b){
+  var w;
+  switch(act){
+    case'wpOpen':w=wpS();w.open=true;wpPaint();return true;
+    case'wpClose':S.wipe=null;wpPaint();return true;
+    case'wpSave':wpBackup();wpS().saved=true;wpPaint();return true;
+    case'wpGo':w=wpS();if(w.busy||!w.saved||w.word.trim().toUpperCase()!==WIPE_WORD)return true;wpRun();return true;
+  }
+  return false;
+}
+function wpChange(act,t){
+  if(act==='wpSel'){wpS()[t.getAttribute('data-k')]=t.checked;wpPaint();return true;}
+  return false;
+}
+function wpInput(act,t){
+  if(act!=='wpWord')return false;
+  var w=wpS();w.word=t.value;
+  var b=$('#wipeCard [data-act="wpGo"]');if(b)b.disabled=!((w.rec||w.price||w.fc)&&w.saved&&w.word.trim().toUpperCase()===WIPE_WORD&&!w.busy);
+  return true;
+}
+try{window.kbzhuWipe={run:wpRun,S:S,counts:wpCounts};}catch(e){}      /* для проверок */
 /* ---------- ревизии (версия 26) ----------
    Ревизия хранится в общей таблице; страница показывает список и редактор. Строка: сырьё, единица (кг, г, л, мл, шт, уп), учётный остаток,
    факт, учётная цена. Пустой факт — «не посчитано», а не ноль: такие строки не входят в итоги и не дают завершить ревизию. Неизвестная
@@ -13614,6 +13811,8 @@ function pickCommit(inp,v,q){
     else if(v&&S.ings[v])fcSetMap(fe.kind,fe.nm,fe.code,v);
     else{pickClose(inp,true);return;}
     S.fc.itemEdit='';renderAll();
+  }else if(kind==='specIng'){
+    if(v===old||!specPick(inp,v))pickClose(inp,true);
   }else if(kind==='c1Ing'){
     var cx=c1Item(inp);
     if(!cx){pickClose(inp,true);return;}
@@ -13676,7 +13875,7 @@ function viewCalc(){
       +'<hr><button role="menuitem" class="danger" data-act="delRecipe" data-edit>Удалить</button>'
     +'</div></span>'
     +'</div>'
-    +'<div id="syStrip">'+syStripHtml(r)+'</div>'
+    +'<div id="syStrip">'+syStripHtml(r)+'</div>'+specStripHtml(r)
     +'<nav class="jump" aria-label="Разделы страницы"><button class="btn mini" data-act="jump" data-to="secDish">Название и выход</button><button class="btn mini" data-act="jump" data-to="secDoc">Реквизиты и рецептура карты</button><button class="btn mini" data-act="jump" data-to="secTexts">Тексты разделов</button><button class="btn mini" data-act="jump" data-to="secDl">Скачать</button><button class="btn mini" data-act="jump" data-to="secKbzhu">КБЖУ и сверка</button><button class="btn mini" data-act="jump" data-to="secCalc">Таблица расчёта КБЖУ</button></nav>'
     +'<div id="secDish"><section class="card">'
       +'<div class="head2" style="margin-bottom:0">'
@@ -14387,7 +14586,8 @@ function c1Row(x){
   }
   var ig0=x.ing?S.ings[x.ing]:null,dn=x.densUser>0?x.densUser:((ig0&&ig0.dens>0)?ig0.dens:0);
   var cv=c1Conv(it,pk,dn);
-  if(!cv.ok){r.st='empty';return r;}
+  if(cv.ok&&x.drop){cv.lines=cv.lines.filter(function(l){return!x.drop[l.ix];});cv.ok=cv.lines.length>0;r.nDrop=Object.keys(x.drop).length;}
+  if(!cv.ok){r.st=r.nDrop?'skip':'empty';return r;}
   r.dens=dn;r.densAssumed=!!cv.assumed;
   /* объём без плотности: 1 л = 1 кг не принимается молча; строка ждёт ввода плотности или явного допущения пользователя */
   if(cv.assumed&&!x.densAsm){r.st='dens';return r;}
@@ -14396,6 +14596,10 @@ function c1Row(x){
   r.old=isNew?null:pricePerKg(S.ings[x.ing],curRegion());
   r.isNew=isNew;
   r.st=(isNew||x.sure||x.how==='manual')?'ok':'check';
+  r.san=c1Sanity(cv.lines,r.pr,r.old);
+  /* подозрительная цена не загружается, пока человек не подтвердит именно это значение или не исключит ошибочную строку */
+  r.priceOk=x.okPr!=null&&r.pr!==null&&Math.abs(x.okPr-r.pr)<0.01;
+  if(r.st==='ok'&&r.san.w.length&&!r.priceOk)r.st='price';
   if(x.done&&r.st==='ok')r.st='done';
   return r;
 }
@@ -14410,7 +14614,7 @@ function c1Start(parsed,fileName){
   var rule=lsGet('kbzhu:c1rule');
   S.c1={file:fileName,parsed:parsed,items:items,rule:PH_RULES[rule]?rule:'avg',open:null,objs:c1Objs(parsed),dropLegacy:true};
   var cnt={};S.c1.items.forEach(function(x){var st=c1Row(x).st;cnt[st]=(cnt[st]||0)+1;});
-  S.c1.open={dens:true,mass:true,check:true,none:(cnt.none||0)<=12,'new':true,ok:false,empty:false,skip:false};
+  S.c1.open={price:true,dens:true,mass:true,check:true,none:(cnt.none||0)<=12,'new':true,ok:false,empty:false,skip:false};
   S.bsub='price';lsSet('kbzhu:bsub','price');S.pview='tbl';lsSet('kbzhu:pview','tbl');S.tab='base';S.c1Paste=false;
   renderAll();
   var c=$('#c1Card');if(c&&c.scrollIntoView)c.scrollIntoView({block:'start'});
@@ -14475,7 +14679,7 @@ function pcSign(p){return p>0?'▲':(p<0?'▼':'=');}
 function pcCls(p){return p>=0.5?'up':(p<=-0.5?'dn':'eq');}
 function pcTxt(p){return p===null||p===undefined||!isFinite(p)?'':pcSign(Math.abs(p)<0.05?0:p)+' '+signed(p,1)+' %';}
 function c1StatHtml(st,x){
-  var m={ok:(x.add&&!x.ing)?['warn','Новое сырьё']:['ok',x.how==='alias'?'Запомнено':'Совпало'],check:['warn','Подтвердите'],done:['ok','Загружено'],mass:['warn','Нужна масса'],dens:['warn','Нужна плотность'],none:['bad','Не найдено'],skip:['neutral','Не вносить'],empty:['neutral','Нет закупок']}[st];
+  var m={ok:(x.add&&!x.ing)?['warn','Новое сырьё']:['ok',x.how==='alias'?'Запомнено':'Совпало'],check:['warn','Подтвердите'],price:['bad','Проверьте цену'],done:['ok','Загружено'],mass:['warn','Нужна масса'],dens:['warn','Нужна плотность'],none:['bad','Не найдено'],skip:['neutral','Не вносить'],empty:['neutral','Нет закупок']}[st];
   return'<span class="tstat '+m[0]+'">'+m[1]+'</span>';
 }
 /* несколько позиций 1С выбрали одно и то же сырьё: цена станет общей, а ошибка автоподбора незаметной */
@@ -14499,6 +14703,7 @@ function c1RowHtml(i,r,optsHtml){
   }else if(it.lines.length){
     price='<small>'+money(it.lines[0].p)+' ₽/'+C1_UNIT_NAME[it.unit]+'</small>';
   }
+  if(r.san&&r.san.w.length&&r.st!=='done')price+='<small class="c1bad">⚠ '+esc(r.san.w.join('; '))+'</small>';
   var sel,cur=x.ing||(x.add?'__new__':'');
   /* поле с поиском по базе (набираете часть названия) и отдельные кнопки: «Новое сырьё» и «Не вносить» */
   function btns(skipBtn,newBtn){
@@ -14528,15 +14733,32 @@ function c1RowHtml(i,r,optsHtml){
     sel+='<label class="c1mass">Масса штуки, г <input class="num" inputmode="decimal" autocomplete="off" data-act="c1Pack" data-edit data-fk="c1p:'+i+'" value="'+toInput(r.pack>0?r.pack:null)+'" placeholder="г"></label>'
       +(r.psrc==='name'?'<small class="muted">взято из названия</small>':(r.psrc==='base'?'<small class="muted">из карточки сырья</small>':(r.psrc==='memo'||r.psrc==='user'?'<small class="muted">как вы указали</small>':'')));
   }
-  return'<div class="trow c1row" data-i="'+i+'"><span class="tn">'+esc(it.name)+'<small class="c1sub">'+sub+'</small></span>'
+  if(r.st==='price')sel+='<span class="c1btns"><button class="btn mini" data-act="c1PriceOk" data-edit data-i="'+i+'" title="Цена проверена по накладной: загрузить её как есть">Цена верна</button></span>';
+  else if(r.priceOk&&r.san&&r.san.w.length&&r.st!=='done')sel+='<small class="muted">цена подтверждена вами</small>';
+  var lns=c1LinesHtml(i,x,it,r);
+  return'<div class="trow c1row'+(r.st==='price'?' c1warn':'')+'" data-i="'+i+'"><span class="tn">'+esc(it.name)+'<small class="c1sub">'+sub+'</small></span>'
     +'<span class="c1p">'+price+'</span>'
     +'<span class="tsel">'+sel+'</span>'
-    +'<span class="tst">'+c1StatHtml(r.st,x)+((x.ing&&(x.how==='fuzzy'||x.how==='manual'))?'<label class="trem"><input type="checkbox" data-act="c1Rem" data-edit'+(x.remember?' checked':'')+'>запомнить название</label>':'')+'</span></div>';
+    +'<span class="tst">'+c1StatHtml(r.st,x)+((x.ing&&(x.how==='fuzzy'||x.how==='manual'))?'<label class="trem"><input type="checkbox" data-act="c1Rem" data-edit'+(x.remember?' checked':'')+'>запомнить название</label>':'')+'</span>'+lns+'</div>';
+}
+/* все закупки позиции: дата, поставщик, цена, количество; ошибочную строку можно исключить из расчёта */
+function c1LinesHtml(i,x,it,r){
+  if(!it.lines.length)return'';
+  var out=(r.san&&r.san.out)||{},u=C1_UNIT_NAME[it.unit],pkOf={};
+  if(r.cv)r.cv.lines.forEach(function(l){pkOf[l.ix]=l.pk;});
+  var open=r.st==='price'||(x.drop&&Object.keys(x.drop).length);
+  return'<details class="c1ln"'+(open?' open':'')+'><summary>Закупки · '+it.lines.length+(r.nDrop?' · исключено '+r.nDrop:'')+'</summary>'
+    +it.lines.map(function(l,k){
+      var dr=x.drop&&x.drop[k],bad=out[k];
+      return'<label class="c1l'+(bad?' bad':'')+(dr?' off':'')+'"><input type="checkbox" data-act="c1Drop" data-edit data-k="'+k+'"'+(dr?'':' checked')+' title="Снимите отметку, чтобы не учитывать эту закупку">'
+        +'<span>'+esc(c1DateRu(l.d)||'')+'</span><span class="c1lsup">'+esc(l.sup||'')+'</span><span class="r">'+money(l.p)+' ₽/'+u+'</span><span class="r">'+fmt(l.q,3)+' '+u+'</span>'
+        +(pkOf[k]!=null&&it.unit!=='kg'?'<span class="r">'+money(pkOf[k])+' ₽/кг</span>':'<span></span>')+'</label>';
+    }).join('')+'</details>';
 }
 function c1CardHtml(){
   var t=S.c1;if(!t)return'';
   var P=t.parsed,g=curRegion(),rows=t.items.map(c1Row);
-  var G={dens:[],mass:[],check:[],none:[],ok:[],empty:[],skip:[],'new':[],done:[]};
+  var G={price:[],dens:[],mass:[],check:[],none:[],ok:[],empty:[],skip:[],'new':[],done:[]};
   rows.forEach(function(r,i){if(r.isNew&&r.st==='ok')G['new'].push(i);else G[r.st].push(i);});
   var ids=Object.keys(S.ings).sort(byName(S.ings));
   var optsHtml=ids.map(function(id){return'<option value="'+esc(id)+'">'+esc(S.ings[id].name||'Без названия')+'</option>';}).join('');
@@ -14555,6 +14777,7 @@ function c1CardHtml(){
     +'<div class="fgrid" style="margin-top:12px"><label class="field w280"><span class="lbl">Какую цену записать в базу</span><select data-act="c1Rule" data-edit data-fk="c1rule">'
     +Object.keys(PH_RULES).map(function(k){return'<option value="'+k+'"'+(k===t.rule?' selected':'')+'>'+PH_RULES[k]+'</option>';}).join('')+'</select></label>'
     +'<p class="hint" style="margin:0;align-self:end;flex:2 1 280px">'+C1_RULE_HINT[t.rule]+'</p></div>'
+    +block('price','Проверьте цену: она сильно отличается от цены в базе или от других закупок. Сверьте с накладной, исключите ошибочную строку или подтвердите',G.price)
     +block('dens','Нужна плотность: введите её или примите допущение «1 л = 1 кг» (цены этих позиций не загрузятся)',G.dens)+block('mass','Нужна масса штуки',G.mass)+block('check','Подтвердите соответствие: цены этих позиций не загрузятся, пока вы не подтвердите',G.check)+(G.none.length?'<div class="btns" style="margin:10px 0 4px"><button class="btn" data-act="c1NewAll" data-edit>＋ Добавить все ненайденные как новое сырьё · '+G.none.length+'</button></div>':'')
     +block('none','Не найдено в базе: выберите сырьё или добавьте как новое',G.none)+block('new','Будут добавлены как новое сырьё',G['new'])+block('ok','Совпали с базой',G.ok)+block('done','Уже загружено',G.done)+block('empty','Без закупок с ценой и количеством',G.empty)+block('skip','Не вносить: цены этих позиций не загрузятся',G.skip);
   var notes=[];
@@ -14569,6 +14792,7 @@ function c1CardHtml(){
   if(G.dens.length)notes.push(['warn','У '+G.dens.length+' позиций в литрах (мл) не задана плотность: их цены не загрузятся, пока вы не введёте плотность или не примете допущение «1 л = 1 кг». Для масла, молока, сливок и сиропов литр заметно отличается от килограмма.']);
   var nDa=rows.filter(function(r){return r.densAcc&&(r.st==='ok'||r.st==='done');}).length;
   if(nDa)notes.push(['warn','Принято допущение «1 л = 1 кг» у '+nDa+' позиций: цена за кг у них приблизительная, пометка сохранится в сырье и в расчётах себестоимости.']);
+  if(G.price.length)notes.push(['bad','Подозрительная цена у '+G.price.length+' поз.: она не загрузится, пока вы не нажмёте «Цена верна», не исключите ошибочную закупку или не выберете «Не вносить». Так ошибка прихода (например, лук по 1000 ₽) не попадёт в себестоимость.']);
   if(G.mass.length)notes.push(['warn','У '+G.mass.length+' штучных позиций не указана масса штуки: без неё цену за килограмм не посчитать.']);
   if(G.check.length)notes.push(['warn','Не подтверждено соответствие у '+G.check.length+' позиций: их цены не загрузятся. Подтвердите предложенное сырьё, выберите другое, создайте новое или нажмите «Не вносить».']);
   notes.push(['good','К загрузке готово цен: '+ready+' из '+P.items.length+' (уверенные совпадения и подтверждённые вами). Цены региона «'+esc(regionName(g))+'» у этих позиций будут заменены, остальные не изменятся.']);
@@ -14586,7 +14810,7 @@ function c1CardHtml(){
    В историю цен идут только уверенные совпадения и позиции, подтверждённые человеком; строки «Подтвердите» не загружаются */
 function c1Plan(dry){
   var t=S.c1,g=curRegion(),P=t.parsed,rows=t.items.map(c1Row),pkey=P.from?phId(g,P.from,P.to):'';
-  var pl={g:g,P:P,rows:rows,err:'',nNew:0,nConf:0,skipped:{check:0,none:0,mass:0,dens:0,empty:0,skip:0},built:[],changes:[],same:0,kept:0,mine:{},legacyDrop:'',ingOf:[],made:{},newName:{},rem:0};
+  var pl={g:g,P:P,rows:rows,err:'',nNew:0,nConf:0,skipped:{price:0,check:0,none:0,mass:0,dens:0,empty:0,skip:0},built:[],changes:[],same:0,kept:0,mine:{},legacyDrop:'',ingOf:[],made:{},newName:{},rem:0};
   if(!pkey){pl.err='В отчёте не найден период';return pl;}
   rows.forEach(function(r){if(r.st==='ok')pl.nConf++;else if(pl.skipped[r.st]!==undefined)pl.skipped[r.st]++;});
   if(!pl.nConf){pl.err='Нечего загружать: нет подтверждённых позиций';return pl;}
@@ -14606,7 +14830,7 @@ function c1Plan(dry){
     if(old)old.it.forEach(function(x){if(x.pv>0)oldPv[x.ing]=x.pv;});
     P.items.forEach(function(it,i){
       if(!picks[i])return;
-      var ls=it.lines.filter(function(l){return c1Slug(c1ObjFor(t,l).name)===gr.slug;});
+      var dr=t.items[i].drop||{},ls=it.lines.filter(function(l,k){return!dr[k]&&c1Slug(c1ObjFor(t,l).name)===gr.slug;});
       if(!ls.length)return;
       its.push({name:it.name,unit:it.unit,uraw:it.uraw,qty:it.qty,lines:ls});pk2.push(picks[i]);
       if(base[picks[i].ing]===undefined){
@@ -14636,8 +14860,9 @@ function c1Plan(dry){
     if(dry){
       if(later[x.ing]){pl.kept++;return;}
       var nm=ing?ing.name:(pl.newName[x.ing]||x.nm),was=ing?pricePerKg(ing,g):null;
-      if(was!==null&&Math.abs(was-x.pr)<0.005)pl.same++;
-      else pl.changes.push({ing:x.ing,name:nm||'Без названия',was:was,now:x.pr,isNew:!ing});
+      var eq=was!==null&&Math.abs(was-x.pr)<0.005;
+      if(eq)pl.same++;
+      pl.changes.push({ing:x.ing,name:nm||'Без названия',was:was,now:x.pr,isNew:!ing,same:eq});
       return;
     }
     if(!ing)return;
@@ -14674,7 +14899,7 @@ function doC1Apply(){
     if(failed)flash('История цен сохранена только у вас: в общую базу она не ушла'+((((S.sy.info&&S.sy.info.v)||0)<22)?'. Обновите скрипт общей базы до версии 22 (Личный кабинет)':''));
   });
   if(pl.legacyDrop)phDelete(pl.legacyDrop).then(function(ok){if(ok)renderAll();});
-  var nIng=Object.keys(pl.mine).length,open=pl.skipped.check+pl.skipped.none+pl.skipped.mass+pl.skipped.dens;
+  var nIng=Object.keys(pl.mine).length,open=pl.skipped.price+pl.skipped.check+pl.skipped.none+pl.skipped.mass+pl.skipped.dens;
   /* загруженные позиции помечаем «Уже загружено»; неразобранные остаются в карточке: их можно подтвердить и загрузить позже */
   pl.rows.forEach(function(r,i){var x=t.items[i];if(r.st==='ok'){x.ing=pl.ingOf[i];x.done=true;if(r.isNew){x.add=false;x.how='manual';}}});
   if(open){t.confirm=false;t.open.done=false;}else S.c1=null;
@@ -14686,23 +14911,25 @@ function doC1Apply(){
 function c1ConfHtml(){
   var t=S.c1,pl=c1Plan(true),g=curRegion(),P=t.parsed;
   if(pl.err)return'<div class="c1conf" id="c1Conf"><p class="w-bad">'+esc(pl.err)+'</p><div class="btns"><button class="btn" data-act="c1Back">Назад к проверке</button></div></div>';
-  var sk=pl.skipped,nSk=sk.check+sk.none+sk.mass+sk.dens+sk.empty+sk.skip;
+  var sk=pl.skipped,nSk=sk.price+sk.check+sk.none+sk.mass+sk.dens+sk.empty+sk.skip;
   var objs=pl.built.map(function(b){return esc(b.obj||'без указания объекта')+' ('+b.it.length+' поз.)';}).join('; ');
-  var up=pl.changes.filter(function(c){return c.was!==null&&c.now>c.was;}).length,dn=pl.changes.filter(function(c){return c.was!==null&&c.now<c.was;}).length,nn=pl.changes.filter(function(c){return c.was===null;}).length;
-  var ch=pl.changes.slice().sort(function(a,c){var pa=a.was>0?Math.abs(a.now/a.was-1):9,pc=c.was>0?Math.abs(c.now/c.was-1):9;return pc-pa;});
-  var lim=t.confAll?ch.length:40;
+  var up=pl.changes.filter(function(c){return c.was!==null&&!c.same&&c.now>c.was;}).length,dn=pl.changes.filter(function(c){return c.was!==null&&!c.same&&c.now<c.was;}).length,nn=pl.changes.filter(function(c){return c.was===null;}).length;
+  /* сверка всех позиций: сначала самые большие изменения, в конце без изменений; список целиком, без сокращения */
+  var ch=pl.changes.slice().sort(function(a,c){var pa=a.same?-1:(a.was>0?Math.abs(a.now/a.was-1):9),pc=c.same?-1:(c.was>0?Math.abs(c.now/c.was-1):9);return pc-pa||a.name.localeCompare(c.name,'ru');});
+  var lim=ch.length;
   var h='<div class="c1conf" id="c1Conf"><h3>Проверьте перед загрузкой</h3>'
     +'<dl class="kv"><div><dt>Регион</dt><dd>'+esc(regionName(g))+'</dd></div><div><dt>Объект</dt><dd>'+objs+'</dd></div><div><dt>Период</dt><dd>'+esc(c1DateRu(P.from)+' – '+c1DateRu(P.to))+'</dd></div>'
     +'<div><dt>Загрузится строк</dt><dd>'+pl.nConf+(pl.nNew?' (новое сырьё: '+pl.nNew+')':'')+'</dd></div>'
-    +'<div><dt>Не загрузится</dt><dd>'+nSk+(nSk?' ('+[sk.check?'не подтверждено '+sk.check:'',sk.none?'не найдено '+sk.none:'',sk.mass?'нет массы штуки '+sk.mass:'',sk.skip?'не вносить '+sk.skip:'',sk.empty?'без закупок '+sk.empty:''].filter(Boolean).join(', ')+')':'')+'</dd></div></dl>';
-  if(nSk&&(sk.check||sk.none||sk.mass||sk.dens))h+='<p class="hint">Неразобранные строки останутся в карточке: их можно подтвердить и загрузить позже.</p>';
+    +'<div><dt>Не загрузится</dt><dd>'+nSk+(nSk?' ('+[sk.price?'цена не проверена '+sk.price:'',sk.check?'не подтверждено '+sk.check:'',sk.none?'не найдено '+sk.none:'',sk.mass?'нет массы штуки '+sk.mass:'',sk.skip?'не вносить '+sk.skip:'',sk.empty?'без закупок '+sk.empty:''].filter(Boolean).join(', ')+')':'')+'</dd></div></dl>';
+  if(nSk&&(sk.price||sk.check||sk.none||sk.mass||sk.dens))h+='<p class="hint">Неразобранные строки останутся в карточке: их можно подтвердить и загрузить позже.</p>';
   if(pl.nDens)h+='<p class="w-warn" style="margin:6px 0">Объём принят за массу (1 л = 1 кг, плотность не задана) у '+pl.nDens+' поз.: цена за кг у них приблизительная.</p>';
   h+='<p class="rgnote">Цены в базе: вырастут у <b>'+up+'</b> · снизятся у <b>'+dn+'</b> · новых <b>'+nn+'</b> · без изменений <b>'+pl.same+'</b>'+(pl.kept?' · не изменятся из-за более поздней загрузки <b>'+pl.kept+'</b>':'')+'</p>';
   if(ch.length){
-    h+='<div class="c1chg"><div class="c1cr c1ch"><span>Сырьё</span><span class="r">Было, ₽/кг</span><span class="r">Станет, ₽/кг</span><span class="r">Изменение</span></div>'
+    h+='<p class="hint">Сверьте цены всех позиций ('+ch.length+'). Красным отмечены изменения больше чем на '+Math.round((C1_JUMP_UP-1)*100)+' % вверх или '+Math.round((1-C1_JUMP_DN)*100)+' % вниз.</p><div class="c1chg"><div class="c1cr c1ch"><span>Сырьё</span><span class="r">Было, ₽/кг</span><span class="r">Станет, ₽/кг</span><span class="r">Изменение</span></div>'
       +ch.slice(0,lim).map(function(c){
         var d=(c.was>0)?(c.now/c.was-1)*100:null;
-        return'<div class="c1cr"><span>'+esc(c.name)+'</span><span class="r">'+(c.was===null?'нет':money(c.was))+'</span><span class="r">'+money(c.now)+'</span><span class="r '+(d===null?'':pcCls(d))+'">'+(d===null?'новая цена':pcTxt(d))+'</span></div>';
+        var big=c.was>0&&(c.now>=c.was*C1_JUMP_UP||c.now<=c.was*C1_JUMP_DN);
+        return'<div class="c1cr'+(big?' big':'')+'"><span>'+esc(c.name)+'</span><span class="r">'+(c.was===null?'нет':money(c.was))+'</span><span class="r">'+money(c.now)+'</span><span class="r '+(d===null?'':pcCls(d))+'">'+(d===null?'новая цена':(c.same?'без изменений':pcTxt(d)))+'</span></div>';
       }).join('')+'</div>';
     if(ch.length>lim)h+='<button class="btn mini" data-act="c1ConfAll">Показать все ('+ch.length+')</button>';
   }
@@ -15178,6 +15405,7 @@ function pChartTip(e){
   tip.style.left=left+'px';tip.style.top=top+'px';
 }
 
+try{window.kbzhuC1={S:S,start:c1Start,parse:c1Parse,row:c1Row,ppk:function(id){return pricePerKg(S.ings[id],curRegion());}};}catch(e){}      /* для проверок */
 /* ----- загрузка цен продажи блюд из файла (прейскурант: наименование блюда, единица, стоимость) -----
    В файле может быть больше блюд, чем заведено в приложении: найденные блюда обновляются после просмотра «было → стало»,
    ненайденные и неоднозначные показываются списком и ничем не заменяются. Цены пишутся в регион, выбранный вверху. */
@@ -15769,6 +15997,214 @@ function tbClick(act,b){
   }
   return false;
 }
+/* ---------- блюда из ресурсной спецификации 1С: состав без ТТК, ТТК привязывается позже ---------- */
+/* все листы книги .xlsx: имена из workbook.xml, файлы листов из связей */
+function xlsxSheetsAll(buf){
+  var dec=new TextDecoder('utf-8');
+  return Promise.all([unzipEntry(buf,'xl/workbook.xml'),unzipEntry(buf,'xl/_rels/workbook.xml.rels'),unzipEntry(buf,'xl/sharedStrings.xml'),unzipEntry(buf,'xl/styles.xml')]).then(function(r){
+    if(!r[0])throw new Error('nowb');
+    var wb=dec.decode(r[0]),rel=r[1]?dec.decode(r[1]):'',tgt={},m,re=/<Relationship\b[^>]*>/g;
+    while((m=re.exec(rel))){var id=/\bId="([^"]+)"/.exec(m[0]),t=/\bTarget="([^"]+)"/.exec(m[0]);if(id&&t)tgt[id[1]]=t[1];}
+    var sh=[],rs=/<sheet\b[^>]*>/g;
+    while((m=rs.exec(wb))){
+      if(/\bstate="(hidden|veryHidden)"/.test(m[0]))continue;
+      var nm=/\bname="([^"]*)"/.exec(m[0]),rid=/\br:id="([^"]+)"/.exec(m[0])||/\bid="([^"]+)"/.exec(m[0]),p=rid&&tgt[rid[1]];
+      if(!p)continue;
+      p=p.replace(/^\/?xl\//,'').replace(/^\//,'');
+      sh.push({name:xmlUnesc(nm?nm[1]:''),path:'xl/'+p});
+    }
+    if(!sh.length)sh=[{name:'',path:'xl/worksheets/sheet1.xml'}];
+    var shared=xlShared(r[2]?dec.decode(r[2]):''),ds=xlDateStyles(r[3]?dec.decode(r[3]):'');
+    return sh.reduce(function(pr,s){return pr.then(function(acc){return unzipEntry(buf,s.path).then(function(u){if(u)acc.push({name:s.name,rows:xlRows(dec.decode(u),shared,ds)});return acc;});});},Promise.resolve([]));
+  });
+}
+function xmlUnesc(s){return String(s||'').replace(/&quot;/g,'"').replace(/&apos;/g,"'").replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&');}
+function specOnFile(file){
+  if(!file)return;
+  var ext=((/\.([a-z0-9]+)$/i.exec(file.name)||[])[1]||'').toLowerCase();
+  function bad(m){flash(m||'Не удалось разобрать файл. Сохраните спецификацию из 1С как «Лист Excel 2007 (.xlsx)».');}
+  function done(sheets){
+    var P=specParse(sheets||[]);
+    if(!P.dishes.length){bad('В файле не нашлось блюд. Нужен отчёт 1С «Список сырья по Спецификации»: блюдо в строке «Выходные изделия», под ним «Сырьё» с количеством.');return;}
+    specStart(P,file.name);
+  }
+  if(ext==='xlsx'||ext==='xlsm'){
+    if(typeof DecompressionStream==='undefined'){bad('Этот браузер не открывает .xlsx. Нужен современный Chrome, Edge, Firefox или Safari.');return;}
+    readBuf(file).then(xlsxSheetsAll).then(done)['catch'](function(){bad();});
+  }else if(ext==='xls')xlsReadFile(file,done,bad,true);
+  else bad('Нужен файл .xlsx или .xls со спецификацией из 1С.');
+}
+/* та же карта в базе: по названию или номеру ТТК с похожим названием блюда */
+function specFind(d){return findSameRecipe({dish:d.dish,number:d.num},'',true);}
+function specNoTtk(r){return!!(r&&r.spec);}
+function specStart(P,file){
+  var ing={};
+  P.dishes.forEach(function(d){d.rows.forEach(function(x){
+    var e=ing[x.k];
+    if(!e){
+      var mt=c1Match(x.raw,S.ings),pick=mt.id;
+      if(mt.how==='fuzzy'&&mt.score<0.6)pick='';
+      var sure=!!pick&&(mt.how==='alias'||mt.how==='exact'||(mt.how==='fuzzy'&&mt.score>=0.8&&!mt.pct&&!mt.extra));
+      e=ing[x.k]={k:x.k,raw:x.raw,name:x.name,n:0,ing:pick,guess:mt.id,how:pick?mt.how:'none',sure:sure,add:false,skip:false,edit:false};
+    }
+    e.n++;
+  });});
+  var ds=P.dishes.map(function(d,i){
+    var ex=specFind(d),er=ex?S.recipes[ex]:null,st=!ex?'new':(specNoTtk(er)?'upd':'has');
+    return{i:i,ex:ex,st:st,sel:st!=='has'&&!d.bad};
+  });
+  S.spec={file:file,P:P,ing:ing,ds:ds,cat:false,open:{}};
+  S.tab='calc';S.ttkHome=false;
+  renderAll();
+  var c=$('#specCard');if(c&&c.scrollIntoView)c.scrollIntoView({block:'start'});
+}
+function specIngSt(e){
+  if(e.skip)return'skip';
+  if(e.add&&!e.ing)return'new';
+  if(e.ing&&S.ings[e.ing])return(e.sure||e.how==='manual')?'ok':'check';
+  return'none';
+}
+var SPEC_ST={none:['bad','Не найдено'],check:['warn','Подтвердите'],'new':['warn','Новое сырьё'],ok:['ok','Совпало'],skip:['neutral','Не переносить']};
+function specIngRow(e){
+  var st=specIngSt(e),k=esc(e.k),sel;
+  function btns(){return'<span class="c1btns"><button class="btn mini" data-act="specNew" data-edit data-k="'+k+'">＋ Новое сырьё</button><button class="btn mini" data-act="specSkip" data-edit data-k="'+k+'" title="Строка останется в карте без сырья и не войдёт в расчёт">Не переносить</button></span>';}
+  if(st==='skip')sel='<span class="c1cur muted">Не переносить в состав</span><button class="btn mini" data-act="specEdit" data-k="'+k+'">Вернуть</button>';
+  else if(st==='new'&&!e.edit)sel='<span class="c1cur">＋ Новое сырьё</span><button class="btn mini" data-act="specEdit" data-k="'+k+'">Изменить</button>';
+  else if(st==='ok'&&!e.edit)sel='<span class="c1cur">'+esc(S.ings[e.ing].name)+'</span><button class="btn mini" data-act="specEdit" data-k="'+k+'">Другое сырьё</button>';
+  else sel=((st==='check'||st==='none')&&e.guess&&S.ings[e.guess]?'<span class="tsub">'+(e.ing?'Предложено: ':'Похоже: ')+'<b>'+esc(S.ings[e.guess].name)+'</b> <button class="btn mini" data-act="specTake" data-edit data-k="'+k+'">Подтвердить</button></span>':'')
+    +pickerHtml('specIng','sp:'+e.k,e.ing||'','Сырьё из базы для «'+e.name+'»','Поиск по базе…','new|c1')+btns();
+  return'<div class="trow sprow" data-k="'+k+'"><span class="tn">'+esc(e.name)+'<small class="c1sub">в блюдах: '+e.n+'</small></span><span class="tsel">'+sel+'</span><span class="tst"><span class="tstat '+SPEC_ST[st][0]+'">'+SPEC_ST[st][1]+'</span></span></div>';
+}
+function specDishRow(x){
+  var d=S.spec.P.dishes[x.i],st={'new':['ok','Новая карта'],upd:['warn','Обновится (карта без ТТК)'],has:['neutral','Есть ТТК: не меняется']}[x.st];
+  var info=(d.out?fmt(d.out,0)+' г':'выход не указан')+' · сырья: '+d.rows.length+(d.sk.length?' · без массы: '+d.sk.map(function(s){return esc(s.name)+' '+fmt(s.q||0,0)+' '+esc(s.u);}).join(', '):'');
+  return'<label class="trow spd'+(d.bad?' c1warn':'')+'" data-i="'+x.i+'"><span class="tn"><input type="checkbox" data-act="specSel" data-edit data-i="'+x.i+'"'+(x.sel?' checked':'')+(x.st==='has'?' disabled':'')+'> '+esc(d.name)
+    +'<small class="c1sub">'+info+'</small>'+(d.bad?'<small class="warnt">⚠ Проверьте спецификацию: '+esc(d.bad)+'</small>':'')+'</span><span class="tst"><span class="tstat '+st[0]+'">'+st[1]+'</span></span></label>';
+}
+function specHtml(){
+  var t=S.spec;if(!t)return'';
+  var P=t.P,es=Object.keys(t.ing).map(function(k){return t.ing[k];}).sort(function(a,b){return a.name.localeCompare(b.name,'ru');});
+  var G={none:[],check:[],'new':[],ok:[],skip:[]};es.forEach(function(e){G[specIngSt(e)].push(e);});
+  var sheets=[],bySh={};
+  t.ds.forEach(function(x){var s=P.dishes[x.i].sheet||'Без листа';if(!bySh[s]){bySh[s]=[];sheets.push(s);}bySh[s].push(x);});
+  var nSel=t.ds.filter(function(x){return x.sel;}).length,nBad=P.dishes.filter(function(d){return d.bad;}).length,nLit=P.dishes.filter(function(d){return d.rows.some(function(r){return r.lit;});}).length;
+  function iblock(key,title,list,open){
+    if(!list.length)return'';
+    return'<details class="pgroup"'+(open?' open':'')+'><summary>'+title+' · '+list.length+'</summary><div class="trows">'+list.map(specIngRow).join('')+'</div></details>';
+  }
+  var h='<section class="card ttk" id="specCard"><h2>Блюда из ресурсной спецификации</h2>'
+    +'<p class="hint" style="margin-top:2px">Файл «'+esc(t.file)+'». Из спецификации переносятся выход и сырьё на одну порцию: количество сырья идёт в брутто (по нему считается себестоимость), нетто считается по нормам холодной обработки из базы сырья. Технологии и документа ТТК в спецификации нет: такие карты помечаются «Нет ТТК», файл ТТК можно привязать позже.</p>'
+    +'<dl class="kv"><div><dt>Блюд</dt><dd>'+P.dishes.length+'</dd></div><div><dt>Листов</dt><dd>'+sheets.length+'</dd></div><div><dt>Сырья (разного)</dt><dd>'+es.length+'</dd></div>'+(P.d?'<div><dt>Спецификация на дату</dt><dd>'+esc(c1DateRu(P.d))+'</dd></div>':'')+'</dl>';
+  var notes=[];
+  if(G.none.length)notes.push(['warn','Не найдено в базе сырья: '+G.none.length+'. Выберите сырьё, добавьте как новое или «Не переносить»: иначе строка будет в карте без сырья и без цены.']);
+  if(G.check.length)notes.push(['warn','Подтвердите сопоставление: '+G.check.length+'. Пока не подтверждено, строка будет в карте без сырья.']);
+  if(nBad)notes.push(['bad','В '+nBad+' блюдах сырья намного больше выхода: похоже на ошибку в самой спецификации (например, килограммы вместо граммов). Эти блюда не отмечены к загрузке: проверьте их в 1С.']);
+  if(nLit)notes.push(['warn','В '+nLit+' блюдах есть сырьё в литрах без массы: принято 1 л = 1 кг.']);
+  var nHas=t.ds.filter(function(x){return x.st==='has';}).length,nUpd=t.ds.filter(function(x){return x.st==='upd';}).length;
+  if(nHas)notes.push(['good','Уже есть с ТТК: '+nHas+'. Их состав не меняется.']);
+  if(nUpd)notes.push(['warn','Уже загружены из спецификации раньше (без ТТК): '+nUpd+'. Их состав обновится.']);
+  if(notes.length)h+='<ul class="warns">'+notes.map(function(n){return'<li class="w-'+n[0]+'">'+n[1]+'</li>';}).join('')+'</ul>';
+  h+='<h3 class="h3">Сырьё</h3>'
+    +(G.none.length?'<div class="btns" style="margin:6px 0"><button class="btn" data-act="specNewAll" data-edit>＋ Добавить все ненайденные как новое сырьё · '+G.none.length+'</button></div>':'')
+    +iblock('none','Не найдено в базе',G.none,true)+iblock('check','Подтвердите соответствие',G.check,true)+iblock('new','Будут добавлены как новое сырьё',G['new'],false)+iblock('ok','Совпали с базой',G.ok,false)+iblock('skip','Не переносить',G.skip,false);
+  h+='<h3 class="h3">Блюда</h3>'
+    +sheets.map(function(s){
+      var l=bySh[s],n=l.filter(function(x){return x.sel;}).length;
+      return'<details class="pgroup"'+(t.open[s]?' open':'')+' data-sh="'+esc(s)+'"><summary>'+esc(s)+' · отмечено '+n+' из '+l.length+'</summary><div class="btns" style="margin:4px 0"><button class="btn mini" data-act="specSelAll" data-edit data-sh="'+esc(s)+'" data-on="1">Отметить все</button><button class="btn mini" data-act="specSelAll" data-edit data-sh="'+esc(s)+'" data-on="0">Снять все</button></div><div class="trows">'+l.map(specDishRow).join('')+'</div></details>';
+    }).join('')
+    +'<label class="chk" style="margin-top:10px"><input type="checkbox" data-act="specCat" data-edit'+(t.cat?' checked':'')+'> Разложить блюда по папкам меню с названиями листов ('+sheets.map(esc).join(', ')+')</label>'
+    +'<div class="btns" style="margin-top:12px"><button class="btn primary" data-act="specApply" data-edit'+(nSel?'':' disabled')+'>Загрузить блюд: '+nSel+'</button><button class="btn" data-act="specCancel">Отмена</button></div></section>';
+  return h;
+}
+function specNet(id,g){
+  var ig=id?S.ings[id]:null,c=ig&&ig.loss&&ig.loss.cold;
+  return(c>0&&c<100)?Math.round(g*(1-c/100)*1000)/1000:g;
+}
+function specApply(){
+  var t=S.spec;if(!t)return;
+  var P=t.P,made={},nNew=0,nRem=0,nC=0,nU=0,firstId='';
+  Object.keys(t.ing).forEach(function(k){
+    var e=t.ing[k],st=specIngSt(e);
+    if(st==='new'){e.ing=addNewIng(e.name,'Добавлено из ресурсной спецификации 1С: значения КБЖУ не заполнены');made[k]=e.ing;nNew++;}
+    else if(st==='ok'&&e.how==='manual'){addAlias(e.ing,e.raw);nRem++;}
+  });
+  t.ds.forEach(function(x){
+    if(!x.sel||x.st==='has')return;
+    var d=P.dishes[x.i];
+    var rows=d.rows.map(function(r){
+      var e=t.ing[r.k],st=specIngSt(e),id=(st==='ok'||st==='new')?e.ing:'';
+      var o={rid:newId(),ing:id,net:specNet(id,r.g),gross:r.g,share:100,tname:r.name};
+      if(st==='skip')o.skip=true;
+      return o;
+    });
+    var old=x.ex?S.recipes[x.ex]:null,rid=old?x.ex:newId();
+    var sp={f:t.file,d:d.from||P.from||'',sh:d.sheet||'',at:Date.now()};
+    if(d.sk.length)sp.sk=d.sk.map(function(s){return s.name+' '+fmt(s.q||0,0)+' '+s.u;}).join('; ');
+    var nrd={name:old?old.name:d.name,output:d.out||0,rows:rows,ref:old?old.ref:{label:'',p:null,f:null,c:null,kcal:null,tol:10},ttk:old&&old.ttk?old.ttk:{},spec:sp};
+    if(d.num)nrd.ttk.num=d.num;
+    if(old)['sell','qty','aliases','op','cat','arch','reg','ds'].forEach(function(k){if(old[k]!==undefined)nrd[k]=old[k];});
+    if(t.cat&&d.sheet){var cid=lyCatFor(d.sheet,true);if(cid)nrd.cat=cid;}
+    S.recipes[rid]=normRecipe(nrd);queueSave('recipes',rid);
+    if(old)nU++;else nC++;
+    if(!firstId)firstId=rid;
+  });
+  if(t.cat)saveMenu();
+  S.spec=null;S.ttkHome='home';S.tab='calc';
+  renderAll();
+  flash('Загружено блюд: '+(nC+nU)+(nU?' (обновлено '+nU+')':'')+(nNew?'. Новое сырьё: '+nNew:'')+(nRem?'. Запомнено названий: '+nRem:'')+'. У этих карт нет ТТК: привяжите файл ТТК, когда он будет');
+}
+/* плашка в карте: состав из спецификации, документа ТТК нет */
+function specStripHtml(r){
+  if(!specNoTtk(r))return'';
+  var s=r.spec;
+  return'<section class="card sendstrip specstrip"><div class="ssl"><span class="tstat warn">Нет ТТК</span><span class="grow">Состав загружен из ресурсной спецификации 1С'+(s.f?' («'+esc(s.f)+'»'+(s.d?', действует с '+esc(c1DateRu(s.d)):'')+')':'')+'. Технологии и документа ТТК нет. Брутто взято из спецификации, нетто посчитано по нормам холодной обработки: сверьте с ТТК.'
+    +(s.sk?' Без массы, в состав не перенесено: '+esc(s.sk)+'.':'')
+    +' Загрузите файл ТТК (.docx), когда он будет готов, в том числе из «ТТК в облаке»: карта найдётся по номеру и названию и обновится.</span>'
+    +'<button class="btn" data-act="specTtk" data-edit>Привязать ТТК (.docx)</button></div></section>';
+}
+function specNoTtkIds(){return visIds().filter(function(id){return specNoTtk(S.recipes[id])&&!S.recipes[id].arch;});}
+function specHomeHtml(){
+  var ids=specNoTtkIds();
+  if(!ids.length)return'';
+  ids.sort(function(a,b){return recLabel(S.recipes[a]).localeCompare(recLabel(S.recipes[b]),'ru');});
+  return'<details class="pgroup spnottk" id="specNoTtk"><summary>Нет ТТК: '+ids.length+' '+plural(ids.length,['блюдо','блюда','блюд'])+' загружено из спецификации</summary><p class="hint">Загрузите файл ТТК в карту блюда кнопкой «Привязать ТТК» или откройте ТТК из облака: карта найдётся по номеру.</p><div class="trows">'
+    +ids.map(function(id){return'<div class="trow" data-rid="'+esc(id)+'"><span class="tn">'+esc(recLabel(S.recipes[id]))+'</span><button class="btn mini" data-act="specOpen" data-rid="'+esc(id)+'">Открыть</button></div>';}).join('')+'</div></details>';
+}
+function specClick(act,b){
+  var t=S.spec,e,k=b.getAttribute('data-k');
+  e=t&&k!=null?t.ing[k]:null;
+  switch(act){
+    case'pickSpec':$('#specFile').click();return true;
+    case'specCancel':S.spec=null;S.ttkHome='home';renderAll();return true;
+    case'specApply':specApply();return true;
+    case'specNew':if(e){e.ing='';e.add=true;e.skip=false;e.how='new';e.edit=false;renderAll();}return true;
+    case'specSkip':if(e){e.ing='';e.add=false;e.skip=true;e.how='skip';e.edit=false;renderAll();}return true;
+    case'specEdit':if(e){e.edit=true;e.skip=false;S.focusFk='sp:'+k;renderAll();}return true;
+    case'specTake':if(e&&e.guess){e.ing=e.guess;e.how='manual';e.add=false;e.skip=false;e.edit=false;renderAll();}return true;
+    case'specNewAll':if(t)Object.keys(t.ing).forEach(function(kk){var x=t.ing[kk];if(specIngSt(x)==='none'){x.add=true;x.how='new';x.edit=false;}});renderAll();return true;
+    case'specSelAll':if(t){var sh=b.getAttribute('data-sh'),on=b.getAttribute('data-on')==='1';t.open[sh]=true;t.ds.forEach(function(x){if((t.P.dishes[x.i].sheet||'Без листа')===sh&&x.st!=='has')x.sel=on;});renderAll();}return true;
+    case'specTtk':S.ttkFor=S.active;$('#ttkFile').click();return true;
+    case'specOpen':var id=b.getAttribute('data-rid');if(S.recipes[id]){setActive(id);S.ttkHome=false;S.tab='calc';renderAll();window.scrollTo(0,0);}return true;
+  }
+  return false;
+}
+function specChange(act,el){
+  var t=S.spec;
+  if(act==='specSel'&&t){var x=t.ds[Number(el.getAttribute('data-i'))];if(x){x.sel=el.checked;var dt=el.closest('details');if(dt)t.open[dt.getAttribute('data-sh')]=true;renderAll();}return true;}
+  if(act==='specCat'&&t){t.cat=el.checked;return true;}
+  return false;
+}
+/* выбор сырья в поле с поиском */
+function specPick(inp,v){
+  var t=S.spec,k=String(inp.getAttribute('data-fk')||'').slice(3),e=t&&t.ing[k];
+  if(!e)return false;
+  if(v==='__skip__'){e.ing='';e.add=false;e.skip=true;e.how='skip';}
+  else if(v==='__new__'){e.ing='';e.add=true;e.skip=false;e.how='new';}
+  else{e.ing=v;e.add=false;e.skip=false;e.how=v?'manual':'none';}
+  e.edit=false;S.focusFk='sp:'+k;renderAll();
+  return true;
+}
+try{window.kbzhuSpec={parse:specParse,start:specStart,S:S,apply:specApply,ingSt:specIngSt};}catch(e){}      /* для проверок */
 /* Тестовая версия (сборка с --test): данные хранятся отдельно от рабочих (префикс «T~» в хранилище браузера, см. начало страницы),
    рабочий скрипт общей базы заблокирован, сверху плашка «ТЕСТ». Рабочие данные браузера отсюда только читаются и только по кнопке. */
 function testOn(){return typeof window!=='undefined'&&window.KBZHU_TEST===1;}
@@ -15820,7 +16256,10 @@ testBar();
 var REL_FIRST=91;         /* с какого выпуска ведётся журнал для объявлений: прежнюю историю прежним пользователям не показываем */
 /* k: new — новое, fix — исправлено, act — нужно сделать; r — роли, которым это важно (нет — всем) */
 var REL_LOG=[
-  {v:93,d:'2026-11-23',items:[
+  {v:93,d:'2026-11-26',items:[
+    {k:'new',r:['admin','editor','finance'],t:'Цены из 1С: перед загрузкой видны все закупки каждой позиции (дата, поставщик, цена, количество). Цена, которая сильно отличается от цены в базе или от других закупок (например, лук по 1000 ₽), не загрузится, пока вы не нажмёте «Цена верна» или не снимете отметку с ошибочной закупки. На экране подтверждения — все позиции, включая цены без изменений.'},
+    {k:'new',r:['admin','editor','finance'],t:'ТТК → «Загрузить блюда из спецификации 1С»: отчёт «Список сырья по Спецификации» (все листы) превращается в карты с выходом и сырьём на порцию. Такие карты помечены «Нет ТТК»; файл ТТК привязывается позже кнопкой «Привязать ТТК» в карте или открытием ТТК из облака. Ошибки самой спецификации (сырья в разы больше выхода) отмечаются и не загружаются сами.'},
+    {k:'new',r:['admin'],t:'Личный кабинет → «Настройки системы» → «Начать заново» (без общей базы — внизу личного кабинета): удалить ТТК, цены с историей и отчёты фудкоста, чтобы загрузить всё заново. Сначала скачивается копия данных; база сырья остаётся. В общей базе удаление уходит всем после публикации.'},
     {k:'new',t:'Загрузка файлов .xls (Excel 97–2003) — в «Фудкосте», ревизиях, ценах из 1С и прейскурантах. Читаются и файлы, которые 1С сохраняет как .xls, а внутри это HTML или XML.'},
     {k:'new',r:['editor','finance'],t:'Ваши правки сохраняются на этом устройстве и попадают в общую базу, только когда технолог их примет. Вверху видно «Не отправлено» или «На проверке»; когда вы закончите править, внизу появится напоминание «Отправить на проверку» (его можно отложить кнопкой «Позже»).'}
   ]},
@@ -18453,6 +18892,7 @@ function p1cClick(act,b){
       if(S.c1)S.c1.items.forEach(function(x,i){if(!x.ing&&!x.skip&&S.c1.parsed.items[i].lines.length){x.add=true;x.how='new';x.remember=false;x.edit=false;}});
       renderAll();return true;
     case'c1Edit':x=c1Item(b);if(x){x.edit=true;x.skip=false;S.focusFk='c1i:'+x.i;renderAll();}return true;
+    case'c1PriceOk':x=c1Item(b);if(x){var rr=c1Row(x);if(rr.pr!==null)x.okPr=rr.pr;renderAll();}return true;
     case'c1DensOk':x=c1Item(b);if(x){x.densAsm=true;renderAll();}return true;
     case'c1DensNo':x=c1Item(b);if(x){x.densAsm=false;renderAll();}return true;
     case'c1Take':x=c1Item(b);if(x&&x.guess){x.skip=false;x.ing=x.guess;x.how='manual';x.remember=true;x.edit=false;renderAll();}return true;
@@ -18491,6 +18931,7 @@ function p1cChange(act,t){
     case'c1Pack':x=c1Item(t);if(x){var p=parseNum(t.value);x.packUser=(p.ok&&p.v>0)?p.v:0;S.focusFk='c1p:'+x.i;renderAll();}return true;
     case'c1Dens':x=c1Item(t);if(x){var dp=parseNum(t.value);x.densUser=(dp.ok&&dp.v>=0.2&&dp.v<=3)?dp.v:0;if(x.densUser>0)x.densAsm=false;S.focusFk='c1d:'+x.i;renderAll();}return true;
     case'c1Rem':x=c1Item(t);if(x)x.remember=t.checked;return true;
+    case'c1Drop':x=c1Item(t);if(x){var k=Number(t.getAttribute('data-k'));x.drop=x.drop||{};if(t.checked)delete x.drop[k];else x.drop[k]=1;if(!Object.keys(x.drop).length)delete x.drop;renderAll();}return true;
     case'pSort':S.psort=t.value;S.focusFk='psort';renderAll();return true;
     case'pCur':S.pan=S.pan||{};S.pan.a=t.value;S.pan.b=null;S.focusFk='pcur';renderAll();return true;
     case'pObjF':S.pobj=t.value;S.pan=S.pan||{};S.pan.a=null;S.pan.b=null;S.focusFk='pobjf';renderAll();return true;
@@ -19148,6 +19589,7 @@ function startTtk(parsed,fileName){
   t.reg='';
   if(t.cloudId&&!t.review){var cf=syFileById(t.cloudId);if(cf&&cf.reg&&regKnown(cf.reg)&&regionList().length>1)t.reg=cf.reg;}   /* регион ТТК — как у файла в облаке */
   t.sameId=t.review?null:findSameRecipe(t,t.reg);
+  if(t.forId&&!t.review&&S.recipes[t.forId]){t.sameId=t.forId;t.reg=S.recipes[t.forId].reg||'';}   /* «Привязать ТТК» из карты без ТТК: файл ложится в эту карту */
   t.hdr=ttkHdrInit(t);t.hdr0=hdrFromFile(t)?{org:t.hdr.org,head:t.hdr.head,headName:t.hdr.headName,date:t.hdr.date}:null;
   t.back=(S.tab==='cloud'||t.cloudId||t.review)?'cloud':(S.ttkHome?'home':'');     /* куда вернуться по «Отмена»: список облака, стартовый экран или открытая карта */
   S.ttk=t;S.tab='calc';S.ttkHome=false;
@@ -19164,6 +19606,7 @@ function loadTtkBuffer(buf,name,extra){
     parsed.buf=buf;
     if(extra&&extra.cloudId)parsed.cloudId=extra.cloudId;
     if(extra&&extra.review)parsed.review=extra.review;
+    if(extra&&extra.forId)parsed.forId=extra.forId;
     startTtk(parsed,name);
   }).catch(function(){flash('Не получилось разобрать файл. Проверьте, что это .docx из Word.');});
 }
@@ -19172,7 +19615,8 @@ function onTtkFile(file){
   if(!/\.docx$/i.test(file.name)){flash('Нужен файл Word с расширением .docx');return;}
   var fr=new FileReader();
   fr.onerror=function(){flash('Не удалось прочитать файл');};
-  fr.onload=function(){loadTtkBuffer(fr.result,file.name);};
+  var forId=S.ttkFor||'';S.ttkFor='';
+  fr.onload=function(){loadTtkBuffer(fr.result,file.name,forId?{forId:forId}:null);};
   fr.readAsArrayBuffer(file);
 }
 /* итог по файлу: что из карты загружено, чего в файле нет */
@@ -19416,6 +19860,8 @@ function onClick(e){
   var act=b.getAttribute('data-act'),r=curRecipe(),id;
   if(uiRO()&&b.hasAttribute('data-edit')){roFlash();return;}
   if(p1cClick(act,b))return;
+  if(specClick(act,b))return;
+  if(wpClick(act,b))return;
   if(fcClick(act,b))return;
   if(dsClick(act,b))return;
   if(tbClick(act,b))return;
@@ -19630,7 +20076,7 @@ function onClick(e){
         if(r.ttk)TT_TEXT_KEYS.concat(['look','color','texture','taste']).forEach(function(k){delete r.ttk[k];});
         queueSave('recipes',S.active);renderAll();flash('Тексты возвращены к стандартным');
       });break;
-    case'pickTtk':$('#ttkFile').click();break;
+    case'pickTtk':S.ttkFor='';$('#ttkFile').click();break;
     case'jump':var jt=$('#'+b.getAttribute('data-to'));if(jt&&jt.scrollIntoView)jt.scrollIntoView({block:'start',behavior:'smooth'});break;
     case'ttkCreate':doTtkCreate(false);break;
     case'ttkCreateNew':doTtkCreate(true);break;
@@ -19781,6 +20227,7 @@ function onClick(e){
 function onInput(e){
   var t=e.target,act=t.getAttribute('data-act');if(!act||t.tagName==='BUTTON')return;
   if(p1cInput(act,t))return;
+  if(wpInput(act,t))return;
   if(tbInput(act,t))return;
   if(aiInput(act,t))return;
   if(drInput(act,t))return;
@@ -19937,6 +20384,8 @@ function onInput(e){
 function onChange(e){
   var t=e.target,act=t.getAttribute('data-act');if(!act)return;
   if(p1cChange(act,t))return;
+  if(specChange(act,t))return;
+  if(wpChange(act,t))return;
   if(fcChange(act,t))return;
   if(dsChange(act,t))return;
   if(tbChange(act,t))return;
@@ -20163,6 +20612,7 @@ $('#view').addEventListener('click',function(e){
 });
 var abResizeT=null;
 window.addEventListener('resize',function(){clearTimeout(abResizeT);abResizeT=setTimeout(function(){if(S.tab==='abc')abDrawChart();else if(S.tab==='base'&&S.bsub==='price'&&(S.pview==='an'||S.pview==='obj'))pChartsDraw();},150);});
+$('#specFile').addEventListener('change',function(){var f=this.files&&this.files[0];try{this.value='';}catch(e){}if(f){if(uiRO()){roFlash();return;}specOnFile(f);}});
 $('#ttkFile').addEventListener('change',function(){var f=this.files&&this.files[0];try{this.value='';}catch(e){}if(f){if(uiRO()){roFlash();return;}onTtkFile(f);}});
 $('#syUpFile').addEventListener('change',function(){var fl=Array.prototype.slice.call(this.files||[]);try{this.value='';}catch(e){}if(fl.length)syFileUpload(fl);});
 /* перетаскивание .docx на страницу */

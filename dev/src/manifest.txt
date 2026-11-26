@@ -17,6 +17,7 @@ js/11-import-table.js
 js/12-sync-core.js
 js/13-import-1c.js
 js/13-import-xls.js
+js/13-import-spec.js
 js/14-price-files-core.js
 js/15-backup-core.js
 js/20-state.js
@@ -46,6 +47,7 @@ js/54-users.js
 js/55-op1.js
 js/56-access.js
 js/57-dir.js
+js/57-wipe.js
 js/58-rev.js
 js/59-rev-export.js
 js/60-ing-picker.js
@@ -55,6 +57,7 @@ js/63-sell-import.js
 js/64-ttk-view.js
 js/65-home.js
 js/66-ttk-bulk.js
+js/66-spec-ui.js
 js/67-test-mode.js
 js/68-whatsnew.js
 js/69-fc-data.js

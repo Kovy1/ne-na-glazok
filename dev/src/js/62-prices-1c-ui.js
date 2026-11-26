@@ -88,7 +88,8 @@ function c1Row(x){
   }
   var ig0=x.ing?S.ings[x.ing]:null,dn=x.densUser>0?x.densUser:((ig0&&ig0.dens>0)?ig0.dens:0);
   var cv=c1Conv(it,pk,dn);
-  if(!cv.ok){r.st='empty';return r;}
+  if(cv.ok&&x.drop){cv.lines=cv.lines.filter(function(l){return!x.drop[l.ix];});cv.ok=cv.lines.length>0;r.nDrop=Object.keys(x.drop).length;}
+  if(!cv.ok){r.st=r.nDrop?'skip':'empty';return r;}
   r.dens=dn;r.densAssumed=!!cv.assumed;
   /* объём без плотности: 1 л = 1 кг не принимается молча; строка ждёт ввода плотности или явного допущения пользователя */
   if(cv.assumed&&!x.densAsm){r.st='dens';return r;}
@@ -97,6 +98,10 @@ function c1Row(x){
   r.old=isNew?null:pricePerKg(S.ings[x.ing],curRegion());
   r.isNew=isNew;
   r.st=(isNew||x.sure||x.how==='manual')?'ok':'check';
+  r.san=c1Sanity(cv.lines,r.pr,r.old);
+  /* подозрительная цена не загружается, пока человек не подтвердит именно это значение или не исключит ошибочную строку */
+  r.priceOk=x.okPr!=null&&r.pr!==null&&Math.abs(x.okPr-r.pr)<0.01;
+  if(r.st==='ok'&&r.san.w.length&&!r.priceOk)r.st='price';
   if(x.done&&r.st==='ok')r.st='done';
   return r;
 }
@@ -111,7 +116,7 @@ function c1Start(parsed,fileName){
   var rule=lsGet('kbzhu:c1rule');
   S.c1={file:fileName,parsed:parsed,items:items,rule:PH_RULES[rule]?rule:'avg',open:null,objs:c1Objs(parsed),dropLegacy:true};
   var cnt={};S.c1.items.forEach(function(x){var st=c1Row(x).st;cnt[st]=(cnt[st]||0)+1;});
-  S.c1.open={dens:true,mass:true,check:true,none:(cnt.none||0)<=12,'new':true,ok:false,empty:false,skip:false};
+  S.c1.open={price:true,dens:true,mass:true,check:true,none:(cnt.none||0)<=12,'new':true,ok:false,empty:false,skip:false};
   S.bsub='price';lsSet('kbzhu:bsub','price');S.pview='tbl';lsSet('kbzhu:pview','tbl');S.tab='base';S.c1Paste=false;
   renderAll();
   var c=$('#c1Card');if(c&&c.scrollIntoView)c.scrollIntoView({block:'start'});
@@ -176,7 +181,7 @@ function pcSign(p){return p>0?'▲':(p<0?'▼':'=');}
 function pcCls(p){return p>=0.5?'up':(p<=-0.5?'dn':'eq');}
 function pcTxt(p){return p===null||p===undefined||!isFinite(p)?'':pcSign(Math.abs(p)<0.05?0:p)+' '+signed(p,1)+' %';}
 function c1StatHtml(st,x){
-  var m={ok:(x.add&&!x.ing)?['warn','Новое сырьё']:['ok',x.how==='alias'?'Запомнено':'Совпало'],check:['warn','Подтвердите'],done:['ok','Загружено'],mass:['warn','Нужна масса'],dens:['warn','Нужна плотность'],none:['bad','Не найдено'],skip:['neutral','Не вносить'],empty:['neutral','Нет закупок']}[st];
+  var m={ok:(x.add&&!x.ing)?['warn','Новое сырьё']:['ok',x.how==='alias'?'Запомнено':'Совпало'],check:['warn','Подтвердите'],price:['bad','Проверьте цену'],done:['ok','Загружено'],mass:['warn','Нужна масса'],dens:['warn','Нужна плотность'],none:['bad','Не найдено'],skip:['neutral','Не вносить'],empty:['neutral','Нет закупок']}[st];
   return'<span class="tstat '+m[0]+'">'+m[1]+'</span>';
 }
 /* несколько позиций 1С выбрали одно и то же сырьё: цена станет общей, а ошибка автоподбора незаметной */
@@ -200,6 +205,7 @@ function c1RowHtml(i,r,optsHtml){
   }else if(it.lines.length){
     price='<small>'+money(it.lines[0].p)+' ₽/'+C1_UNIT_NAME[it.unit]+'</small>';
   }
+  if(r.san&&r.san.w.length&&r.st!=='done')price+='<small class="c1bad">⚠ '+esc(r.san.w.join('; '))+'</small>';
   var sel,cur=x.ing||(x.add?'__new__':'');
   /* поле с поиском по базе (набираете часть названия) и отдельные кнопки: «Новое сырьё» и «Не вносить» */
   function btns(skipBtn,newBtn){
@@ -229,15 +235,32 @@ function c1RowHtml(i,r,optsHtml){
     sel+='<label class="c1mass">Масса штуки, г <input class="num" inputmode="decimal" autocomplete="off" data-act="c1Pack" data-edit data-fk="c1p:'+i+'" value="'+toInput(r.pack>0?r.pack:null)+'" placeholder="г"></label>'
       +(r.psrc==='name'?'<small class="muted">взято из названия</small>':(r.psrc==='base'?'<small class="muted">из карточки сырья</small>':(r.psrc==='memo'||r.psrc==='user'?'<small class="muted">как вы указали</small>':'')));
   }
-  return'<div class="trow c1row" data-i="'+i+'"><span class="tn">'+esc(it.name)+'<small class="c1sub">'+sub+'</small></span>'
+  if(r.st==='price')sel+='<span class="c1btns"><button class="btn mini" data-act="c1PriceOk" data-edit data-i="'+i+'" title="Цена проверена по накладной: загрузить её как есть">Цена верна</button></span>';
+  else if(r.priceOk&&r.san&&r.san.w.length&&r.st!=='done')sel+='<small class="muted">цена подтверждена вами</small>';
+  var lns=c1LinesHtml(i,x,it,r);
+  return'<div class="trow c1row'+(r.st==='price'?' c1warn':'')+'" data-i="'+i+'"><span class="tn">'+esc(it.name)+'<small class="c1sub">'+sub+'</small></span>'
     +'<span class="c1p">'+price+'</span>'
     +'<span class="tsel">'+sel+'</span>'
-    +'<span class="tst">'+c1StatHtml(r.st,x)+((x.ing&&(x.how==='fuzzy'||x.how==='manual'))?'<label class="trem"><input type="checkbox" data-act="c1Rem" data-edit'+(x.remember?' checked':'')+'>запомнить название</label>':'')+'</span></div>';
+    +'<span class="tst">'+c1StatHtml(r.st,x)+((x.ing&&(x.how==='fuzzy'||x.how==='manual'))?'<label class="trem"><input type="checkbox" data-act="c1Rem" data-edit'+(x.remember?' checked':'')+'>запомнить название</label>':'')+'</span>'+lns+'</div>';
+}
+/* все закупки позиции: дата, поставщик, цена, количество; ошибочную строку можно исключить из расчёта */
+function c1LinesHtml(i,x,it,r){
+  if(!it.lines.length)return'';
+  var out=(r.san&&r.san.out)||{},u=C1_UNIT_NAME[it.unit],pkOf={};
+  if(r.cv)r.cv.lines.forEach(function(l){pkOf[l.ix]=l.pk;});
+  var open=r.st==='price'||(x.drop&&Object.keys(x.drop).length);
+  return'<details class="c1ln"'+(open?' open':'')+'><summary>Закупки · '+it.lines.length+(r.nDrop?' · исключено '+r.nDrop:'')+'</summary>'
+    +it.lines.map(function(l,k){
+      var dr=x.drop&&x.drop[k],bad=out[k];
+      return'<label class="c1l'+(bad?' bad':'')+(dr?' off':'')+'"><input type="checkbox" data-act="c1Drop" data-edit data-k="'+k+'"'+(dr?'':' checked')+' title="Снимите отметку, чтобы не учитывать эту закупку">'
+        +'<span>'+esc(c1DateRu(l.d)||'')+'</span><span class="c1lsup">'+esc(l.sup||'')+'</span><span class="r">'+money(l.p)+' ₽/'+u+'</span><span class="r">'+fmt(l.q,3)+' '+u+'</span>'
+        +(pkOf[k]!=null&&it.unit!=='kg'?'<span class="r">'+money(pkOf[k])+' ₽/кг</span>':'<span></span>')+'</label>';
+    }).join('')+'</details>';
 }
 function c1CardHtml(){
   var t=S.c1;if(!t)return'';
   var P=t.parsed,g=curRegion(),rows=t.items.map(c1Row);
-  var G={dens:[],mass:[],check:[],none:[],ok:[],empty:[],skip:[],'new':[],done:[]};
+  var G={price:[],dens:[],mass:[],check:[],none:[],ok:[],empty:[],skip:[],'new':[],done:[]};
   rows.forEach(function(r,i){if(r.isNew&&r.st==='ok')G['new'].push(i);else G[r.st].push(i);});
   var ids=Object.keys(S.ings).sort(byName(S.ings));
   var optsHtml=ids.map(function(id){return'<option value="'+esc(id)+'">'+esc(S.ings[id].name||'Без названия')+'</option>';}).join('');
@@ -256,6 +279,7 @@ function c1CardHtml(){
     +'<div class="fgrid" style="margin-top:12px"><label class="field w280"><span class="lbl">Какую цену записать в базу</span><select data-act="c1Rule" data-edit data-fk="c1rule">'
     +Object.keys(PH_RULES).map(function(k){return'<option value="'+k+'"'+(k===t.rule?' selected':'')+'>'+PH_RULES[k]+'</option>';}).join('')+'</select></label>'
     +'<p class="hint" style="margin:0;align-self:end;flex:2 1 280px">'+C1_RULE_HINT[t.rule]+'</p></div>'
+    +block('price','Проверьте цену: она сильно отличается от цены в базе или от других закупок. Сверьте с накладной, исключите ошибочную строку или подтвердите',G.price)
     +block('dens','Нужна плотность: введите её или примите допущение «1 л = 1 кг» (цены этих позиций не загрузятся)',G.dens)+block('mass','Нужна масса штуки',G.mass)+block('check','Подтвердите соответствие: цены этих позиций не загрузятся, пока вы не подтвердите',G.check)+(G.none.length?'<div class="btns" style="margin:10px 0 4px"><button class="btn" data-act="c1NewAll" data-edit>＋ Добавить все ненайденные как новое сырьё · '+G.none.length+'</button></div>':'')
     +block('none','Не найдено в базе: выберите сырьё или добавьте как новое',G.none)+block('new','Будут добавлены как новое сырьё',G['new'])+block('ok','Совпали с базой',G.ok)+block('done','Уже загружено',G.done)+block('empty','Без закупок с ценой и количеством',G.empty)+block('skip','Не вносить: цены этих позиций не загрузятся',G.skip);
   var notes=[];
@@ -270,6 +294,7 @@ function c1CardHtml(){
   if(G.dens.length)notes.push(['warn','У '+G.dens.length+' позиций в литрах (мл) не задана плотность: их цены не загрузятся, пока вы не введёте плотность или не примете допущение «1 л = 1 кг». Для масла, молока, сливок и сиропов литр заметно отличается от килограмма.']);
   var nDa=rows.filter(function(r){return r.densAcc&&(r.st==='ok'||r.st==='done');}).length;
   if(nDa)notes.push(['warn','Принято допущение «1 л = 1 кг» у '+nDa+' позиций: цена за кг у них приблизительная, пометка сохранится в сырье и в расчётах себестоимости.']);
+  if(G.price.length)notes.push(['bad','Подозрительная цена у '+G.price.length+' поз.: она не загрузится, пока вы не нажмёте «Цена верна», не исключите ошибочную закупку или не выберете «Не вносить». Так ошибка прихода (например, лук по 1000 ₽) не попадёт в себестоимость.']);
   if(G.mass.length)notes.push(['warn','У '+G.mass.length+' штучных позиций не указана масса штуки: без неё цену за килограмм не посчитать.']);
   if(G.check.length)notes.push(['warn','Не подтверждено соответствие у '+G.check.length+' позиций: их цены не загрузятся. Подтвердите предложенное сырьё, выберите другое, создайте новое или нажмите «Не вносить».']);
   notes.push(['good','К загрузке готово цен: '+ready+' из '+P.items.length+' (уверенные совпадения и подтверждённые вами). Цены региона «'+esc(regionName(g))+'» у этих позиций будут заменены, остальные не изменятся.']);
@@ -287,7 +312,7 @@ function c1CardHtml(){
    В историю цен идут только уверенные совпадения и позиции, подтверждённые человеком; строки «Подтвердите» не загружаются */
 function c1Plan(dry){
   var t=S.c1,g=curRegion(),P=t.parsed,rows=t.items.map(c1Row),pkey=P.from?phId(g,P.from,P.to):'';
-  var pl={g:g,P:P,rows:rows,err:'',nNew:0,nConf:0,skipped:{check:0,none:0,mass:0,dens:0,empty:0,skip:0},built:[],changes:[],same:0,kept:0,mine:{},legacyDrop:'',ingOf:[],made:{},newName:{},rem:0};
+  var pl={g:g,P:P,rows:rows,err:'',nNew:0,nConf:0,skipped:{price:0,check:0,none:0,mass:0,dens:0,empty:0,skip:0},built:[],changes:[],same:0,kept:0,mine:{},legacyDrop:'',ingOf:[],made:{},newName:{},rem:0};
   if(!pkey){pl.err='В отчёте не найден период';return pl;}
   rows.forEach(function(r){if(r.st==='ok')pl.nConf++;else if(pl.skipped[r.st]!==undefined)pl.skipped[r.st]++;});
   if(!pl.nConf){pl.err='Нечего загружать: нет подтверждённых позиций';return pl;}
@@ -307,7 +332,7 @@ function c1Plan(dry){
     if(old)old.it.forEach(function(x){if(x.pv>0)oldPv[x.ing]=x.pv;});
     P.items.forEach(function(it,i){
       if(!picks[i])return;
-      var ls=it.lines.filter(function(l){return c1Slug(c1ObjFor(t,l).name)===gr.slug;});
+      var dr=t.items[i].drop||{},ls=it.lines.filter(function(l,k){return!dr[k]&&c1Slug(c1ObjFor(t,l).name)===gr.slug;});
       if(!ls.length)return;
       its.push({name:it.name,unit:it.unit,uraw:it.uraw,qty:it.qty,lines:ls});pk2.push(picks[i]);
       if(base[picks[i].ing]===undefined){
@@ -337,8 +362,9 @@ function c1Plan(dry){
     if(dry){
       if(later[x.ing]){pl.kept++;return;}
       var nm=ing?ing.name:(pl.newName[x.ing]||x.nm),was=ing?pricePerKg(ing,g):null;
-      if(was!==null&&Math.abs(was-x.pr)<0.005)pl.same++;
-      else pl.changes.push({ing:x.ing,name:nm||'Без названия',was:was,now:x.pr,isNew:!ing});
+      var eq=was!==null&&Math.abs(was-x.pr)<0.005;
+      if(eq)pl.same++;
+      pl.changes.push({ing:x.ing,name:nm||'Без названия',was:was,now:x.pr,isNew:!ing,same:eq});
       return;
     }
     if(!ing)return;
@@ -375,7 +401,7 @@ function doC1Apply(){
     if(failed)flash('История цен сохранена только у вас: в общую базу она не ушла'+((((S.sy.info&&S.sy.info.v)||0)<22)?'. Обновите скрипт общей базы до версии 22 (Личный кабинет)':''));
   });
   if(pl.legacyDrop)phDelete(pl.legacyDrop).then(function(ok){if(ok)renderAll();});
-  var nIng=Object.keys(pl.mine).length,open=pl.skipped.check+pl.skipped.none+pl.skipped.mass+pl.skipped.dens;
+  var nIng=Object.keys(pl.mine).length,open=pl.skipped.price+pl.skipped.check+pl.skipped.none+pl.skipped.mass+pl.skipped.dens;
   /* загруженные позиции помечаем «Уже загружено»; неразобранные остаются в карточке: их можно подтвердить и загрузить позже */
   pl.rows.forEach(function(r,i){var x=t.items[i];if(r.st==='ok'){x.ing=pl.ingOf[i];x.done=true;if(r.isNew){x.add=false;x.how='manual';}}});
   if(open){t.confirm=false;t.open.done=false;}else S.c1=null;
@@ -387,23 +413,25 @@ function doC1Apply(){
 function c1ConfHtml(){
   var t=S.c1,pl=c1Plan(true),g=curRegion(),P=t.parsed;
   if(pl.err)return'<div class="c1conf" id="c1Conf"><p class="w-bad">'+esc(pl.err)+'</p><div class="btns"><button class="btn" data-act="c1Back">Назад к проверке</button></div></div>';
-  var sk=pl.skipped,nSk=sk.check+sk.none+sk.mass+sk.dens+sk.empty+sk.skip;
+  var sk=pl.skipped,nSk=sk.price+sk.check+sk.none+sk.mass+sk.dens+sk.empty+sk.skip;
   var objs=pl.built.map(function(b){return esc(b.obj||'без указания объекта')+' ('+b.it.length+' поз.)';}).join('; ');
-  var up=pl.changes.filter(function(c){return c.was!==null&&c.now>c.was;}).length,dn=pl.changes.filter(function(c){return c.was!==null&&c.now<c.was;}).length,nn=pl.changes.filter(function(c){return c.was===null;}).length;
-  var ch=pl.changes.slice().sort(function(a,c){var pa=a.was>0?Math.abs(a.now/a.was-1):9,pc=c.was>0?Math.abs(c.now/c.was-1):9;return pc-pa;});
-  var lim=t.confAll?ch.length:40;
+  var up=pl.changes.filter(function(c){return c.was!==null&&!c.same&&c.now>c.was;}).length,dn=pl.changes.filter(function(c){return c.was!==null&&!c.same&&c.now<c.was;}).length,nn=pl.changes.filter(function(c){return c.was===null;}).length;
+  /* сверка всех позиций: сначала самые большие изменения, в конце без изменений; список целиком, без сокращения */
+  var ch=pl.changes.slice().sort(function(a,c){var pa=a.same?-1:(a.was>0?Math.abs(a.now/a.was-1):9),pc=c.same?-1:(c.was>0?Math.abs(c.now/c.was-1):9);return pc-pa||a.name.localeCompare(c.name,'ru');});
+  var lim=ch.length;
   var h='<div class="c1conf" id="c1Conf"><h3>Проверьте перед загрузкой</h3>'
     +'<dl class="kv"><div><dt>Регион</dt><dd>'+esc(regionName(g))+'</dd></div><div><dt>Объект</dt><dd>'+objs+'</dd></div><div><dt>Период</dt><dd>'+esc(c1DateRu(P.from)+' – '+c1DateRu(P.to))+'</dd></div>'
     +'<div><dt>Загрузится строк</dt><dd>'+pl.nConf+(pl.nNew?' (новое сырьё: '+pl.nNew+')':'')+'</dd></div>'
-    +'<div><dt>Не загрузится</dt><dd>'+nSk+(nSk?' ('+[sk.check?'не подтверждено '+sk.check:'',sk.none?'не найдено '+sk.none:'',sk.mass?'нет массы штуки '+sk.mass:'',sk.skip?'не вносить '+sk.skip:'',sk.empty?'без закупок '+sk.empty:''].filter(Boolean).join(', ')+')':'')+'</dd></div></dl>';
-  if(nSk&&(sk.check||sk.none||sk.mass||sk.dens))h+='<p class="hint">Неразобранные строки останутся в карточке: их можно подтвердить и загрузить позже.</p>';
+    +'<div><dt>Не загрузится</dt><dd>'+nSk+(nSk?' ('+[sk.price?'цена не проверена '+sk.price:'',sk.check?'не подтверждено '+sk.check:'',sk.none?'не найдено '+sk.none:'',sk.mass?'нет массы штуки '+sk.mass:'',sk.skip?'не вносить '+sk.skip:'',sk.empty?'без закупок '+sk.empty:''].filter(Boolean).join(', ')+')':'')+'</dd></div></dl>';
+  if(nSk&&(sk.price||sk.check||sk.none||sk.mass||sk.dens))h+='<p class="hint">Неразобранные строки останутся в карточке: их можно подтвердить и загрузить позже.</p>';
   if(pl.nDens)h+='<p class="w-warn" style="margin:6px 0">Объём принят за массу (1 л = 1 кг, плотность не задана) у '+pl.nDens+' поз.: цена за кг у них приблизительная.</p>';
   h+='<p class="rgnote">Цены в базе: вырастут у <b>'+up+'</b> · снизятся у <b>'+dn+'</b> · новых <b>'+nn+'</b> · без изменений <b>'+pl.same+'</b>'+(pl.kept?' · не изменятся из-за более поздней загрузки <b>'+pl.kept+'</b>':'')+'</p>';
   if(ch.length){
-    h+='<div class="c1chg"><div class="c1cr c1ch"><span>Сырьё</span><span class="r">Было, ₽/кг</span><span class="r">Станет, ₽/кг</span><span class="r">Изменение</span></div>'
+    h+='<p class="hint">Сверьте цены всех позиций ('+ch.length+'). Красным отмечены изменения больше чем на '+Math.round((C1_JUMP_UP-1)*100)+' % вверх или '+Math.round((1-C1_JUMP_DN)*100)+' % вниз.</p><div class="c1chg"><div class="c1cr c1ch"><span>Сырьё</span><span class="r">Было, ₽/кг</span><span class="r">Станет, ₽/кг</span><span class="r">Изменение</span></div>'
       +ch.slice(0,lim).map(function(c){
         var d=(c.was>0)?(c.now/c.was-1)*100:null;
-        return'<div class="c1cr"><span>'+esc(c.name)+'</span><span class="r">'+(c.was===null?'нет':money(c.was))+'</span><span class="r">'+money(c.now)+'</span><span class="r '+(d===null?'':pcCls(d))+'">'+(d===null?'новая цена':pcTxt(d))+'</span></div>';
+        var big=c.was>0&&(c.now>=c.was*C1_JUMP_UP||c.now<=c.was*C1_JUMP_DN);
+        return'<div class="c1cr'+(big?' big':'')+'"><span>'+esc(c.name)+'</span><span class="r">'+(c.was===null?'нет':money(c.was))+'</span><span class="r">'+money(c.now)+'</span><span class="r '+(d===null?'':pcCls(d))+'">'+(d===null?'новая цена':(c.same?'без изменений':pcTxt(d)))+'</span></div>';
       }).join('')+'</div>';
     if(ch.length>lim)h+='<button class="btn mini" data-act="c1ConfAll">Показать все ('+ch.length+')</button>';
   }
@@ -879,3 +907,4 @@ function pChartTip(e){
   tip.style.left=left+'px';tip.style.top=top+'px';
 }
 
+try{window.kbzhuC1={S:S,start:c1Start,parse:c1Parse,row:c1Row,ppk:function(id){return pricePerKg(S.ings[id],curRegion());}};}catch(e){}      /* для проверок */

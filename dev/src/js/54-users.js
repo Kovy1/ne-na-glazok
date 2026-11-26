@@ -132,7 +132,7 @@ function cabParts(){
     tasks:syInboxHtml()+syMineHtml()+syReworkHtml()+syPullHtml()+syFilesHintHtml(),
     review:S.sy.cfg.role==='viewer'?'':syPendHtml()+syLogHtml(),
     admin:syUsrHtml(),
-    sys:syRelHtml()+syPgHtml()+syAiHtml()+sySvcHtml(),
+    sys:syRelHtml()+syPgHtml()+syAiHtml()+sySvcHtml()+wipeHtml(),
     prof:syConnHtml()
   };
 }
@@ -143,7 +143,7 @@ function cabCount(k){
   return n;
 }
 function viewSync(){
-  if(!syLinked())return syConnHtml();
+  if(!syLinked())return syConnHtml()+wipeHtml();
   var parts=cabParts(),segs=CAB_SEGS.filter(function(x){return parts[x[0]];}),cur=S.cabSeg;
   if(!segs.some(function(x){return x[0]===cur;}))cur=(syAdmin()&&S.sy.info&&S.sy.info.pending&&parts.review)?'review':'tasks';
   if(!segs.some(function(x){return x[0]===cur;}))cur=segs.length?segs[0][0]:'prof';

@@ -121,6 +121,8 @@ function pickCommit(inp,v,q){
     else if(v&&S.ings[v])fcSetMap(fe.kind,fe.nm,fe.code,v);
     else{pickClose(inp,true);return;}
     S.fc.itemEdit='';renderAll();
+  }else if(kind==='specIng'){
+    if(v===old||!specPick(inp,v))pickClose(inp,true);
   }else if(kind==='c1Ing'){
     var cx=c1Item(inp);
     if(!cx){pickClose(inp,true);return;}
@@ -183,7 +185,7 @@ function viewCalc(){
       +'<hr><button role="menuitem" class="danger" data-act="delRecipe" data-edit>Удалить</button>'
     +'</div></span>'
     +'</div>'
-    +'<div id="syStrip">'+syStripHtml(r)+'</div>'
+    +'<div id="syStrip">'+syStripHtml(r)+'</div>'+specStripHtml(r)
     +'<nav class="jump" aria-label="Разделы страницы"><button class="btn mini" data-act="jump" data-to="secDish">Название и выход</button><button class="btn mini" data-act="jump" data-to="secDoc">Реквизиты и рецептура карты</button><button class="btn mini" data-act="jump" data-to="secTexts">Тексты разделов</button><button class="btn mini" data-act="jump" data-to="secDl">Скачать</button><button class="btn mini" data-act="jump" data-to="secKbzhu">КБЖУ и сверка</button><button class="btn mini" data-act="jump" data-to="secCalc">Таблица расчёта КБЖУ</button></nav>'
     +'<div id="secDish"><section class="card">'
       +'<div class="head2" style="margin-bottom:0">'

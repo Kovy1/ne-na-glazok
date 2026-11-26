@@ -69,6 +69,7 @@ $('#view').addEventListener('click',function(e){
 });
 var abResizeT=null;
 window.addEventListener('resize',function(){clearTimeout(abResizeT);abResizeT=setTimeout(function(){if(S.tab==='abc')abDrawChart();else if(S.tab==='base'&&S.bsub==='price'&&(S.pview==='an'||S.pview==='obj'))pChartsDraw();},150);});
+$('#specFile').addEventListener('change',function(){var f=this.files&&this.files[0];try{this.value='';}catch(e){}if(f){if(uiRO()){roFlash();return;}specOnFile(f);}});
 $('#ttkFile').addEventListener('change',function(){var f=this.files&&this.files[0];try{this.value='';}catch(e){}if(f){if(uiRO()){roFlash();return;}onTtkFile(f);}});
 $('#syUpFile').addEventListener('change',function(){var fl=Array.prototype.slice.call(this.files||[]);try{this.value='';}catch(e){}if(fl.length)syFileUpload(fl);});
 /* перетаскивание .docx на страницу */

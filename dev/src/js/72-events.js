@@ -3,6 +3,8 @@ function onClick(e){
   var act=b.getAttribute('data-act'),r=curRecipe(),id;
   if(uiRO()&&b.hasAttribute('data-edit')){roFlash();return;}
   if(p1cClick(act,b))return;
+  if(specClick(act,b))return;
+  if(wpClick(act,b))return;
   if(fcClick(act,b))return;
   if(dsClick(act,b))return;
   if(tbClick(act,b))return;
@@ -217,7 +219,7 @@ function onClick(e){
         if(r.ttk)TT_TEXT_KEYS.concat(['look','color','texture','taste']).forEach(function(k){delete r.ttk[k];});
         queueSave('recipes',S.active);renderAll();flash('Тексты возвращены к стандартным');
       });break;
-    case'pickTtk':$('#ttkFile').click();break;
+    case'pickTtk':S.ttkFor='';$('#ttkFile').click();break;
     case'jump':var jt=$('#'+b.getAttribute('data-to'));if(jt&&jt.scrollIntoView)jt.scrollIntoView({block:'start',behavior:'smooth'});break;
     case'ttkCreate':doTtkCreate(false);break;
     case'ttkCreateNew':doTtkCreate(true);break;
@@ -368,6 +370,7 @@ function onClick(e){
 function onInput(e){
   var t=e.target,act=t.getAttribute('data-act');if(!act||t.tagName==='BUTTON')return;
   if(p1cInput(act,t))return;
+  if(wpInput(act,t))return;
   if(tbInput(act,t))return;
   if(aiInput(act,t))return;
   if(drInput(act,t))return;
@@ -524,6 +527,8 @@ function onInput(e){
 function onChange(e){
   var t=e.target,act=t.getAttribute('data-act');if(!act)return;
   if(p1cChange(act,t))return;
+  if(specChange(act,t))return;
+  if(wpChange(act,t))return;
   if(fcChange(act,t))return;
   if(dsChange(act,t))return;
   if(tbChange(act,t))return;

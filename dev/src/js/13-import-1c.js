@@ -148,11 +148,23 @@ function c1Conv(item,packG,dens){
   if(item.unit==='pc')f=packG>0?packG/1000:0;
   if(!(f>0))return{ok:false,lines:[],skipped:0};
   var ls=[],sk=0;
-  item.lines.forEach(function(l){
+  item.lines.forEach(function(l,k){
     if(!(l.p>0)||!(l.q>0)){sk++;return;}
-    ls.push({d:l.d,wh:l.wh||'',sup:l.sup,pk:Math.round(l.p/f*10000)/10000,kg:Math.round(l.q*f*10000)/10000,p:l.p,q:l.q});
+    ls.push({d:l.d,wh:l.wh||'',sup:l.sup,pk:Math.round(l.p/f*10000)/10000,kg:Math.round(l.q*f*10000)/10000,p:l.p,q:l.q,ix:k});
   });
   return{ok:ls.length>0,lines:ls,skipped:sk,assumed:asm};
+}
+/* проверка цены на ошибку прихода (лук за 1000 ₽): скачок к цене в базе и строки, выбивающиеся из закупок той же позиции */
+var C1_JUMP_UP=1.5,C1_JUMP_DN=0.6,C1_SPREAD=1.8;
+function c1Sanity(lines,pr,old){
+  var w=[],out={},pks=lines.map(function(l){return l.pk;}).sort(function(a,b){return a-b;}),med=0;
+  if(pks.length)med=pks.length%2?pks[(pks.length-1)/2]:(pks[pks.length/2-1]+pks[pks.length/2])/2;
+  if(lines.length>=2&&med>0)lines.forEach(function(l){if(l.pk>=med*C1_SPREAD||l.pk<=med/C1_SPREAD)out[l.ix]=1;});
+  var nOut=Object.keys(out).length;
+  if(lines.length===2&&nOut)out={};   /* из двух закупок не понять, какая ошибочная: отмечаем разброс без выделения строки */
+  if(lines.length>=2&&pks[0]>0&&pks[pks.length-1]/pks[0]>=C1_SPREAD)w.push('закупки по разной цене: от '+money(pks[0])+' до '+money(pks[pks.length-1])+' ₽/кг');
+  if(old>0&&pr>0&&(pr>=old*C1_JUMP_UP||pr<=old*C1_JUMP_DN))w.push((pr>old?'выше':'ниже')+' цены в базе в '+fmt(pr>old?pr/old:old/pr,1)+' раза');
+  return{w:w,out:out,med:med};
 }
 /* цена за кг по правилу: avg — средневзвешенная по количеству, last — последняя закупка периода, min — самая низкая */
 function c1Pick(lines,rule){

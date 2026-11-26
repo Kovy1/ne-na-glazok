@@ -544,6 +544,7 @@ function startTtk(parsed,fileName){
   t.reg='';
   if(t.cloudId&&!t.review){var cf=syFileById(t.cloudId);if(cf&&cf.reg&&regKnown(cf.reg)&&regionList().length>1)t.reg=cf.reg;}   /* регион ТТК — как у файла в облаке */
   t.sameId=t.review?null:findSameRecipe(t,t.reg);
+  if(t.forId&&!t.review&&S.recipes[t.forId]){t.sameId=t.forId;t.reg=S.recipes[t.forId].reg||'';}   /* «Привязать ТТК» из карты без ТТК: файл ложится в эту карту */
   t.hdr=ttkHdrInit(t);t.hdr0=hdrFromFile(t)?{org:t.hdr.org,head:t.hdr.head,headName:t.hdr.headName,date:t.hdr.date}:null;
   t.back=(S.tab==='cloud'||t.cloudId||t.review)?'cloud':(S.ttkHome?'home':'');     /* куда вернуться по «Отмена»: список облака, стартовый экран или открытая карта */
   S.ttk=t;S.tab='calc';S.ttkHome=false;
@@ -560,6 +561,7 @@ function loadTtkBuffer(buf,name,extra){
     parsed.buf=buf;
     if(extra&&extra.cloudId)parsed.cloudId=extra.cloudId;
     if(extra&&extra.review)parsed.review=extra.review;
+    if(extra&&extra.forId)parsed.forId=extra.forId;
     startTtk(parsed,name);
   }).catch(function(){flash('Не получилось разобрать файл. Проверьте, что это .docx из Word.');});
 }
@@ -568,7 +570,8 @@ function onTtkFile(file){
   if(!/\.docx$/i.test(file.name)){flash('Нужен файл Word с расширением .docx');return;}
   var fr=new FileReader();
   fr.onerror=function(){flash('Не удалось прочитать файл');};
-  fr.onload=function(){loadTtkBuffer(fr.result,file.name);};
+  var forId=S.ttkFor||'';S.ttkFor='';
+  fr.onload=function(){loadTtkBuffer(fr.result,file.name,forId?{forId:forId}:null);};
   fr.readAsArrayBuffer(file);
 }
 /* итог по файлу: что из карты загружено, чего в файле нет */

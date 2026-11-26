@@ -79,7 +79,7 @@ function xlsDateFmt(id,fmts){
   f=f.replace(/"[^"]*"/g,'').replace(/\[[^\]]*\]/g,'').replace(/\\./g,'');
   return/[dmyhs]/i.test(f)&&!/[0#]/.test(f);
 }
-function xlsBiff(wb){
+function xlsBiff(wb,all){
   var recs=[],o=0,t,l;
   while(o+4<=wb.length){t=xlsU16(wb,o);l=xlsU16(wb,o+2);recs.push({t:t,o:o,d:wb.subarray(o+4,o+4+l)});o+=4+l;}
   if(!recs.length||recs[0].t!==0x0809)throw new Error('Это не таблица Excel');
@@ -105,13 +105,16 @@ function xlsBiff(wb){
     }
   }
   if(!sheets.length)throw new Error('В книге нет листов');
-  var sh=sheets.filter(function(s){return!s.hid;})[0]||sheets[0],start=-1;
+  function isDate(xf){var f=xfs[xf];return f!=null&&xlsDateFmt(f,fmts);}
+  function num(xf,v){return isDate(xf)&&v>0&&v<2958466?xlSerial(v):xlNumStr(v);}
+  if(all)return sheets.filter(function(s){return!s.hid;}).map(function(s){return{name:s.name,rows:one(s)};});
+  return one(sheets.filter(function(s){return!s.hid;})[0]||sheets[0]);
+  function one(sh){
+  var start=-1,i,r,dat;
   for(i=0;i<recs.length;i++)if(recs[i].o===sh.pos){start=i;break;}
   if(start<0)throw new Error('Не найден лист «'+sh.name+'»');
   var rows=[],lastF=null;
-  function isDate(xf){var f=xfs[xf];return f!=null&&xlsDateFmt(f,fmts);}
   function put(row,col,v){(rows[row]||(rows[row]=[]))[col]=v;}
-  function num(xf,v){return isDate(xf)&&v>0&&v<2958466?xlSerial(v):xlNumStr(v);}
   for(i=start+1;i<recs.length;i++){
     r=recs[i];dat=r.d;
     if(r.t===0x000A)break;
@@ -137,6 +140,7 @@ function xlsBiff(wb){
     if(a.some(function(x){return x!=='';}))out.push(a);
   });
   return out;
+  }
 }
 /* «.xls», который на деле HTML-таблица или XML 2003 */
 function xlsText(u8){
@@ -175,21 +179,21 @@ function xlsMarkupRows(t){
   });
   return rows;
 }
-function xlsRows(buf){
+function xlsRows(buf,all){
   var u8=new Uint8Array(buf),wb=xlsCfb(u8,['Workbook','Book']);
-  if(wb)return xlsBiff(wb);
+  if(wb)return xlsBiff(wb,all);
   if(u8.length>4&&u8[0]===0x50&&u8[1]===0x4B)throw new Error('Это файл .xlsx с расширением .xls: переименуйте его в .xlsx');
   var head=xlsText(u8.subarray(0,Math.min(u8.length,4096)));
-  if(/^\s*(﻿)?\s*</.test(head))return xlsMarkupRows(xlsText(u8));
+  if(/^\s*(﻿)?\s*</.test(head)){var mr=xlsMarkupRows(xlsText(u8));return all?[{name:'',rows:mr}]:mr;}
   throw new Error('Не удалось прочитать .xls');
 }
 /* общий вход для всех загрузок: ok(rows) или fail(сообщение) */
-function xlsReadFile(file,ok,fail){
+function xlsReadFile(file,ok,fail,all){
   var fr=new FileReader();
   fr.onerror=function(){fail('Не удалось открыть файл');};
   fr.onload=function(){
     var rows;
-    try{rows=xlsRows(fr.result);}catch(e){fail((e&&e.message?e.message+'. ':'')+'Можно пересохранить файл как .xlsx (Файл → Сохранить как → Книга Excel).');return;}
+    try{rows=xlsRows(fr.result,all);}catch(e){fail((e&&e.message?e.message+'. ':'')+'Можно пересохранить файл как .xlsx (Файл → Сохранить как → Книга Excel).');return;}
     ok(rows);
   };
   fr.readAsArrayBuffer(file);
