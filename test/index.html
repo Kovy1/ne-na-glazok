@@ -2,7 +2,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;0,7..72,600;1,7..72,400&subset=cyrillic&display=swap">
 <style>
 /* Layout: recipe editor on the left, results and reference check on the right; one column on phones. The ingredient base is a second tab. */
 :root{
@@ -1749,8 +1749,174 @@ html.testmode .tabs{top:82px}
 .fcing th{white-space:normal}
 .fcwrap td,.fcwrap th{white-space:normal;overflow-wrap:anywhere;vertical-align:top}
 .fcwrap td.n{white-space:nowrap}
+/* v94: «стекло на старом фото», стальная гамма. Одна светлая схема (тёмная тема и выбор цвета убраны).
+   Фото — сцена, стекло — слои; прозрачность обратно пропорциональна размеру текста.
+   Сталь — норма и действие, глина — потери, охра — внимание; остальное — графит. */
+:root[data-theme="light"]:not([data-accent]){
+  --ink:#20303C; --ink-2:#4C5D6C; --ink-3:#5F7080; --ink-4:#8296A6;
+  --steel:#5E87A5; --steel-deep:#456F8D; --steel-ink:#2F526B;
+  --clay:#8B6B64; --amber:#A78C5F;
+  --edge:rgba(255,255,255,.82); --hair:rgba(32,48,60,.10); --hair-2:rgba(32,48,60,.16);
+  --ui:"Golos Text",system-ui,-apple-system,sans-serif;
+  --serif:"Literata",Georgia,serif;
+  --num:"IBM Plex Mono",ui-monospace,monospace;
+  --font-ui:var(--ui); --font-num:var(--num);
+  --r-lg:24px; --r-md:16px; --r-sm:12px;
+  --e1:0 1px 2px rgba(16,36,54,.14),0 8px 18px -10px rgba(16,36,54,.5);
+  --e2:0 2px 4px rgba(16,36,54,.14),0 20px 40px -18px rgba(16,36,54,.6);
+  --e3:0 6px 14px rgba(16,36,54,.14),0 44px 90px -46px rgba(16,36,54,.75);
+  --sink:inset 0 3px 7px rgba(16,36,54,.16),inset 0 -1px 0 rgba(255,255,255,.8);
+  --rim:inset 0 1px 0 #fff,inset 0 -1px 0 rgba(18,38,56,.08);
+  /* стекло: «блик сверху / подложка» */
+  --g-page:linear-gradient(135deg,rgba(247,251,255,.40),rgba(247,251,255,.16) 42%,rgba(247,251,255,.28) 78%,rgba(247,251,255,.36));
+  --g-rail:linear-gradient(160deg,rgba(247,251,255,.48),rgba(247,251,255,.22) 50%,rgba(247,251,255,.34));
+  --g-top:linear-gradient(135deg,rgba(247,251,255,.46),rgba(247,251,255,.18) 50%,rgba(247,251,255,.34));
+  --g-tile:linear-gradient(135deg,rgba(250,253,255,.62),rgba(250,253,255,.34) 42%,rgba(250,253,255,.46) 78%,rgba(250,253,255,.56));
+  --g-btn:linear-gradient(180deg,rgba(255,255,255,.80),rgba(244,249,252,.50));
+  --g-row:linear-gradient(180deg,rgba(250,253,255,.70),rgba(240,246,250,.46));
+  --g-head:linear-gradient(180deg,rgba(252,254,255,.84),rgba(240,246,250,.60));
+  --g-pop:rgba(250,253,255,.97);
+  /* старые имена — на новые значения */
+  --bg:#E4ECF2; --surface:#F7FAFC; --surface-2:rgba(255,255,255,.46); --field:rgba(255,255,255,.32); --rail:transparent;
+  --line:rgba(32,48,60,.14);
+  --accent:#456F8D; --accent-ink:#FFFFFF; --accent-soft:rgba(94,135,165,.16); --glow:rgba(69,111,141,.35);
+  --good:#3F6884; --good-soft:rgba(94,135,165,.14);
+  --bad:#7D5C55; --bad-soft:rgba(139,107,100,.14);
+  --warn:#7A6440; --warn-soft:rgba(167,140,95,.18);
+  --abc-a:#5E87A5; --abc-b:#9DB5C8; --abc-c:#B9A29C; --gl-green:#5E87A5; --gl-blue:#9DB5C8; --gl-pink:#B9A29C;
+  --r:var(--r-lg); --ws-r:var(--r-sm);
+  --sh1:var(--e1);
+  --glass:rgba(247,251,255,.44); --glass-b:rgba(247,251,255,.44); --dense:rgba(250,253,255,.86); --shell:transparent;
+  --focus:0 0 0 2px #5E87A5,inset 0 1px 0 rgba(255,255,255,.9);
+}
+:root[data-theme="light"]:not([data-accent]) body{font:15px/1.5 var(--ui);color:var(--ink);background-color:#DDE6ED}
+:root[data-theme="light"]:not([data-accent]) body::before{background-position:center;background-size:cover}
+
+/* ---------- типографика по ролям ---------- */
+:root[data-theme="light"]:not([data-accent]) :is(h1,h2,.h2,.ttl,.card>h2,.card h2){font-family:var(--serif);font-weight:500;letter-spacing:-.01em;color:var(--ink)}
+:root[data-theme="light"]:not([data-accent]) :is(h3,.h3){font-family:var(--serif);font-weight:500;color:var(--ink)}
+:root[data-theme="light"]:not([data-accent]) :is(.num,.r,.money,.kv dd,td.r,th.r,.tnum){font-family:var(--num);font-variant-numeric:tabular-nums}
+:root[data-theme="light"]:not([data-accent]) :is(.hint,.muted){color:var(--ink-3)}
+
+/* ---------- полотно, корешок, шапка ---------- */
+@media (min-width:1000px){
+  :root[data-theme="light"]:not([data-accent]) body{padding:32px}
+  :root[data-theme="light"]:not([data-accent]) .wrap{max-width:1336px;margin:0 auto;padding:0 0 0 274px;background:none;border:0;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;min-height:0;border-radius:0}
+  :root[data-theme="light"]:not([data-accent]) .tabs{position:fixed;left:max(32px,calc((100vw - 1336px)/2));top:32px;bottom:32px;width:254px;max-height:none;padding:22px 18px 18px;gap:1px;border-radius:var(--r-lg);
+    background:var(--g-rail);border:1px solid var(--edge);box-shadow:var(--e3),var(--rim);-webkit-backdrop-filter:blur(24px) saturate(118%);backdrop-filter:blur(24px) saturate(118%);overflow:auto;display:flex;flex-direction:column}
+  :root[data-theme="light"]:not([data-accent]) .tabs::before,:root[data-theme="light"]:not([data-accent]) .tabs::after{display:none!important;content:none}
+  .railbrand{display:flex;gap:11px;align-items:flex-start;margin:0 0 22px}
+  .rbmark{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;flex:none;background:linear-gradient(160deg,rgba(94,135,165,.30),rgba(94,135,165,.10));border:1px solid rgba(69,111,141,.32);box-shadow:inset 0 1px 0 rgba(255,255,255,.8)}
+  .rbmark svg{width:19px;height:19px;stroke:#3D6280;fill:none;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
+  .rbtxt{display:flex;flex-direction:column;min-width:0}
+  .rbname{font-family:var(--serif);font-size:17px;line-height:1.15;font-weight:500;letter-spacing:-.01em;color:var(--ink)}
+  .rbslogan{font-family:var(--serif);font-style:italic;font-size:11px;line-height:1.45;color:#586A78;margin-top:7px;width:160px}
+  .navcap{font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:#6E8191;margin:16px 0 4px}
+  .railbrand+.navcap{margin-top:0}
+  :root[data-theme="light"]:not([data-accent]) .tabs .tab:not([hidden]){min-height:34px;padding:6px 8px;margin:0 -8px;gap:9px;font-size:13.4px;color:#4F606F;border-radius:11px;background:transparent;box-shadow:none;font-weight:400}
+  :root[data-theme="light"]:not([data-accent]) .tabs .tab::before{width:16px;height:16px;opacity:.8}
+  :root[data-theme="light"]:not([data-accent]) .tabs .tab:hover{background:rgba(255,255,255,.32);color:var(--ink)}
+  :root[data-theme="light"]:not([data-accent]) .tabs .tab[aria-selected="true"]:not([hidden]){color:#22323E;font-weight:600;background:linear-gradient(180deg,rgba(255,255,255,.78),rgba(255,255,255,.52));box-shadow:var(--e1),inset 0 0 0 1px rgba(255,255,255,.72)}
+  :root[data-theme="light"]:not([data-accent]) .tabs .tab[aria-selected="true"] .tcnt{background:none;color:#8A9CAC}
+  :root[data-theme="light"]:not([data-accent]) .tabs .tcnt{margin-left:auto;font:10.5px var(--num);color:#8A9CAC;background:none;padding:0}
+  :root[data-theme="light"]:not([data-accent]) header.top{position:sticky;top:32px;z-index:40;margin:0 0 16px;padding:10px 16px;min-height:62px;border-radius:var(--r-lg);
+    background:var(--g-top);border:1px solid var(--edge);box-shadow:var(--e2),var(--rim);-webkit-backdrop-filter:blur(22px) saturate(118%);backdrop-filter:blur(22px) saturate(118%)}
+  :root[data-theme="light"]:not([data-accent]) #view{padding:26px 28px 30px;border-radius:var(--r-lg);background:var(--g-page);border:1px solid var(--edge);box-shadow:var(--e3),var(--rim);
+    -webkit-backdrop-filter:blur(26px) saturate(118%);backdrop-filter:blur(26px) saturate(118%);min-height:320px}
+}
+:root[data-theme="light"]:not([data-accent]) header.top .rgsel select,:root[data-theme="light"]:not([data-accent]) header.top .whoami,:root[data-theme="light"]:not([data-accent]) .status{background:var(--g-btn);border:1px solid var(--edge);box-shadow:var(--e1),var(--rim);border-radius:var(--r-sm);min-height:38px;font-size:13px;color:var(--ink)}
+:root[data-theme="light"]:not([data-accent]) .status{display:inline-flex;align-items:center;gap:7px;padding:0 12px}
+
+/* ---------- плитки и панели внутри полотна ---------- */
+:root[data-theme="light"]:not([data-accent]) :is(.card,.hmk,.tvbox,.wscard){background:var(--g-tile);border:1px solid var(--edge);border-radius:var(--r-md);box-shadow:var(--e2),var(--rim);
+  -webkit-backdrop-filter:none;backdrop-filter:none}
+:root[data-theme="light"]:not([data-accent]) #view>.card,:root[data-theme="light"]:not([data-accent]) #view>section.card{margin-bottom:16px}
+:root[data-theme="light"]:not([data-accent]) .card .card{box-shadow:var(--e1),var(--rim)}
+
+/* ---------- кнопки: выпуклые, нажатие утапливает ---------- */
+:root[data-theme="light"]:not([data-accent]) .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:34px;padding:0 14px;border-radius:var(--r-sm);white-space:nowrap;
+  font:500 13px/1 var(--ui);color:var(--ink);background:var(--g-btn);border:1px solid rgba(255,255,255,.86);border-bottom-color:rgba(32,48,60,.16);
+  box-shadow:var(--e1),var(--rim);transition:filter .12s,box-shadow .12s,transform .12s}
+:root[data-theme="light"]:not([data-accent]) .btn:hover:not(:disabled){filter:brightness(1.02)}
+:root[data-theme="light"]:not([data-accent]) .btn:active:not(:disabled){box-shadow:var(--sink);transform:translateY(1px)}
+:root[data-theme="light"]:not([data-accent]) .btn:disabled{opacity:.45;box-shadow:none;cursor:default}
+:root[data-theme="light"]:not([data-accent]) .btn.primary{color:#fff;background:linear-gradient(180deg,#6E95B1,#5E87A5 45%,#456F8D);border-color:#4D7896;border-bottom-color:#36586F;
+  box-shadow:var(--e1),inset 0 1px 0 rgba(255,255,255,.38),inset 0 -1px 0 rgba(18,38,56,.25);text-shadow:0 1px 0 rgba(18,38,56,.25)}
+:root[data-theme="light"]:not([data-accent]) .btn.primary:active:not(:disabled){box-shadow:inset 0 3px 7px rgba(16,36,54,.35);transform:translateY(1px)}
+:root[data-theme="light"]:not([data-accent]) .btn.mini{min-height:28px;padding:0 10px;font-size:12px;border-radius:10px}
+:root[data-theme="light"]:not([data-accent]) .btn.ghost,:root[data-theme="light"]:not([data-accent]) .tlink{background:linear-gradient(180deg,rgba(255,255,255,.52),rgba(244,249,252,.28))}
+:root[data-theme="light"]:not([data-accent]) .btn.danger{color:var(--bad)}
+:root[data-theme="light"]:not([data-accent]) .btn svg{width:15px;height:15px;flex:none;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* ---------- поля: вдавленные ---------- */
+:root[data-theme="light"]:not([data-accent]) :is(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]),select,textarea){
+  background:rgba(255,255,255,.42);border:1px solid rgba(32,48,60,.12);border-radius:var(--r-sm);box-shadow:var(--sink);color:var(--ink);font-family:var(--ui)}
+:root[data-theme="light"]:not([data-accent]) :is(input:not([type=checkbox]):not([type=radio]):not([type=range]),select){min-height:40px}
+:root[data-theme="light"]:not([data-accent]) :is(input,select,textarea):focus-visible{outline:none;box-shadow:var(--sink),0 0 0 2px #5E87A5}
+:root[data-theme="light"]:not([data-accent]) :is(button,a,summary,[tabindex]):focus-visible{outline:2px solid #5E87A5;outline-offset:2px}
+:root[data-theme="light"]:not([data-accent]) input[type=checkbox],:root[data-theme="light"]:not([data-accent]) input[type=radio]{accent-color:#456F8D}
+
+/* ---------- чипы и сегменты-вкладки ---------- */
+:root[data-theme="light"]:not([data-accent]) :is(.chip,.fchip){background:linear-gradient(180deg,rgba(255,255,255,.62),rgba(244,249,252,.36));border:1px solid rgba(255,255,255,.82);border-bottom-color:rgba(32,48,60,.12);box-shadow:var(--e1),var(--rim);color:var(--ink-2);border-radius:var(--r-sm)}
+:root[data-theme="light"]:not([data-accent]) :is(.chip,.fchip)[aria-pressed="true"],:root[data-theme="light"]:not([data-accent]) :is(.chip,.fchip).on{background:linear-gradient(180deg,rgba(214,228,238,.9),rgba(196,215,229,.7));color:var(--steel-ink);border-color:rgba(94,135,165,.4)}
+:root[data-theme="light"]:not([data-accent]) :is(.seg,.segs,.cabseg){background:rgba(32,48,60,.05);border:1px solid rgba(255,255,255,.6);border-radius:14px;box-shadow:var(--sink);padding:3px}
+:root[data-theme="light"]:not([data-accent]) :is(.seg,.segs,.cabseg) :is(button,.segb){border:0;background:transparent;box-shadow:none;border-radius:11px;color:var(--ink-2)}
+:root[data-theme="light"]:not([data-accent]) :is(.seg,.segs,.cabseg) :is(button,.segb):is([aria-pressed="true"],[aria-selected="true"],.on){background:rgba(250,253,255,.92);color:var(--ink);box-shadow:var(--e1),var(--rim)}
+
+/* ---------- таблицы: полосы с зазором, шапка — единая полка ---------- */
+:root[data-theme="light"]:not([data-accent]) :is(.card table,.wtbl,.fctab){background:none;border-collapse:separate;border-spacing:0 7px}
+:root[data-theme="light"]:not([data-accent]) :is(.wtbl,.fctab,.card table) thead th{background:var(--g-head);font:500 9.5px/1.2 var(--ui);letter-spacing:.12em;text-transform:uppercase;color:#6E8191;border:0;
+  border-top:1px solid rgba(255,255,255,.9);border-bottom:1px solid rgba(32,48,60,.08);padding:11px 10px}
+:root[data-theme="light"]:not([data-accent]) :is(.wtbl,.fctab,.card table) thead th:first-child{border-radius:13px 0 0 13px;border-left:1px solid rgba(255,255,255,.9)}
+:root[data-theme="light"]:not([data-accent]) :is(.wtbl,.fctab,.card table) thead th:last-child{border-radius:0 13px 13px 0;border-right:1px solid rgba(255,255,255,.9)}
+:root[data-theme="light"]:not([data-accent]) :is(.wtbl,.fctab,.card table) tbody td{background:var(--g-row);border:0;border-top:1px solid rgba(255,255,255,.95);border-bottom:1px solid rgba(32,48,60,.07);padding:10px}
+:root[data-theme="light"]:not([data-accent]) :is(.wtbl,.fctab,.card table) tbody td:first-child{border-radius:13px 0 0 13px;border-left:1px solid rgba(255,255,255,.8)}
+:root[data-theme="light"]:not([data-accent]) :is(.wtbl,.fctab,.card table) tbody td:last-child{border-radius:0 13px 13px 0;border-right:1px solid rgba(255,255,255,.8)}
+:root[data-theme="light"]:not([data-accent]) :is(.wtbl,.fctab,.card table) tbody tr{box-shadow:var(--e1)}
+:root[data-theme="light"]:not([data-accent]) :is(.wtbl,.fctab,.card table) :is(td,th).r,:root[data-theme="light"]:not([data-accent]) :is(.wtbl,.fctab) td.num{text-align:right;font-family:var(--num);font-variant-numeric:tabular-nums}
+/* строки-списки (меню, сырьё, загрузки): та же полоса */
+:root[data-theme="light"]:not([data-accent]) :is(.mrow,.arow,.trow,.sxlist>*,.syrow){background:var(--g-row);border:1px solid rgba(255,255,255,.8);border-bottom-color:rgba(32,48,60,.08);border-radius:13px;box-shadow:var(--e1);margin-bottom:7px}
+:root[data-theme="light"]:not([data-accent]) :is(.trows,.sxlist){background:none;border:0;box-shadow:none}
+
+/* ---------- поповеры и меню: плотное стекло ---------- */
+:root[data-theme="light"]:not([data-accent]) :is(.profpop,.pop,.rmenu,.dd,.menu-pop,.pickdd,.pkdd,dialog.dg,.tabs.more-open .tab-over){background:var(--g-pop)!important;border:1px solid #fff;border-radius:var(--r-md);box-shadow:var(--e3)}
+:root[data-theme="light"]:not([data-accent]) dialog.dg::backdrop{background:rgba(32,48,60,.28)}
+
+/* ---------- состояния ---------- */
+:root[data-theme="light"]:not([data-accent]) :is(.w-bad,.err){color:var(--bad)}
+:root[data-theme="light"]:not([data-accent]) .tstat.bad{background:var(--bad-soft);color:var(--bad)}
+:root[data-theme="light"]:not([data-accent]) .tstat.warn{background:var(--warn-soft);color:var(--warn)}
+:root[data-theme="light"]:not([data-accent]) .tstat.ok{background:var(--good-soft);color:var(--good)}
+
+/* ---------- значок «Фудкост» в меню ---------- */
+#tabFc{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M19 5 5 19'/%3E%3Ccircle cx='7' cy='7' r='2.5'/%3E%3Ccircle cx='17' cy='17' r='2.5'/%3E%3C/svg%3E")}
+
+/* ---------- телефон: корешок — нижняя панель, бренд и подписи групп скрыты ---------- */
+@media (max-width:999.98px){
+  .railbrand,.navcap{display:none}
+  :root[data-theme="light"]:not([data-accent]) .tabs{background:var(--g-pop);border:1px solid #fff;box-shadow:var(--e3)}
+  :root[data-theme="light"]:not([data-accent]) .tabs .tab[aria-selected="true"]:not([hidden]):not(.tab-over){background:linear-gradient(180deg,#6E95B1,#456F8D);color:#fff;box-shadow:var(--e1)}
+  :root[data-theme="light"]:not([data-accent]) #view{padding:0}
+  :root[data-theme="light"]:not([data-accent]) :is(input:not([type=checkbox]):not([type=radio]),select,textarea){font-size:16px;min-height:44px}
+}
+@media (prefers-reduced-motion:reduce){:root[data-theme="light"]:not([data-accent]) .btn{transition:none}}
+/* без поддержки размытия — сплошной светлый фон */
+@supports not ((-webkit-backdrop-filter:blur(1px)) or (backdrop-filter:blur(1px))){
+  :root[data-theme="light"]:not([data-accent]) :is(.tabs,header.top,#view){background:rgba(250,253,255,.9)}
+}
+@media print{:root[data-theme="light"]:not([data-accent]) :is(.tabs,header.top){display:none}:root[data-theme="light"]:not([data-accent]) #view{background:#fff;box-shadow:none;border:0;-webkit-backdrop-filter:none;backdrop-filter:none;padding:0}}
+
+/* «Что изменилось» и служебные плашки — плитки на стекле */
+:root[data-theme="light"]:not([data-accent]) :is(#relBar>*,#upBar>*,#bkBar>*,#rvBar>*,#pwBar>*){background:var(--g-tile);border:1px solid var(--edge);border-radius:var(--r-md);box-shadow:var(--e2),var(--rim)}
+/* хвост корешка: версия и «Что изменилось» */
+@media (min-width:1000px){
+  :root[data-theme="light"]:not([data-accent]) #relFoot{position:fixed;left:calc(max(32px,calc((100vw - 1336px)/2)) + 18px);bottom:50px;width:218px;z-index:61;margin:0;padding:12px 0 0;border-top:1px solid var(--hair);text-align:left;background:none}
+  :root[data-theme="light"]:not([data-accent]) #relFoot :is(a,button){font:10.5px/1.6 var(--num);color:#6E8191;background:none;border:0;box-shadow:none;padding:0;text-decoration:none}
+  :root[data-theme="light"]:not([data-accent]) .tabs{padding-bottom:64px}
+}
+:root[data-theme="light"]:not([data-accent]) #upBar .btn{min-height:38px}
 </style>
-<script id="skinBoot">try{var d=document.documentElement,a=localStorage.getItem('kbzhu:accent'),t=localStorage.getItem('kbzhu:theme');if(a&&a!=='mint')d.setAttribute('data-accent',a);if(t==='dark')d.setAttribute('data-theme','dark');else if(t!=='auto')d.setAttribute('data-theme','light');}catch(e){document.documentElement.setAttribute('data-theme','light');}</script>
+<script id="skinBoot">document.documentElement.setAttribute("data-theme","light");</script>
 
 <div class="wrap">
   <header class="top">
@@ -1763,7 +1929,7 @@ html.testmode .tabs{top:82px}
       <span class="whoami" id="periodChip" hidden></span>
       <div class="whoami" id="leBox" role="note" hidden></div>
       <div class="status" id="status" role="status">Подключаюсь…</div>
-      <div class="prof">
+      <div class="prof" hidden>
         <button type="button" id="profBtn" class="profbtn" aria-haspopup="true" aria-expanded="false" aria-controls="skinBox" title="Профиль и оформление"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg><span class="whoami" id="whoBox" role="note" hidden></span></button>
         <div class="skin profpop" id="skinBox" role="group" aria-label="Оформление" hidden><span class="pplbl">Цвет оформления</span><div class="ppsw">
         <button class="sk" type="button" data-accent="mint" aria-pressed="true" title="Зелёный" aria-label="Цвет: зелёный"></button>
@@ -1779,15 +1945,20 @@ html.testmode .tabs{top:82px}
     </div>
   </header>
   <nav class="tabs" id="tabs" role="tablist" aria-label="Разделы">
+    <div class="railbrand" role="presentation"><span class="rbmark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7.5 14.5A4 4 0 0 1 8 6.6a4 4 0 0 1 8 0 4 4 0 0 1 .5 7.9V17h-9z"/><path d="M7.5 20h9"/></svg></span><span class="rbtxt"><span class="rbname">Не на глазок</span><span class="rbslogan">У каждой котлеты есть амбиции, финансовые ожидания и право знать себе цену.</span></span></div>
+    <div class="navcap" role="presentation">Деньги</div>
     <button class="tab" role="tab" id="tabHome" data-tab="home" aria-selected="false">Обзор</button>
-    <button class="tab" role="tab" id="tabMenu" data-tab="menu" aria-selected="false">Меню и финансы</button>
+    <button class="tab" role="tab" id="tabMenu" data-tab="menu" aria-selected="false">Меню и цены</button>
     <button class="tab" role="tab" id="tabFc" data-tab="fc" aria-selected="false" hidden>Фудкост</button>
     <button class="tab" role="tab" id="tabAbc" data-tab="abc" aria-selected="false">ABC-анализ</button>
-    <button class="tab" role="tab" id="tabCalc" data-tab="calc" aria-selected="true">ТТК</button>
+    <div class="navcap" role="presentation">Документы</div>
+    <button class="tab" role="tab" id="tabCalc" data-tab="calc" aria-selected="true">ТТК и калькуляции</button>
     <button class="tab" role="tab" id="tabOp1" data-tab="op1" aria-selected="false">Калькуляция ОП-1</button>
-    <button class="tab" role="tab" id="tabBase" data-tab="base" aria-selected="false">База сырья</button>
     <button class="tab" role="tab" id="tabRev" data-tab="rev" aria-selected="false" hidden>Ревизии</button>
+    <div class="navcap" role="presentation">Дополнительно</div>
+    <button class="tab" role="tab" id="tabBase" data-tab="base" aria-selected="false">Сырьё и КБЖУ</button>
     <button class="tab" role="tab" id="tabDir" data-tab="dir" aria-selected="false" hidden>Справочники</button>
+    <div class="navcap" role="presentation">Служебное</div>
     <button class="tab" role="tab" id="tabSync" data-tab="sync" aria-selected="false" hidden>Личный кабинет</button>
     <button class="tab tab-more" type="button" id="tabMore" aria-haspopup="true" aria-expanded="false" aria-selected="false" hidden>Ещё</button>
   </nav>
@@ -1827,7 +1998,7 @@ try{
 }catch(e){fail=1;}
 window.__realLS=real;window.KBZHU_TEST=1;
 if(fail){window.stop();document.documentElement.innerHTML='<body style="font:16px sans-serif;padding:24px"><h2>Тестовая версия остановлена</h2><p>Браузер не дал отделить тестовые данные от рабочих, поэтому ничего не запущено. Рабочие данные не тронуты.</p></body>';throw new Error('test-isolation');}
-})();window.KBZHU_TEST_PROD="";window.KBZHU_SEED={"ings":{},"recipes":{}};window.KBZHU_BUILD=202611261704;</script>
+})();window.KBZHU_TEST_PROD="";window.KBZHU_SEED={"ings":{},"recipes":{}};window.KBZHU_BUILD=202611271908;</script>
 <script>
 (function(){
 'use strict';
@@ -5244,11 +5415,11 @@ function restoreFocus(k){
 }
 function renderTabs(){
   $$('.tab').forEach(function(b){var t=b.getAttribute('data-tab');b.setAttribute('aria-selected',(t===S.tab||(t==='calc'&&S.tab==='cloud'))?'true':'false');});
-  $('#tabBase').innerHTML='База сырья'+(S.loaded.ingredients?'<span class="tdot"> · </span><span class="tcnt">'+Object.keys(S.ings).length+'</span>':'');
+  $('#tabBase').innerHTML='Сырьё и КБЖУ'+(S.loaded.ingredients?'<span class="tdot"> · </span><span class="tcnt">'+Object.keys(S.ings).length+'</span>':'');
   var th=$('#tabHome');if(th)th.hidden=guestOn()||!tabOk('home');
   var tm=$('#tabMenu'),ta=$('#tabAbc'),to=$('#tabOp1'),tk=$('#tabCalc');
   if(syMgr())$('#tabBase').textContent='Цены сырья';
-  if(tm)tm.textContent=NOPRICE?'Меню':'Меню и финансы';
+  if(tm)tm.textContent=NOPRICE?'Меню':'Меню и цены';
   if(ta)ta.hidden=NOPRICE||!tabOk('abc');
   if(to)to.hidden=NOPRICE||!tabOk('op1');
   if(tk){tk.hidden=!(tabOk('calc')||ttkCloudOn());tk.setAttribute('data-cloud',ttkCloudOn()?'1':'0');}
@@ -11393,8 +11564,9 @@ var SKIN_ACC=['mint','indigo','ember','plum'];
 function skinGet(k){try{return localStorage.getItem(k)||'';}catch(e){return'';}}
 function skinPut(k,v){try{if(v)localStorage.setItem(k,v);else localStorage.removeItem(k);}catch(e){}}
 function skinTheme(){var t=skinGet('kbzhu:theme');return t==='dark'||t==='auto'?t:'light';}
+/* v94: одна светлая стальная гамма; выбор цвета и тёмная тема убраны */
 function skinApply(){
-  var acc=skinGet('kbzhu:accent')||'mint',th=skinTheme(),d=document.documentElement;
+  var acc='mint',th='light',d=document.documentElement;
   if(SKIN_ACC.indexOf(acc)<0)acc='mint';
   if(acc==='mint')d.removeAttribute('data-accent');else d.setAttribute('data-accent',acc);
   if(th==='auto')d.removeAttribute('data-theme');else d.setAttribute('data-theme',th);

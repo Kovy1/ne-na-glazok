@@ -18,11 +18,11 @@ function restoreFocus(k){
 }
 function renderTabs(){
   $$('.tab').forEach(function(b){var t=b.getAttribute('data-tab');b.setAttribute('aria-selected',(t===S.tab||(t==='calc'&&S.tab==='cloud'))?'true':'false');});
-  $('#tabBase').innerHTML='База сырья'+(S.loaded.ingredients?'<span class="tdot"> · </span><span class="tcnt">'+Object.keys(S.ings).length+'</span>':'');
+  $('#tabBase').innerHTML='Сырьё и КБЖУ'+(S.loaded.ingredients?'<span class="tdot"> · </span><span class="tcnt">'+Object.keys(S.ings).length+'</span>':'');
   var th=$('#tabHome');if(th)th.hidden=guestOn()||!tabOk('home');
   var tm=$('#tabMenu'),ta=$('#tabAbc'),to=$('#tabOp1'),tk=$('#tabCalc');
   if(syMgr())$('#tabBase').textContent='Цены сырья';
-  if(tm)tm.textContent=NOPRICE?'Меню':'Меню и финансы';
+  if(tm)tm.textContent=NOPRICE?'Меню':'Меню и цены';
   if(ta)ta.hidden=NOPRICE||!tabOk('abc');
   if(to)to.hidden=NOPRICE||!tabOk('op1');
   if(tk){tk.hidden=!(tabOk('calc')||ttkCloudOn());tk.setAttribute('data-cloud',ttkCloudOn()?'1':'0');}

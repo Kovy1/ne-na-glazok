@@ -34,7 +34,7 @@ const seed = () => ({
   const T = await mk(1280, 'adm-5678', seed());
   const rail = await T.$$eval('.tabs .tab:not([hidden])', a => a.map(x => x.textContent.trim().replace(/\s+·.*$/, '')));
   console.log('вкладки:', rail.join(' | '));
-  assert.ok(rail.includes('ТТК') && !rail.some(x => /облаке/.test(x)), 'в шапке одна вкладка «ТТК»');
+  assert.ok(rail.includes('ТТК и калькуляции') && !rail.some(x => /облаке/.test(x)), 'в шапке одна вкладка «ТТК»');
   assert.strictEqual(await T.locator('.tabs #tabCloud').count(), 0);
   await T.click('#tabCalc'); await T.waitForSelector('#ttkHome');
   assert.strictEqual(await T.locator('#tabCalc[aria-selected="true"]').count(), 1);

@@ -1,5 +1,5 @@
 </style>
-<script id="skinBoot">try{var d=document.documentElement,a=localStorage.getItem('kbzhu:accent'),t=localStorage.getItem('kbzhu:theme');if(a&&a!=='mint')d.setAttribute('data-accent',a);if(t==='dark')d.setAttribute('data-theme','dark');else if(t!=='auto')d.setAttribute('data-theme','light');}catch(e){document.documentElement.setAttribute('data-theme','light');}</script>
+<script id="skinBoot">document.documentElement.setAttribute("data-theme","light");</script>
 
 <div class="wrap">
   <header class="top">
@@ -12,7 +12,7 @@
       <span class="whoami" id="periodChip" hidden></span>
       <div class="whoami" id="leBox" role="note" hidden></div>
       <div class="status" id="status" role="status">Подключаюсь…</div>
-      <div class="prof">
+      <div class="prof" hidden>
         <button type="button" id="profBtn" class="profbtn" aria-haspopup="true" aria-expanded="false" aria-controls="skinBox" title="Профиль и оформление"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg><span class="whoami" id="whoBox" role="note" hidden></span></button>
         <div class="skin profpop" id="skinBox" role="group" aria-label="Оформление" hidden><span class="pplbl">Цвет оформления</span><div class="ppsw">
         <button class="sk" type="button" data-accent="mint" aria-pressed="true" title="Зелёный" aria-label="Цвет: зелёный"></button>
@@ -28,15 +28,20 @@
     </div>
   </header>
   <nav class="tabs" id="tabs" role="tablist" aria-label="Разделы">
+    <div class="railbrand" role="presentation"><span class="rbmark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7.5 14.5A4 4 0 0 1 8 6.6a4 4 0 0 1 8 0 4 4 0 0 1 .5 7.9V17h-9z"/><path d="M7.5 20h9"/></svg></span><span class="rbtxt"><span class="rbname">Не на глазок</span><span class="rbslogan">У каждой котлеты есть амбиции, финансовые ожидания и право знать себе цену.</span></span></div>
+    <div class="navcap" role="presentation">Деньги</div>
     <button class="tab" role="tab" id="tabHome" data-tab="home" aria-selected="false">Обзор</button>
-    <button class="tab" role="tab" id="tabMenu" data-tab="menu" aria-selected="false">Меню и финансы</button>
+    <button class="tab" role="tab" id="tabMenu" data-tab="menu" aria-selected="false">Меню и цены</button>
     <button class="tab" role="tab" id="tabFc" data-tab="fc" aria-selected="false" hidden>Фудкост</button>
     <button class="tab" role="tab" id="tabAbc" data-tab="abc" aria-selected="false">ABC-анализ</button>
-    <button class="tab" role="tab" id="tabCalc" data-tab="calc" aria-selected="true">ТТК</button>
+    <div class="navcap" role="presentation">Документы</div>
+    <button class="tab" role="tab" id="tabCalc" data-tab="calc" aria-selected="true">ТТК и калькуляции</button>
     <button class="tab" role="tab" id="tabOp1" data-tab="op1" aria-selected="false">Калькуляция ОП-1</button>
-    <button class="tab" role="tab" id="tabBase" data-tab="base" aria-selected="false">База сырья</button>
     <button class="tab" role="tab" id="tabRev" data-tab="rev" aria-selected="false" hidden>Ревизии</button>
+    <div class="navcap" role="presentation">Дополнительно</div>
+    <button class="tab" role="tab" id="tabBase" data-tab="base" aria-selected="false">Сырьё и КБЖУ</button>
     <button class="tab" role="tab" id="tabDir" data-tab="dir" aria-selected="false" hidden>Справочники</button>
+    <div class="navcap" role="presentation">Служебное</div>
     <button class="tab" role="tab" id="tabSync" data-tab="sync" aria-selected="false" hidden>Личный кабинет</button>
     <button class="tab tab-more" type="button" id="tabMore" aria-haspopup="true" aria-expanded="false" aria-selected="false" hidden>Ещё</button>
   </nav>

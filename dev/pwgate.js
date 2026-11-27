@@ -74,7 +74,7 @@ const errs = [];
   await page.waitForFunction(() => { const e = document.querySelector('#sym-conn'); return e && !e.hidden && /Подключено/.test(e.textContent); }, null, { timeout: 30000 });
   await sleep(800);
   const tabs = await visTabs(); console.log('после входа:', tabs.join(' | '));
-  assert.ok(tabs.includes('ТТК') && tabs.some(t => /^База сырья/.test(t)) && tabs.includes('Личный кабинет') && !tabs.includes('Вход'), tabs.join('|'));
+  assert.ok(tabs.includes('ТТК и калькуляции') && tabs.some(t => /^Сырьё и КБЖУ/.test(t)) && tabs.includes('Личный кабинет') && !tabs.includes('Вход'), tabs.join('|'));
   // «Служебное» свёрнуто
   await page.waitForSelector('#sySvc');
   assert.strictEqual(await page.$eval('#sySvc', e => e.open), false, 'служебные блоки свёрнуты');

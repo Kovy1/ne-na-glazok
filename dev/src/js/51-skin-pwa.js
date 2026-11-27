@@ -3,8 +3,9 @@ var SKIN_ACC=['mint','indigo','ember','plum'];
 function skinGet(k){try{return localStorage.getItem(k)||'';}catch(e){return'';}}
 function skinPut(k,v){try{if(v)localStorage.setItem(k,v);else localStorage.removeItem(k);}catch(e){}}
 function skinTheme(){var t=skinGet('kbzhu:theme');return t==='dark'||t==='auto'?t:'light';}
+/* v94: одна светлая стальная гамма; выбор цвета и тёмная тема убраны */
 function skinApply(){
-  var acc=skinGet('kbzhu:accent')||'mint',th=skinTheme(),d=document.documentElement;
+  var acc='mint',th='light',d=document.documentElement;
   if(SKIN_ACC.indexOf(acc)<0)acc='mint';
   if(acc==='mint')d.removeAttribute('data-accent');else d.setAttribute('data-accent',acc);
   if(th==='auto')d.removeAttribute('data-theme');else d.setAttribute('data-theme',th);
