@@ -35,7 +35,7 @@ const path = require('path'), assert = require('assert');
   assert.strictEqual(stored, 45.8, 'рецептура не изменилась');
   await P.screenshot({ path: 'out/tv_desktop.png' });
   await P.keyboard.press('Escape'); await P.waitForFunction(() => !document.getElementById('ttkView'));
-  assert.ok(await P.evaluate(() => document.activeElement && document.activeElement.getAttribute('data-act') === 'mView'), 'фокус вернулся на кнопку');
+  assert.ok(await P.evaluate(() => document.activeElement && (document.activeElement.getAttribute('data-act') === 'mView' || !!document.activeElement.closest('details.mmore'))), 'фокус вернулся на кнопку');
   // пустая карта: ничего не выдумывает
   await P.locator('[data-act="mView"]').nth(1).click(); await P.waitForSelector('#ttkViewBox');
   t = (await P.textContent('#ttkViewBox')).replace(/\s+/g, ' ');

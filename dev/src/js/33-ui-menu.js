@@ -249,10 +249,10 @@ function mRowHtml(it){
   var r=it.r,m=it.m,id=it.id,fk='m:'+esc(id)+':',nm=String(r.name||'Без названия'),num=ttkVal(r,'num');
   var dis=m.cost===null?' disabled':'';
   var lsp=NOPRICE?sellEff(r,curRegion()):null;
-  var mn='<span class="mn"><b>'+esc(nm)+dsBadge(r)+'</b><small>'+(num?'ТТК №'+esc(num)+' · ':'')+'выход '+dnum(r.output,2)+' г'+(rdOutCheck(r).length?' <span class="warnt" title="'+esc(rdOutCheck(r)[0].txt)+' Проверьте в «Готовности карт»: исправление подтверждает технолог.">⚠ проверьте выход</span>':'')+(lsp?' · цена продажи <b class="lsell">'+money(lsp)+' ₽</b>':'')+'</small>'+mKbHtml(id,r)
-      +'<span class="mctl">'+gpRowHtml(it)+(menuCats().length&&!layOn()?'<select class="mcat" data-act="mCat" data-edit data-fk="mcat:'+esc(id)+'" aria-label="Папка: '+esc(nm)+'" title="Папка меню">'+catOptionsHtml(r.cat)+'</select>':'')
-      +(uiRO()?'':'<button class="btn mini" data-act="mArch" data-edit title="Убрать из меню: блюдо уйдёт в архив, его ТТК останется">В архив</button>')+'</span></span>';
-  if(NOPRICE)return'<div class="mrow mlite" data-rid="'+esc(id)+'">'+mn+''+mOpenBtn()+'</div>';
+  var mn='<span class="mn"><b>'+esc(nm)+dsBadge(r)+'</b><small>'+(num?'ТТК №'+esc(num)+' · ':'')+'выход '+dnum(r.output,2)+' г'+(rdOutCheck(r).length?' <span class="warnt" title="'+esc(rdOutCheck(r)[0].txt)+' Проверьте в «Готовности карт»: исправление подтверждает технолог.">⚠ проверьте выход</span>':'')+(lsp?' · цена продажи <b class="lsell">'+money(lsp)+' ₽</b>':'')+(!NOPRICE&&m.fc!==null?' · фудкост <span class="mfc'+(function(){var t=rowTones(m);return t&&t.fc?tcls(t.fc):'';})()+'">'+pctStr(m.fc)+' %</span>':'')+'</small>'
+      +'</span>';
+  var more=mMoreHtml(it,nm);
+  if(NOPRICE)return'<div class="mrow mlite" data-rid="'+esc(id)+'">'+mn+''+mOpenBtn()+more+'</div>';
   var tn=rowTones(m);
   function tt(k){return tn&&tn[k]?tcls(tn[k])+(tn.pre?' t-p':''):'';}
   function tl(k){return tn&&tn[k]?' title="'+esc(toneTip(k,tn[k])+(tn.pre?'.'+TONE_PRE:''))+'"':'';}
@@ -264,9 +264,26 @@ function mRowHtml(it){
     +'<label class="cell'+tt('mg')+'"'+tl('mg')+' data-label="Маржинальность, %" data-s="Маржа, %"><input class="num" inputmode="decimal" autocomplete="off" aria-label="Маржинальность, %: '+esc(nm)+'" data-act="mMg" data-edit data-fk="'+fk+'mg" value="'+pctStr(m.margin)+'" placeholder="—"'+dis+'></label>'
     +'<span class="num'+tt('pf')+'"'+tl('pf')+' data-label="Доход после сырья, ₽" data-s="Доход, ₽" data-out="profit">'+(m.profit===null?'—':money(m.profit))+'</span>'
     +'<span class="num'+tt('fc')+'"'+tl('fc')+' data-label="Сырьё в цене, %" data-s="Сырьё, %" data-out="fc">'+(m.fc===null?'—':pctStr(m.fc)+' %')+'</span>'
-    +''+mOpenBtn()+''
+    +more
     +(!m.complete&&m.rowsN?incBarHtml(m.noPrice,m.noIds,id,'minc'):'')
     +'</div>';
+}
+/* «⋯» в строке блюда: калькуляция, карта, КБЖУ, просмотр, видно посетителям, папка, архив, скачать */
+function mMoreHtml(it,nm){
+  var r=it.r,id=it.id,ch=syChef(),lim=syLimited(),items='';
+  function mi(act,ic,t,ttl,ed){return'<button type="button" role="menuitem" class="mpi" data-act="'+act+'"'+(ed?' data-edit':'')+(ttl?' title="'+esc(ttl)+'"':'')+'>'+IC[ic]+'<span>'+t+'</span></button>';}
+  if(!NOPRICE&&!ch)items+=mi('mCalc','calc','Калькуляция · 1 порция','Себестоимость, цена, маржа, структура; ОП-1');
+  if(ch)items+=mi('mOpen','doc','ТТК в облаке','Найти ТТК этого блюда в облаке');
+  else items+=mi('mOpen','doc',lim?'Калькуляция ОП-1':'Карта ТТК',lim?'Открыть калькуляционную карточку ОП-1':'Открыть ТТК этого блюда');
+  if(!ch&&!lim)items+=mi('mKbzhu','leaf','КБЖУ и сверка','Расчёт КБЖУ и сверка с протоколом');
+  items+=mi('mView','eye','Просмотр','Просмотр ТТК: состав, технология, КБЖУ, пересчёт на число порций');
+  var gp=gpRowHtml(it),cat=(menuCats().length&&!layOn())?'<label class="mpf"><span>Папка</span><select class="mcat" data-act="mCat" data-edit data-fk="mcat:'+esc(id)+'" aria-label="Папка: '+esc(nm)+'">'+catOptionsHtml(r.cat)+'</select></label>':'';
+  if(gp||cat)items+='<hr>'+(gp?'<div class="mpf">'+gp+'</div>':'')+cat;
+  var kb=mKbHtml(id,r);
+  items+='<hr>'+(!ch&&canDl()?mi('mDl','dl',lim?'Скачать ОП-1 (.docx)':'Скачать .docx',''):'')
+    +(uiRO()?'':mi('mArch','box','В архив','Убрать из меню: блюдо уйдёт в архив, его ТТК останется',true))
+    +'<div class="mpkb">'+kb+'</div>';
+  return'<details class="mmore"><summary class="btn mini ico" aria-label="Действия: '+esc(nm)+'" title="Действия">'+IC.more+'</summary><div class="mpop" role="menu">'+items+'</div></details>';
 }
 /* скачать карту прямо из меню, не открывая её: ТТК (.docx), у финансового — ОП-1; у шеф-повара свои файлы в облаке */
 function mDlBtn(){
@@ -321,9 +338,33 @@ function chefOpenTtk(id){
     renderAll();
   });
 }
+/* шапка таблицы меню — одна полка */
+function mColsHtml(){
+  if(NOPRICE)return'';
+  return'<div class="mrow mhead mcols" aria-hidden="true"><span>Блюдо</span><span class="r">Себестоимость</span><span class="r">Цена</span><span class="r">Наценка</span><span class="r">Маржа</span><span class="r">Доход</span><span class="r">Фудкост</span><span></span></div>';
+}
+/* сводка над меню: деньги одной фразой, числа моноширинным */
+/* главные действия меню: новое блюдо, цены продажи из файла, Excel меню */
+function mTopBtnsHtml(){
+  var b='';
+  if(!uiRO()&&!syLimited())b+='<button class="btn primary" data-act="newRecipe" data-edit>'+IC.plus+'Новое блюдо</button>';
+  if(!S.sx)b+='<button class="btn" data-act="pickSx" data-edit title="Прейскурант: наименование блюда, единица, стоимость. Цены попадут в выбранный регион">'+IC.up+'Загрузить цены</button>';
+  if(!guestOn()&&canDl())b+='<button class="btn" data-act="dlMenuX" title="Меню региона с ценами продажи, финансами и КБЖУ, без состава блюд">'+IC.dl+'Скачать меню</button>';
+  return b?'<div class="btns pbtns">'+b+'</div>':'';
+}
+function menuHeadHtml(items){
+  var ok=[],np=0,bl=0,f=curFin();
+  items.forEach(function(it){var m=it.m;if(m.price===null)np++;if(belowTarget(m))bl++;if(m.price!==null&&m.cost!==null&&m.complete)ok.push(m);});
+  function avg(k){return ok.length?ok.reduce(function(a,m){return a+m[k];},0)/ok.length:null;}
+  var mg=avg('margin'),fc=avg('fc'),parts=['<b class="num">'+items.length+'</b> '+plural(items.length,['блюдо','блюда','блюд'])+' в меню'];
+  if(np)parts.push('у <b class="num">'+np+'</b> нет цены продажи');
+  if(f.target!==null&&bl)parts.push('<b class="num">'+bl+'</b> ниже цели');
+  var tail=(mg!==null?'Средняя маржа <b class="num">'+fmt(mg,1)+' %</b>, сырьё в цене <b class="num">'+fmt(fc,1)+' %</b> — по '+ok.length+' '+plural(ok.length,['блюду','блюдам','блюдам'])+' с ценой и полной себестоимостью.':'');
+  return'<div class="phead"><p class="kicker">Деньги · '+esc(regionName(curRegion()))+'</p><h1 class="ptitle">Меню и цены</h1><p class="psum">'+parts.join(', ')+'. '+tail+'</p></div>';
+}
 function mHeadHtml(){
   if(NOPRICE)return'';
-  return'<div class="mleg" role="note"><div>Цвет и значок: <span class="lgk lg-r">✕ плохо</span> · <span class="lgk lg-y">! внимание</span> · без значка — в норме. Пороги — в подсказке при наведении.</div><div>Наценка — к себестоимости, маржа — к цене продажи, сырьё — доля себестоимости в цене. <b>Доход после сырья</b> = цена продажи − стоимость сырья по ТТК и ценам региона. Не учтены: зарплата, аренда, коммунальные услуги, налоги, потери при производстве и списания готовых блюд.</div></div>';
+  return'<details class="mlegd2"><summary>Как читать цвета и показатели</summary><div class="mleg" role="note"><div>Цвет и значок: <span class="lgk lg-r">✕ плохо</span> · <span class="lgk lg-y">! внимание</span> · без значка — в норме. Пороги — в подсказке при наведении.</div><div>Наценка — к себестоимости, маржа — к цене продажи, сырьё — доля себестоимости в цене. <b>Доход после сырья</b> = цена продажи − стоимость сырья по ТТК и ценам региона. Не учтены: зарплата, аренда, коммунальные услуги, налоги, потери при производстве и списания готовых блюд.</div></div></details>';
 }
 function mFoldOpen(k){return!(S.mclosed&&S.mclosed[k]);}
 /* средние по блюдам папки так же, как в строках: себестоимость — по блюдам с себестоимостью, цена — по блюдам с ценой продажи, наценка, маржа, прибыль и доля сырья — по блюдам с ценой и себестоимостью; неполная себестоимость отмечается */
@@ -405,8 +446,8 @@ function mArchHtml(){
 function mListHtml(){
   var items=menuItems(),list=menuVisible(items),cats=menuCats(),h='';
   if(!list.length)h+='<p class="muted">'+(items.length?'Ничего не найдено. Измените поиск или фильтр.':'В меню нет блюд: все ТТК в архиве.')+'</p>';
-  else if(!cats.length)h+='<div class="card">'+mHeadHtml()+list.map(mRowHtml).join('')+'</div>';
-  else h+='<div class="card">'+mHeadHtml()+mGroupsHtml(list)+'</div>';
+  else if(!cats.length)h+='<div class="mtable">'+mColsHtml()+list.map(mRowHtml).join('')+'</div>'+mHeadHtml();
+  else h+='<div class="mtable">'+mColsHtml()+mGroupsHtml(list)+'</div>'+mHeadHtml();
   return h+mBulkHtml(list.length)+mArchHtml();
 }
 function mFoldersHtml(){
@@ -745,13 +786,14 @@ function viewMenu(){
   if(!Object.keys(S.recipes).length)return recsCardHtml()+'<div class="card empty"><h2>ТТК пока нет</h2><p>Здесь появятся все заведённые ТТК с себестоимостью и ценой продажи. Создайте расчёт на вкладке «ТТК» или загрузите готовую ТТК (.docx).</p><div class="btns"><button class="btn primary" data-act="gotoCalc">Открыть ТТК</button></div></div>';
   if(NOPRICE)return viewMenuLite();
   var items=menuItems(),g=curRegion();
-  var h=sxCardHtml(),ex=menuXlsxBtnHtml()+(S.sx?'':'<div class="btns" style="margin-bottom:12px"><button class="btn" data-act="pickSx" data-edit title="Прейскурант: наименование блюда, единица, стоимость. Цены попадут в выбранный регион">Загрузить цены продажи из файла</button></div>')+'<p class="rgtag">Цены региона «'+esc(regionName(g))+'»'+(sellPtKey(g)?' · точка «'+esc((drPt(drCurPtId())||{}).name||'')+'»: у блюда без своей цены точки берётся цена региона':'')+'</p><p class="rgnote">Себестоимость считается по ценам сырья этого региона, цена продажи хранится отдельно для каждого региона. Регион выбирается вверху страницы.</p>';
+  var h=sxCardHtml(),ex='<p class="rgtag">Цены региона «'+esc(regionName(g))+'»'+(sellPtKey(g)?' · точка «'+esc((drPt(drCurPtId())||{}).name||'')+'»: у блюда без своей цены точки берётся цена региона':'')+'</p><p class="rgnote">Себестоимость считается по ценам сырья этого региона, цена продажи хранится отдельно для каждого региона. Регион выбирается вверху страницы.</p>';
   h+=syLimited()?'':recsCardHtml();
   h+=menuIncBarHtml(items)+dsAutoBarHtml();
   ex+=gpPanelHtml();
 
   var sortH='<label class="field w180" style="flex:0 0 190px"><span class="lbl">Сортировка</span><select data-act="mSort" data-fk="msort">'+[['name','По названию'],['cost','Сначала дорогие по себестоимости'],['price','Сначала дорогие по цене'],['margin','Сначала с низкой маржой'],['markup','Сначала с низкой наценкой']].map(function(x){return'<option value="'+x[0]+'"'+((S.msort||'name')===x[0]?' selected':'')+'>'+x[1]+'</option>';}).join('')+'</select></label>';
 
+  h=menuHeadHtml(items)+mTopBtnsHtml()+h;
   h+='<div class="tools mtools" style="margin-top:14px"><label class="field grow"><span class="lbl">Поиск по названию или номеру ТТК</span><input id="msearch" data-act="mQ" data-fk="msearch" autocomplete="off" value="'+esc(S.mq||'')+'" placeholder="Поиск по названию или номеру ТТК"></label>'+'</div>'
     +'<div class="chips" id="mChips" style="margin-bottom:12px">'+menuChipsHtml(items)+'</div>'
     +'<details class="mextra" id="mExtra"'+(S.mExtra?' open':'')+'><summary>Дополнительные действия</summary><div class="mxbody">'+ex+sortH+menuToneHtml()+mFoldersHtml()+dsPanelHtml()+tbHtml()+'</div></details>'

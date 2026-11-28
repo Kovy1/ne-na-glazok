@@ -164,3 +164,113 @@
   :root[data-theme="light"]:not([data-accent]) .tabs{padding-bottom:64px}
 }
 :root[data-theme="light"]:not([data-accent]) #upBar .btn{min-height:38px}
+
+/* ---------- этап 2: карта блюда ---------- */
+.kicker{font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:#6E8191;margin:0 0 6px;font-weight:500}
+.chead{margin:0 0 14px}
+.ctitle{font-family:var(--serif);font-weight:500;font-size:30px;line-height:1.15;letter-spacing:-.015em;margin:0 0 6px;color:var(--ink)}
+.cmeta{margin:0;font-size:13.5px;color:var(--ink-2)}
+.cmeta b.num{font-weight:500;color:var(--ink)}
+.ctabs{display:inline-flex;gap:2px;padding:3px;border-radius:14px;background:rgba(32,48,60,.05);border:1px solid rgba(255,255,255,.6);box-shadow:var(--sink);margin-left:8px}
+.ctab{display:inline-flex;align-items:center;gap:7px;min-height:30px;padding:0 13px;border:0;border-radius:11px;background:transparent;font:500 13px var(--ui);color:var(--ink-2);cursor:pointer;white-space:nowrap}
+.ctab svg,.btn svg{width:15px;height:15px;flex:none;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.ctab svg{width:14px;height:14px}
+.ctab[aria-selected="true"]{background:rgba(250,253,255,.92);color:var(--ink);box-shadow:var(--e1),var(--rim)}
+.ctab:hover:not([aria-selected="true"]){color:var(--ink)}
+.calcgrid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(280px,1fr);gap:16px;align-items:start;margin-bottom:16px}
+.ch2{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:6px}
+.ch2 h2{margin:0}
+.seg{display:inline-flex;gap:2px}
+.seg button{min-height:28px;padding:0 11px;font:500 12px var(--ui);cursor:pointer}
+.ctbl{width:100%}
+.ctbl td:first-child{width:34px;color:var(--ink-3)}
+.ctbl tr.nop td{color:var(--ink-3)}
+.ctbl tfoot td{padding:10px;font-weight:600;border-top:1px solid var(--hair-2)}
+.calcsum .bignum{font:500 38px/1.1 var(--num);letter-spacing:-.02em;margin:0 0 14px;color:var(--ink)}
+.calcsum .bignum span{font-size:20px;color:var(--ink-3)}
+.kv2{margin:0;display:grid;gap:0}
+.kv2>div{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px dotted var(--hair-2)}
+.kv2 dt{color:var(--ink-2);font-size:13px}
+.kv2 dd{margin:0;font:500 13.5px var(--num);font-variant-numeric:tabular-nums}
+.sbar{display:flex;height:10px;border-radius:6px;overflow:hidden;gap:2px;box-shadow:inset 0 1px 2px rgba(16,36,54,.15)}
+.sbar span{min-width:3px}
+.slegend{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:5px;font-size:12.5px}
+.slegend li{display:grid;grid-template-columns:10px minmax(0,1fr) auto;gap:8px;align-items:center}
+.slegend i{width:10px;height:10px;border-radius:3px}
+.slegend span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink-2)}
+@media (max-width:999.98px){.calcgrid{grid-template-columns:minmax(0,1fr)}.ctabs{margin:8px 0 0;display:flex;width:100%}.ctab{flex:1;justify-content:center;padding:0 6px}.ctitle{font-size:24px}}
+:root[data-theme="light"]:not([data-accent]) .ctbl :is(td,th):nth-child(2){text-align:left}
+.ttkbar #ttkMore{min-width:38px;padding:0 10px}
+
+/* ---------- этап 2: заголовок раздела ---------- */
+.phead{margin:0 0 14px}
+.ptitle{font-family:var(--serif);font-weight:500;font-size:32px;line-height:1.1;letter-spacing:-.015em;margin:0 0 8px;color:var(--ink)}
+.psum{font-size:15.5px;line-height:1.55;color:var(--ink-2);margin:0;max-width:72ch}
+.psum b.num{font-weight:500;color:var(--ink)}
+.pbtns{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}
+
+/* ---------- этап 2: таблица меню ---------- */
+@media (min-width:1000px){
+  :root[data-theme="light"]:not([data-accent]) :is(.mrow:not(.mlite),.mfold>summary.mfavg){grid-template-columns:minmax(0,1.7fr) 112px 118px 96px 96px 104px 40px;gap:10px;padding:9px 12px}
+  :root[data-theme="light"]:not([data-accent]) .mrow:not(.mlite)>[data-out="fc"],:root[data-theme="light"]:not([data-accent]) .mfold>summary.mfavg [data-avg="fc"],:root[data-theme="light"]:not([data-accent]) .mrow.mcols>span:nth-child(7){display:none}
+  :root[data-theme="light"]:not([data-accent]) .mrow:not(.mlite) :is(.cell,.num)::before{display:none}
+}
+:root[data-theme="light"]:not([data-accent]) .mrow.mcols{position:sticky;top:104px;z-index:5;background:var(--g-head);border:1px solid rgba(255,255,255,.9);border-bottom-color:rgba(32,48,60,.08);border-radius:13px;box-shadow:var(--e1);
+  font:500 9.5px/1.2 var(--ui);letter-spacing:.12em;text-transform:uppercase;color:#6E8191;min-height:38px}
+:root[data-theme="light"]:not([data-accent]) .mtable .mfold{margin:0 0 8px}
+:root[data-theme="light"]:not([data-accent]) .mrow .mn b{font-family:var(--serif);font-weight:500;font-size:15px;color:var(--ink)}
+:root[data-theme="light"]:not([data-accent]) .mrow .mn small{font-size:12px;color:var(--ink-3)}
+.mfc{font-family:var(--num)}
+.mfc.t-r{color:var(--bad);font-weight:600}.mfc.t-y{color:var(--warn);font-weight:600}
+:root[data-theme="light"]:not([data-accent]) .mrow input.num{min-height:36px;padding:0 10px}
+:root[data-theme="light"]:not([data-accent]) .mrow span.num{font-size:13.5px}
+/* «⋯» */
+.mmore{position:relative;justify-self:end}
+.mmore>summary{list-style:none;cursor:pointer;width:34px;min-width:34px;padding:0}
+.mmore>summary::-webkit-details-marker{display:none}
+.mpop{position:absolute;right:0;top:calc(100% + 6px);z-index:70;min-width:260px;padding:6px;border-radius:16px;background:rgba(250,253,255,.97);border:1px solid #fff;box-shadow:var(--e3);display:flex;flex-direction:column}
+.mpi{display:flex;align-items:center;gap:10px;width:100%;min-height:36px;padding:8px 10px;border:0;border-radius:10px;background:none;font:13px var(--ui);color:var(--ink);text-align:left;cursor:pointer}
+.mpi:hover,.mpi:focus-visible{background:rgba(94,135,165,.12)}
+.mpi svg{width:15px;height:15px;stroke:var(--ink-3);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.mpop hr{border:0;border-top:1px solid var(--hair);margin:5px 4px}
+.mpf{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px 10px;font-size:13px;color:var(--ink-2)}
+.mpf select{min-height:32px;max-width:150px}
+.mpkb{padding:6px 10px 4px;border-top:1px solid var(--hair);margin-top:5px}
+.mpkb .mkb{font-size:11.5px;color:var(--ink-3)}
+.mlegd2{margin:10px 0 0;font-size:12.5px;color:var(--ink-3)}
+.mlegd2 summary{cursor:pointer}
+@media (max-width:999.98px){.mrow.mcols{display:none}.mpop{min-width:230px}}
+:root[data-theme="light"]:not([data-accent]) .mrow:not(.mlite)>span.num{align-self:center}
+
+/* ---------- этап 2: обзор ---------- */
+.hmtiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:0 0 16px}
+.hmt{padding:14px 16px;border-radius:var(--r-md);background:var(--g-tile);border:1px solid var(--edge);box-shadow:var(--e2),var(--rim)}
+.hmtl{display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--ink-3)}
+.hmtl svg{width:15px;height:15px;stroke:var(--steel-deep);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.hmt.warn .hmtl svg{stroke:var(--amber)}
+.hmtv{font:500 22px/1.25 var(--num);letter-spacing:-.01em;color:var(--ink);margin:8px 0 4px;font-variant-numeric:tabular-nums}
+.hmtv .hmdash{font:500 15px var(--ui);color:var(--ink-3)}
+.hmts{font-size:11.5px;color:var(--ink-3)}
+.hloss{list-style:none;margin:0;padding:0;display:grid;gap:7px}
+.hloss li{display:grid;grid-template-columns:34px minmax(0,1fr) auto auto;gap:12px;align-items:center;padding:10px 12px;border-radius:13px;background:var(--g-row);border:1px solid rgba(255,255,255,.85);border-bottom-color:rgba(32,48,60,.08);box-shadow:var(--e1)}
+.hln{font:500 13px var(--num);color:var(--steel-deep)}
+.hlt{display:flex;flex-direction:column;min-width:0}
+.hlt b{font-weight:600;font-size:13.5px}
+.hlt small{font-size:12px;color:var(--ink-3)}
+.hlv{font:500 15px var(--num);color:var(--ink)}
+.hlow{width:100%}
+.hlow .hbad{color:var(--bad);font-weight:600}
+.hlown{font-family:var(--serif);font-size:14.5px;color:var(--ink);text-align:left}
+.hmx .hmxr{display:grid;grid-template-columns:minmax(0,1fr) minmax(200px,1.1fr);gap:16px;align-items:center;padding:8px 0;font-size:13px;color:var(--ink-2)}
+.hmsub{font-size:12px;color:var(--ink-3)}
+.hscale{display:flex;align-items:center;gap:12px}
+.hsbase{position:relative;flex:1;height:14px;border-bottom:1px solid var(--hair-2)}
+.hsbase i{position:absolute;bottom:0;width:1px;height:5px;background:var(--hair-2)}
+.hsfill{position:absolute;left:0;bottom:-2px;height:3px;border-radius:2px;background:var(--steel)}
+.hsmark{position:absolute;bottom:-5px;width:9px;height:9px;margin-left:-4.5px;border-radius:50%;background:#fff;border:2px solid var(--steel-deep);box-shadow:var(--e1)}
+.hscale b{font:500 13px var(--num);min-width:44px;text-align:right}
+:root[data-theme="light"]:not([data-accent]) .hm .hmc .hmch h3{font-family:var(--serif);font-size:18px}
+@media (max-width:999.98px){.hmtiles{grid-template-columns:repeat(2,minmax(0,1fr))}.hloss li{grid-template-columns:28px minmax(0,1fr);}.hloss .hlv,.hloss .btn{grid-column:2}.hmx .hmxr{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:640px){:root[data-theme="light"]:not([data-accent]) .hlow :is(th,td):is(:nth-child(2),:nth-child(5)){display:none}:root[data-theme="light"]:not([data-accent]) .hlow :is(th,td){padding:9px 8px}.hlow{table-layout:fixed}.hlow td:first-child{width:55%}}
+@media (max-width:640px){.calctbl{overflow-x:auto}:root[data-theme="light"]:not([data-accent]) .ctbl :is(th,td){padding:8px 6px;font-size:12.5px}:root[data-theme="light"]:not([data-accent]) .ctbl :is(th,td):nth-child(4){display:none}.calcsum .bignum{font-size:32px}}
+@media (max-width:640px){.ctbl{table-layout:fixed;width:100%}:root[data-theme="light"]:not([data-accent]) .ctbl :is(th,td):nth-child(1){width:26px}:root[data-theme="light"]:not([data-accent]) .ctbl :is(th,td):is(:nth-child(3),:nth-child(5)){width:66px}:root[data-theme="light"]:not([data-accent]) .ctbl td:nth-child(2){white-space:normal;overflow-wrap:anywhere}:root[data-theme="light"]:not([data-accent]) .ctbl th{letter-spacing:.04em}}

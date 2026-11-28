@@ -173,10 +173,12 @@ function viewCalc(){
   var ref=r.ref;
   var rgOpts='<option value="">Все регионы</option>'+regionList().map(function(g){return'<option value="'+esc(g.id)+'"'+(r.reg===g.id?' selected':'')+'>'+esc(g.name||g.id)+'</option>';}).join('');
   var lyItem=lyBtn?lyBtn.replace('<button class="btn"','<button role="menuitem"'):'';
-  return '<div class="bar ttkbar">'
-    +'<button class="btn" id="ttkBack" data-act="ttkHome" title="К выбору: создать новую или скачать из облака">‹ ТТК</button><span class="sp"></span>'
-    +'<button class="btn" data-act="pvTtk" title="Показать карту так, как она будет в документе">Предпросмотр</button>'+(canDl()?'<button class="btn primary" data-act="dlTtk">Скачать ТТК (.docx)</button>':'')
-    +'<span class="tmore"><button class="btn" id="ttkMore" data-act="ttkMore" aria-haspopup="true" aria-expanded="false">Ещё ▾</button>'
+  var ct=cardTab();
+  return cardHeadHtml(r)
+    +'<div class="bar ttkbar">'
+    +'<button class="btn" id="ttkBack" data-act="ttkHome" title="К выбору: создать новую или скачать из облака">'+IC.back+'ТТК</button>'+cardTabsHtml(ct)+'<span class="sp"></span>'
+    +'<button class="btn" data-act="pvTtk" title="Показать карту так, как она будет в документе">'+IC.eye+'Предпросмотр</button>'+(canDl()?'<button class="btn primary" data-act="dlTtk">'+IC.dl+'Скачать .docx</button>'+(NOPRICE?'':'<button class="btn" data-act="dlOp1" title="Калькуляционная карточка по форме ОП-1">'+IC.doc+'ОП-1</button>'):'')
+    +'<span class="tmore"><button class="btn" id="ttkMore" data-act="ttkMore" aria-haspopup="true" aria-expanded="false" aria-label="Ещё действия" title="Ещё действия">'+IC.more+'</button>'
     +'<div class="tmenu" id="ttkMenu" role="menu" hidden>'
       +'<button role="menuitem" data-act="pickTtk" data-edit>Загрузить ТТК (.docx)</button>'
       +'<button role="menuitem" data-act="dupRecipe" data-edit>Сделать копию</button>'
@@ -186,7 +188,8 @@ function viewCalc(){
     +'</div></span>'
     +'</div>'
     +'<div id="syStrip">'+syStripHtml(r)+'</div>'+specStripHtml(r)
-    +'<nav class="jump" aria-label="Разделы страницы"><button class="btn mini" data-act="jump" data-to="secDish">Название и выход</button><button class="btn mini" data-act="jump" data-to="secDoc">Реквизиты и рецептура карты</button><button class="btn mini" data-act="jump" data-to="secTexts">Тексты разделов</button><button class="btn mini" data-act="jump" data-to="secDl">Скачать</button><button class="btn mini" data-act="jump" data-to="secKbzhu">КБЖУ и сверка</button><button class="btn mini" data-act="jump" data-to="secCalc">Таблица расчёта КБЖУ</button></nav>'
+    +'<div class="cpanel" id="cpCard"'+(ct==='card'?'':' hidden')+'>'
+    +'<nav class="jump" aria-label="Разделы страницы"><button class="btn mini" data-act="jump" data-to="secDish">Название и выход</button><button class="btn mini" data-act="jump" data-to="secDoc">Реквизиты и рецептура карты</button><button class="btn mini" data-act="jump" data-to="secTexts">Тексты разделов</button><button class="btn mini" data-act="jump" data-to="secDl">Скачать</button></nav>'
     +'<div id="secDish"><section class="card">'
       +'<div class="head2" style="margin-bottom:0">'
         +'<label class="field grow"><span class="lbl">Название блюда</span><input id="rname" data-act="rName" data-edit data-fk="rname" autocomplete="off" value="'+esc(r.name)+'" placeholder="Например: Котлета мясная 1/100 г"></label>'
@@ -198,6 +201,9 @@ function viewCalc(){
       +(function(){var u=pfUsedBy(S.active);return u.length?'<p class="hint" style="margin:6px 0 0">Используется как полуфабрикат в картах: '+u.slice(0,6).map(function(k){return'<button type="button" class="tlink" data-act="pfOpen" data-id="'+esc(k)+'">'+esc(S.recipes[k].name||'без названия')+'</button>';}).join(', ')+(u.length>6?' и ещё '+(u.length-6):'')+'. Изменения этой карты попадут в них.</p>':'';})()
     +'</section></div>'
     +viewTtkDoc(r)
+    +'</div>'
+    +'<div class="cpanel" id="cpCalc"'+(ct==='calc'?'':' hidden')+'>'+(ct==='calc'?calcTabHtml(r):'')+'</div>'
+    +'<div class="cpanel" id="cpKbzhu"'+(ct==='kbzhu'?'':' hidden')+'>'
     +'<h2 class="secttl" id="secKbzhu">Расчёт КБЖУ и сверка</h2><div class="cols"><div class="col-main">'
       +'<section class="card" id="results"><div id="resBody"></div><textarea id="copybox" class="copybox" rows="4" readonly hidden aria-label="Текст для копирования"></textarea></section>'
       +'</div><div class="col-side">'
@@ -214,13 +220,13 @@ function viewCalc(){
       +'</section>'
     +'</div></div>'
     +'<div id="secCalc"><section class="card"><h2>Таблица расчёта КБЖУ по сырью</h2>'
-      +'<p class="hint" style="margin:-4px 0 10px">Таблица ничего не вводит: сырьё и нетто она берёт из рецептуры карты ТТК выше. Добавлять и убирать сырьё нужно там, здесь можно изменить только долю.</p>'
+      +'<p class="hint" style="margin:-4px 0 10px">Таблица ничего не вводит: сырьё и нетто она берёт из рецептуры на вкладке «Карта». Добавлять и убирать сырьё нужно там, здесь можно изменить только долю.</p>'
       +'<div class="rows">'
         +'<div class="row rowhead"><span>Сырьё</span><span class="r">Нетто, г</span><span class="r" title="Какая часть сырья остаётся в блюде">Доля, %</span><span class="r">Б, г</span><span class="r">Ж, г</span><span class="r">У, г</span><span class="r">ккал</span></div>'
         +(calcRows(r).length?calcRows(r).map(rowHtml).join(''):'<p class="muted" style="margin:8px 0">В рецептуре пока нет сырья.</p>')
       +'</div>'
       +'<p class="hint">КБЖУ считается по нетто. «Доля, %» по умолчанию 100: если часть масла остаётся на сковороде, уменьшите долю в строке масла. Себестоимость считается по брутто из рецептуры. Нужного сырья нет в списке? Добавьте его во вкладке «База сырья».</p>'
-    +'</section></div>';
+    +'</section></div></div>';
 }
 
 /* поля брутто в расчёте и в карте ТТК показывают одно и то же: свою цифру или серую подсказку из потерь; поле, в котором печатают, не трогаем */

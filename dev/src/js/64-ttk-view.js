@@ -122,5 +122,8 @@ function tvClose(quiet){
   if(ov&&ov.parentNode)ov.parentNode.removeChild(ov);
   document.body.classList.remove('tvlock');
   var op=TV.opener;TV.opener=null;TV.id='';
-  if(!quiet&&op&&op.focus&&document.body.contains(op))try{op.focus();}catch(e){}
+  if(!quiet&&op&&op.focus&&document.body.contains(op)){
+    var dm=op.closest&&op.closest('details.mmore');if(dm&&!dm.open)op=dm.querySelector('summary')||op;   /* пункт «⋯» закрыт — фокус на сам «⋯» */
+    try{op.focus();}catch(e){}
+  }
 }

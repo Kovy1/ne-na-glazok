@@ -24,7 +24,7 @@ function renderTabs(){
   if(syMgr())$('#tabBase').textContent='Цены сырья';
   if(tm)tm.textContent=NOPRICE?'Меню':'Меню и цены';
   if(ta)ta.hidden=NOPRICE||!tabOk('abc');
-  if(to)to.hidden=NOPRICE||!tabOk('op1');
+  if(to)to.hidden=true;
   if(tk){tk.hidden=!(tabOk('calc')||ttkCloudOn());tk.setAttribute('data-cloud',ttkCloudOn()?'1':'0');}
   var tb=$('#tabBase');if(tb)tb.hidden=!tabOk('base');
   var tfc=$('#tabFc');if(tfc)tfc.hidden=!(S.mode==='local'&&!guestOn()&&!NOPRICE&&tabOk('fc'));
@@ -188,6 +188,7 @@ function rdPaint(){var el=$('#rdBody');if(el){el.innerHTML=rdBodyHtml();if(uiRO(
 function renderAll(){
   var keep=captureFocus();
   applyPriceMode();
+  if(S.tab==='op1'){S.tab='calc';S.cardTab='calc';S.ttkHome=false;}   /* калькуляция ОП-1 — вкладка карты, отдельного раздела нет */
   if(NOPRICE){if(S.tab==='abc'||S.tab==='op1')S.tab='menu';if(S.bsub==='price')S.bsub='kbzhu';}
   if(!tabOk(S.tab))S.tab='menu';
   if(syMgr())S.bsub='price';

@@ -4,6 +4,7 @@ function onClick(e){
   if(uiRO()&&b.hasAttribute('data-edit')){roFlash();return;}
   if(p1cClick(act,b))return;
   if(specClick(act,b))return;
+  if(cardClick(act,b))return;
   if(wpClick(act,b))return;
   if(fcClick(act,b))return;
   if(dsClick(act,b))return;
@@ -298,7 +299,7 @@ function onClick(e){
       if(S.recipes[id]){
         if(syChef()){chefOpenTtk(id);break;}
         if(syLimited()){setActive(id);S.tab='op1';renderAll();window.scrollTo(0,0);break;}
-        mOpenCard(id);
+        S.cardTab='card';mOpenCard(id);
       }break;
     case'cabSeg':S.cabSeg=b.getAttribute('data-s')||'tasks';renderAll();window.scrollTo(0,0);break;
     case'hmGo':S.tab=b.getAttribute('data-t')||'menu';if(b.getAttribute('data-s'))S.cabSeg=b.getAttribute('data-s');if(!tabOk(S.tab))S.tab='menu';renderAll();window.scrollTo(0,0);break;

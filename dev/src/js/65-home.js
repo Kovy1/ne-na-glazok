@@ -102,32 +102,87 @@ function hmAttention(h){
   var l=[];
   function row(n,txt,act,f,label){if(n>0)l.push('<li><span>'+esc(txt)+'</span><button class="btn mini" data-act="'+act+'"'+(f?' data-f="'+f+'"':'')+'>'+n+' · '+esc(label)+'</button></li>');}
   row(h.noOut,'ТТК без выхода порции','hmGo','','Открыть меню');
-  if(hmFin()){
-    row(h.incomplete,'Себестоимость неполная: нет цены сырья','hmFilter','inc','Показать');
-    row(h.noPrice,'Нет цены продажи','hmFilter','noprice','Показать');
-  }
+  /* неполная себестоимость и цены продажи — в «Где теряются деньги» */
   row(h.noKbzhu,'КБЖУ не рассчитано полностью','hmGo','','Открыть меню');
   if(syAdmin()&&syLinked()&&S.sy.info&&S.sy.info.pending)l.push('<li><span>Ждут проверки технолога</span><button class="btn mini" data-act="hmGo" data-t="sync">'+S.sy.info.pending+' · Открыть</button></li>');
   if(syInboxOn()&&S.sy.inbox&&S.sy.inbox.length)l.push('<li><span>Возвращено на доработку</span><button class="btn mini" data-act="hmGo" data-t="sync">'+S.sy.inbox.length+' · Открыть</button></li>');
   return l.length?'<ul class="hmatt">'+l.join('')+'</ul>':'<p class="hmok">✓ Замечаний к данным нет.</p>';
 }
+/* деньги меню: средняя маржа и фудкост по блюдам с ценой и полной себестоимостью; потери на цене — до цены по цели (если цель задана) */
+function hmMoney(h){
+  var items=menuItems(),ok=[],f=curFin(),qty={},loss=[],lossSum=0,perPort=0,np=0,inc=0;
+  if(h.fin)h.fin.rows.concat(h.fin.skipped||[]).forEach(function(x){if(x.qty>0)qty[x.id]=x.qty;});
+  items.forEach(function(it){
+    var m=it.m;if(m.price===null)np++;if(!m.complete)inc++;
+    if(m.price===null||m.cost===null||!m.complete)return;
+    ok.push(it);
+    if(f.target!==null&&belowTarget(m)){
+      var t=f.target/100,pt=f.mode==='margin'?(t<1?m.cost/(1-t):null):m.cost*(1+t);
+      if(pt!==null&&pt>m.price){var gap=pt-m.price,q=qty[it.id]||0;loss.push({it:it,gap:gap,q:q,sum:gap*q,pt:pt});perPort+=gap;lossSum+=gap*q;}
+    }
+  });
+  function avg(k){return ok.length?ok.reduce(function(a,x){return a+x.m[k];},0)/ok.length:null;}
+  loss.sort(function(a,b){return(b.sum-a.sum)||(b.gap-a.gap);});
+  var low=ok.slice().sort(function(a,b){return a.m.margin-b.m.margin;}).slice(0,5);
+  return{items:items,ok:ok,mg:avg('margin'),fc:avg('fc'),f:f,loss:loss,lossSum:lossSum,perPort:perPort,hasQty:Object.keys(qty).length>0,low:low,np:np,inc:inc};
+}
+function hmMTile(label,ico,val,sub,tone){
+  return'<div class="hmt'+(tone?' '+tone:'')+'"><div class="hmtl">'+ico+'<span>'+esc(label)+'</span></div><div class="hmtv">'+val+'</div><div class="hmts">'+sub+'</div></div>';
+}
+function hmScale(pct,label){
+  var p=Math.max(0,Math.min(100,pct)),ticks='';
+  for(var i=1;i<10;i++)ticks+='<i style="left:'+(i*10)+'%"></i>';
+  return'<div class="hscale" role="img" aria-label="'+esc(label)+': '+fmt(p,0)+' %"><div class="hsbase">'+ticks+'<span class="hsfill" style="width:'+p+'%"></span><span class="hsmark" style="left:'+p+'%"></span></div><b class="num">'+fmt(p,0)+' %</b></div>';
+}
+function hmLossHtml(M,h){
+  var rows=[],f=M.f;
+  if(f.target===null)rows.push({t:'Цель по марже или наценке не задана',s:'Задайте её в «Меню и цены» → «Дополнительные действия»: тогда здесь появятся потери на цене.',v:'',act:'hmGo',d:'data-t="menu"',b:'Открыть меню'});
+  else if(M.loss.length)rows.push({t:M.loss.length+' '+plural(M.loss.length,['блюдо','блюда','блюд'])+' ниже цели '+(f.mode==='margin'?'по марже':'по наценке')+' '+fmt(f.target,f.target%1?1:0)+' %',s:'Сколько не хватает до цены по цели'+(M.hasQty?' с учётом продаж за период':' на одну порцию каждого блюда'),v:money(M.hasQty?M.lossSum:M.perPort)+' ₽',act:'hmGo',d:'data-t="menu"',b:'Показать блюда'});
+  if(M.inc)rows.push({t:'Себестоимость неполная у '+M.inc+' '+plural(M.inc,['блюда','блюд','блюд']),s:'Нет цены части сырья: себестоимость и маржа этих блюд занижены и не входят в средние.',v:'',act:'hmFilter',d:'data-f="inc"',b:'Показать'});
+  if(M.np)rows.push({t:'Нет цены продажи у '+M.np+' '+plural(M.np,['блюда','блюд','блюд']),s:'Без цены нельзя посчитать маржу и фудкост.',v:'',act:'hmFilter',d:'data-f="noprice"',b:'Показать'});
+  if(!rows.length)return'<p class="hmok">Потерь на цене не видно: все блюда с ценой не ниже цели, себестоимость полная.</p>';
+  return'<ol class="hloss">'+rows.slice(0,3).map(function(x,i){return'<li><span class="hln num">'+('0'+(i+1))+'</span><span class="hlt"><b>'+esc(x.t)+'</b><small>'+esc(x.s)+'</small></span><span class="hlv num">'+x.v+'</span><button class="btn mini" data-act="'+x.act+'" '+x.d+'>'+esc(x.b)+'</button></li>';}).join('')+'</ol>';
+}
+function hmLowHtml(M){
+  if(!M.low.length)return'<p class="muted">Нет блюд с ценой продажи и полной себестоимостью.</p>';
+  return'<table class="wtbl hlow"><thead><tr><th>Блюдо</th><th class="r">Себестоимость</th><th class="r">Цена</th><th class="r">Маржа</th><th class="r">Фудкост</th></tr></thead><tbody>'
+    +M.low.map(function(it){var m=it.m,b=belowTarget(m);return'<tr data-rid="'+esc(it.id)+'"><td><button type="button" class="tlink hlown" data-act="mCalc">'+esc(it.r.name||'Без названия')+'</button></td><td class="r">'+money(m.cost)+'</td><td class="r">'+money(m.price)+'</td><td class="r'+(b?' hbad':'')+'">'+fmt(m.margin,1)+' %</td><td class="r">'+fmt(m.fc,1)+' %</td></tr>';}).join('')
+    +'</tbody></table>';
+}
+function hmExtraHtml(h){
+  var ids=abIds(),kb=h.n-h.noKbzhu,dn=0;
+  ids.forEach(function(id){if(dsValid(dsOf(S.recipes[id])))dn++;});
+  return'<section class="card hmx"><div class="hmch"><h3>Дополнительно: КБЖУ и декларации</h3><span class="hmsub">на расчёт денег не влияет</span></div>'
+    +'<div class="hmxr"><span>КБЖУ рассчитано полностью: <b class="num">'+kb+'</b> из <b class="num">'+h.n+'</b></span>'+hmScale(h.n?kb/h.n*100:0,'КБЖУ рассчитано')+'</div>'
+    +'<div class="hmxr"><span>Задекларировано: <b class="num">'+dn+'</b> из <b class="num">'+h.n+'</b></span>'+hmScale(h.n?dn/h.n*100:0,'Задекларировано')+'</div></section>';
+}
 function viewHome(){
-  var h=hmData(),d=h.fin,f=curAbc(),k='',src;
+  var h=hmData(),d=h.fin,f=curAbc(),k='',src,fin=hmFin(),M=fin?hmMoney(h):null,sum='';
   if(!h.n)return'<div class="card empty"><h2>ТТК пока нет</h2><p>Здесь появятся показатели, когда в приложении будут ТТК.</p><div class="btns"><button class="btn primary" data-act="gotoCalc">Открыть ТТК</button></div></div>';
-  if(hmRoleKey()==='viewer'){k='';}
-  else if(!hmFin()){
-    k=hmKpi('ТТК в меню',String(h.n),'регион «'+esc(regionName(h.g))+'»','',HM_IC.doc)+hmKpi('КБЖУ не рассчитано',String(h.noKbzhu),h.noKbzhu?'проверьте карты':'все рассчитаны',h.noKbzhu?'warn':'good',h.noKbzhu?HM_IC.warn:HM_IC.chk);
-  }else{
-    k=hmKpi('Выручка',d&&d.tot.nRev?esc(hmRub(d.tot.rev)):'<span class="hmdash">Нет данных</span>',d&&d.tot.nRev?(f.period?esc(f.period)+' · ':'')+'по '+d.tot.nRev+' блюдам':'нужны продажи за период','good',HM_IC.rub)
-      +hmKpi('Фудкост',h.fc!==null?fmt(h.fc,1)+' %':'<span class="hmdash">Нет данных</span>',h.fc!==null?'по рецептурам · '+h.fcN+' '+plural(h.fcN,['блюдо','блюда','блюд']):'нужны продажи, цены продажи и сырья','',HM_IC.pct)
-      +hmKpi('Требуют внимания',String(h.incomplete+h.noPrice+h.noOut),'нет цены, выхода, сырья',(h.incomplete+h.noPrice+h.noOut)?'warn':'good',(h.incomplete+h.noPrice+h.noOut)?HM_IC.warn:HM_IC.chk)
-      +(hmRoleKey()&&hmRoleKey()!=='audit'?'':hmKpi('На проверке',String(syAdmin()&&syLinked()&&S.sy.info?(S.sy.info.pending||0):(syInboxOn()&&S.sy.inbox?S.sy.inbox.length:0)),syAdmin()?'ждут решения технолога':'возвраты на доработку','',HM_IC.doc));
+  var dt=new Date().toLocaleDateString('ru-RU',{day:'numeric',month:'long'});
+  if(fin){
+    sum='В меню <b class="num">'+M.items.length+'</b> '+plural(M.items.length,['блюдо','блюда','блюд'])+(M.np?', у <b class="num">'+M.np+'</b> нет цены продажи':'')+'.';
+    if(M.mg!==null)sum+=' Средняя маржа <b class="num">'+fmt(M.mg,1)+' %</b>, сырьё в цене <b class="num">'+fmt(M.fc,1)+' %</b>.';
+    if(d&&d.tot.nRev)sum+=' Выручка за период <b class="num">'+hmRub(d.tot.rev)+'</b>'+(h.fc!==null?', фудкост по продажам <b class="num">'+fmt(h.fc,1)+' %</b>':'')+'.';
+    if(M.loss.length)sum+=' Ниже цели — <b class="num">'+M.loss.length+'</b> '+plural(M.loss.length,['блюдо','блюда','блюд'])+'.';
+    var lossV=M.f.target===null?'<span class="hmdash">цель не задана</span>':money(M.hasQty?M.lossSum:M.perPort)+' ₽';
+    k=hmMTile('Выручка',IC.chart,d&&d.tot.nRev?esc(hmRub(d.tot.rev)):'<span class="hmdash">Нет данных</span>',d&&d.tot.nRev?(f.period?esc(f.period)+' · ':'')+'по '+d.tot.nRev+' блюдам':'нужны продажи за период')
+      +hmMTile('Фудкост',IC.calc,h.fc!==null?fmt(h.fc,1)+' %':(M.fc!==null?fmt(M.fc,1)+' %':'<span class="hmdash">Нет данных</span>'),h.fc!==null?'по продажам · '+h.fcN+' '+plural(h.fcN,['блюдо','блюда','блюд']):(M.fc!==null?'среднее по меню, без продаж':'нужны цены продажи и сырья'))
+      +hmMTile('Маржа',IC.leaf,M.mg!==null?fmt(M.mg,1)+' %':'<span class="hmdash">Нет данных</span>',M.ok.length?'среднее по '+M.ok.length+' '+plural(M.ok.length,['блюду','блюдам','блюдам']):'нет блюд с ценой и себестоимостью')
+      +hmMTile('Потери на цене',IC.warn,lossV,M.f.target===null?'задайте цель в меню':(M.loss.length?M.loss.length+' '+plural(M.loss.length,['блюдо','блюда','блюд'])+(M.hasQty?' · за период':' · на порцию каждого'):'все не ниже цели'),M.loss.length?'warn':'');
+  }else if(hmRoleKey()!=='viewer'){
+    k=hmMTile('ТТК в меню',IC.doc,String(h.n),'регион «'+esc(regionName(h.g))+'»')+hmMTile('КБЖУ не рассчитано',IC.leaf,String(h.noKbzhu),h.noKbzhu?'проверьте карты':'все рассчитаны',h.noKbzhu?'warn':'');
   }
-  src='Источник: ТТК и цены региона «'+esc(regionName(h.g))+'», продажи введены на вкладке «ABC-анализ»'+(f.period?' за '+esc(f.period):'')+'. Продажи в приложении вводятся по региону, не по точке. Фудкост расчётный: себестоимость по рецептурам проданных блюд, не фактический расход по учёту. Динамика фудкоста, потери и учётные остатки в приложение не загружаются, поэтому здесь не показаны.';
-  return'<section class="hm"><div class="hmhead"><h2>Обзор</h2><p>'+(hmRoleKey()==='viewer'?'Меню и утверждённые ТТК':'Продажи, себестоимость и качество данных')+'</p></div>'
+  src='Источник: ТТК и цены региона «'+esc(regionName(h.g))+'», продажи введены на вкладке «ABC-анализ»'+(f.period?' за '+esc(f.period):'')+'. Средние по меню считаются по блюдам с ценой продажи и полной себестоимостью. Потери на цене — разница между ценой по цели и текущей ценой; с продажами — умноженная на число проданных порций.';
+  return'<section class="hm"><div class="phead"><p class="kicker">'+esc(regionName(h.g))+' · '+esc(dt)+'</p><h1 class="ptitle">Обзор</h1>'
+    +'<p class="psum">'+(fin?sum:(hmRoleKey()==='viewer'?'Меню и утверждённые ТТК':'ТТК и качество данных'))+'</p></div>'
+    +(fin?'<div class="btns pbtns"><button class="btn primary" data-act="hmGo" data-t="menu">'+IC.doc+'Меню и цены</button><button class="btn" data-act="hmGo" data-t="fc">'+IC.calc+'Фудкост</button><button class="btn" data-act="hmGo" data-t="abc">'+IC.chart+'ABC-анализ</button></div>':'')
     +hmRole(h)
-    +(k?'<div class="hmkpi">'+k+'</div>':'')
-    +(!hmFin()?'':'<div class="hmrow"><section class="card hmc">'+hmAbc(h)+'</section><section class="card hmc">'+hmComposition(h)+'</section></div>')
-    +'<section class="card hmc"><div class="hmch"><h3>Требуют внимания</h3></div>'+hmAttention(h)+'</section>'
-    +(!hmFin()?'':'<details class="hmsrc"><summary>Как считаются показатели</summary><p>'+src+'</p></details>')+'</section>';
+    +(k?'<div class="hmtiles">'+k+'</div>':'')
+    +(fin?'<section class="card hmc"><div class="hmch"><h3>Где теряются деньги</h3></div>'+hmLossHtml(M,h)+'</section>'
+      +'<section class="card hmc"><div class="hmch"><h3>Блюда, которые забирают маржу</h3><span class="hmsub">самая низкая маржа</span></div>'+hmLowHtml(M)+'</section>':'')
+    +(!fin||!(d&&d.tot.nRev)?'':'<div class="hmrow"><section class="card hmc">'+hmAbc(h)+'</section><section class="card hmc">'+hmComposition(h)+'</section></div>')
+    +'<section class="card hmc"><div class="hmch"><h3>Качество данных</h3></div>'+hmAttention(h)+'</section>'
+    +(hmRoleKey()==='viewer'?'':hmExtraHtml(h))
+    +(!fin?'':'<details class="hmsrc"><summary>Как считаются показатели</summary><p>'+src+'</p></details>')+'</section>';
 }

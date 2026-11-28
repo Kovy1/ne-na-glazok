@@ -235,7 +235,7 @@ function viewTtkDoc(r){
     +'</section>';
   /* рецептура */
   h+='<section class="card"><h2>III. Рецептура</h2>'
-    +'<p class="hint" style="margin:-4px 0 8px">Состав блюда вводится здесь: выберите сырьё из базы, укажите брутто и нетто. Таблица расчёта КБЖУ внизу страницы берёт данные отсюда.</p>'
+    +'<p class="hint" style="margin:-4px 0 8px">Состав блюда вводится здесь: выберите сырьё из базы, укажите брутто и нетто. Таблица расчёта КБЖУ на вкладке «КБЖУ и сверка» берёт данные отсюда.</p>'
     +'<div class="trw thead'+(NOPRICE?'':' cst')+'"><span>№</span><span>Сырьё из базы</span><span>Название сырья в ТТК</span><span class="r">Брутто, г</span><span class="r">Нетто, г</span>'+(NOPRICE?'':'<span class="r" title="Стоимость сырья в одной порции: брутто × цена за кг">Себест., ₽</span>')+'<span></span></div>';
   var inl={},kc=NOPRICE?null:ttkCosts(r);list.forEach(function(x,i){inl[x.rid]=i+1;});
   r.rows.forEach(function(x,i){

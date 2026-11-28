@@ -68,7 +68,11 @@ function viewOp1(){
   if(!r)return'<div class="card empty"><h2>Нет расчёта</h2><p>Калькуляция строится по рецептуре из расчёта. Создайте расчёт на вкладке «ТТК» или загрузите готовую ТТК (.docx).</p><div class="btns"><button class="btn primary" data-act="gotoCalc">Открыть ТТК</button></div></div>';
   var m=opModel(r);
   var opts=ids.map(function(id){return'<option value="'+esc(id)+'"'+(id===S.active?' selected':'')+'>'+esc(recLabel(S.recipes[id]))+'</option>';}).join('');
-  var h='<div class="bar"><label class="field grow"><span class="lbl">Блюдо</span><select id="recipeSel" data-act="pickRecipe" data-fk="recipeSel">'+opts+'</select></label></div><div class="ttkcols">';
+  return'<div class="bar"><label class="field grow"><span class="lbl">Блюдо</span><select id="recipeSel" data-act="pickRecipe" data-fk="recipeSel">'+opts+'</select></label></div>'+op1Cards(r,m);
+}
+/* карточки ОП-1: реквизиты, таблица на 100 блюд, подписи, скачивание; теперь — часть вкладки «Калькуляция» карты */
+function op1Cards(r,m){
+  var h='<div class="ttkcols">';
   h+='<section class="card"><h2>Реквизиты карточки ОП-1</h2>'
     +'<div class="fgrid">'+ofIn(r,'org','Организация','')+ofIn(r,'unit','Структурное подразделение','')+'</div>'
     +'<div class="fgrid">'+ofIn(r,'okpo','Код по ОКПО','w150')+ofIn(r,'okdp','Вид деятельности по ОКДП','w180')+ofIn(r,'opType','Вид операции','w150')+ofIn(r,'recNo','Номер блюда по сборнику, ТТК, СТП','')+'</div>'

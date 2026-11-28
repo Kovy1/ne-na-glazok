@@ -1,0 +1,18 @@
+{"ings":{
+"g1":{"name":"Свёкла свеж. очищ. вак.","p":1.5,"f":0.1,"c":8.8,"kind":"table","source":"справочник","price":42.5},
+"g2":{"name":"Капуста белокочанная","p":1.8,"f":0.1,"c":4.7,"kind":"table","source":"справочник","price":42.5},
+"g3":{"name":"Картофель свеж. очищ.","p":2,"f":0.4,"c":16.3,"kind":"table","source":"справочник","price":58},
+"g4":{"name":"Морковь свеж. очищ. вак.","p":1.3,"f":0.1,"c":6.9,"kind":"table","source":"справочник","price":95},
+"g5":{"name":"Лук репчатый н/очищ н/мыт","p":1.4,"f":0,"c":8.2,"kind":"table","source":"справочник","price":165},
+"g6":{"name":"Томатная паста","p":4.8,"f":0,"c":19,"kind":"table","source":"справочник","price":320},
+"g7":{"name":"Масло подсолнечное","p":0,"f":99.9,"c":0,"kind":"table","source":"справочник","price":140.22},
+"g8":{"name":"Говядина тазобедренный отруб","p":18.9,"f":12.4,"c":0,"kind":"table","source":"справочник","price":690},
+"g9":{"name":"Курица филе","p":23.6,"f":1.9,"c":0.4,"kind":"table","source":"справочник","price":420},
+"g10":{"name":"Огурцы солёные","p":0.8,"f":0.1,"c":1.7,"kind":"table","source":"справочник","price":210},
+"g11":{"name":"Вода","p":0,"f":0,"c":0,"kind":"table","source":"справочник","price":0}},
+"recipes":{
+"r1":{"name":"Борщ постный 1/250 г","output":250,"ttk":{"num":"28"},"sell":{"main":60},"rows":[{"rid":"a1","ing":"g1","net":27,"gross":30,"share":100},{"rid":"a2","ing":"g2","net":20,"gross":25,"share":100},{"rid":"a3","ing":"g3","net":30,"gross":30,"share":100},{"rid":"a4","ing":"g4","net":10,"gross":10,"share":100},{"rid":"a5","ing":"g5","net":8,"gross":10,"share":100},{"rid":"a6","ing":"g6","net":5,"gross":5,"share":100},{"rid":"a7","ing":"g7","net":7.5,"gross":7.5,"share":100},{"rid":"a8","ing":"g11","net":200,"gross":200,"share":100}]},
+"r2":{"name":"Солянка мясная","output":285,"ttk":{"num":"295"},"sell":{"main":105},"rows":[{"rid":"b1","ing":"g8","net":40,"gross":45,"share":100},{"rid":"b2","ing":"g10","net":25,"gross":25,"share":100},{"rid":"b3","ing":"g6","net":10,"gross":10,"share":100},{"rid":"b4","ing":"g11","net":200,"gross":200,"share":100}]},
+"r3":{"name":"Борщ с курицей","output":260,"ttk":{"num":"381"},"sell":{"main":80},"rows":[{"rid":"c1","ing":"g9","net":20,"gross":20,"share":100},{"rid":"c2","ing":"g1","net":27,"gross":30,"share":100},{"rid":"c3","ing":"g2","net":20,"gross":25,"share":100},{"rid":"c4","ing":"g11","net":200,"gross":200,"share":100}]},
+"r4":{"name":"Суп овощной","output":250,"ttk":{"num":"568"},"rows":[{"rid":"d1","ing":"g3","net":60,"gross":60,"share":100},{"rid":"d2","ing":"g4","net":20,"gross":20,"share":100},{"rid":"d3","ing":"g11","net":180,"gross":180,"share":100}]}},
+"cfg":{}}

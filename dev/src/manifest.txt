@@ -52,6 +52,7 @@ js/57-wipe.js
 js/58-rev.js
 js/59-rev-export.js
 js/60-ing-picker.js
+js/61-card-tabs.js
 js/61-ing-base.js
 js/62-prices-1c-ui.js
 js/63-sell-import.js
