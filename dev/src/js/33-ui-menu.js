@@ -347,7 +347,7 @@ function mColsHtml(){
 /* главные действия меню: новое блюдо, цены продажи из файла, Excel меню */
 function mTopBtnsHtml(){
   var b='';
-  if(!uiRO()&&!syLimited())b+='<button class="btn primary" data-act="newRecipe" data-edit>'+IC.plus+'Новое блюдо</button>';
+  if(!uiRO()&&!syLimited())b+='<button class="btn primary pmain" data-act="newRecipe" data-edit>'+IC.plus+'Новое блюдо</button>';
   if(!S.sx)b+='<button class="btn" data-act="pickSx" data-edit title="Прейскурант: наименование блюда, единица, стоимость. Цены попадут в выбранный регион">'+IC.up+'Загрузить цены</button>';
   if(!guestOn()&&canDl())b+='<button class="btn" data-act="dlMenuX" title="Меню региона с ценами продажи, финансами и КБЖУ, без состава блюд">'+IC.dl+'Скачать меню</button>';
   return b?'<div class="btns pbtns">'+b+'</div>':'';

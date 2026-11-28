@@ -632,7 +632,7 @@ function hlPanelHtml(){
   n=c.items.length;
   h='<details class="rvdf" id="rvDf" open><summary>'+(c.fresh?'Такой ТТК в общей базе нет: это новая карта':'Что изменено относительно '+esc(c.from)+(n?' · '+n:''))+'</summary>';
   if(c.fresh)h+='<p class="rvt" style="margin:4px 0 0">Подсвечены все строки состава.</p>';
-  else h+=(n?syDfHtml(c.items):'<p class="rvt" style="margin:4px 0 0">Отличий нет: карта совпадает с базой.</p>')+(n?'<p class="rvt" style="margin:4px 0 0">В составе карты изменённые строки подсвечены: зелёным — новые, жёлтым — с другим количеством.</p>':'');
+  else h+=(n?syDfHtml(c.items):'<p class="rvt" style="margin:4px 0 0">Отличий нет: карта совпадает с базой.</p>')+(n?'<p class="rvt" style="margin:4px 0 0">В составе карты изменённые строки подсвечены: синим — новые, охрой — с другим количеством.</p>':'');
   return h+'</details>';
 }
 

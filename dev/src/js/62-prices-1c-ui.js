@@ -564,10 +564,18 @@ function cloudPriceHtml(){
   return'<details class="pgroup cloud" id="cloudPrice"'+(S.cloudOpenP?' open':'')+'><summary>Прайс по ссылке (Google Таблица, CSV)</summary>'
     +'<p class="rgtag" style="margin-top:10px">Регион «'+esc(regionName(curRegion()))+'»</p>'+cloudNoteHtml()+cloudRowHtml('price')+'</details>';
 }
+/* заголовок «Цены и динамика»: сколько загрузок и чем покрыта база */
+function pxHeadHtml(){
+  var raw=pAllRaw(),m=phMerge(raw),ids=Object.keys(S.ings),g=curRegion(),wp=ids.filter(function(id){return pricePerKg(S.ings[id],g)!==null;}).length,last=m.length?m[m.length-1]:null;
+  var t='<b class="num">'+wp+'</b> из <b class="num">'+ids.length+'</b> позиций сырья с ценой';
+  if(m.length)t+=', загрузок цен из 1С: <b class="num">'+m.length+'</b>'+(phObjects(raw).length>1?' по <b class="num">'+phObjects(raw).length+'</b> объектам':'')+', последняя — <b class="num">'+esc(phLabel(last))+'</b>.';
+  else t+='. Загрузок цен из 1С пока нет: загрузите отчёт о закупках, тогда появятся изменения, поставщики и график.';
+  return'<div class="phead"><p class="kicker">Деньги · '+esc(regionName(g))+'</p><h1 class="ptitle">'+(syMgr()?'Цены сырья':'Цены и динамика')+'</h1><p class="psum">'+t+'</p></div>';
+}
 function viewPrices(){
   var bs=pBatches(),ix=phIndex(bs),g=curRegion();
   var paste=S.c1Paste?' open':'';
-  var h='<div class="tools"><div class="btns"><button class="btn primary" data-act="pickC1" data-edit>Загрузить выгрузку 1С</button><button class="btn" data-act="pickPrice" data-edit>Загрузить прайс (.odt, .csv)</button></div></div>'
+  var h=pxHeadHtml()+'<div class="tools"><div class="btns"><button class="btn primary" data-act="pickC1" data-edit>'+IC.up+'Загрузить выгрузку 1С</button><button class="btn" data-act="pickPrice" data-edit>Загрузить прайс (.odt, .csv)</button></div></div>'
     +'<details class="pgroup c1paste" id="c1PasteBox"'+paste+'><summary>Или вставьте строки отчёта из Excel</summary><label class="field"><span class="lbl">Скопируйте таблицу отчёта 1С целиком, вместе с заголовком «Период», и вставьте сюда</span><textarea id="c1Text" rows="5" data-fk="c1Text" aria-label="Строки отчёта 1С"></textarea></label><div class="btns" style="margin-top:8px"><button class="btn" data-act="c1Paste" data-edit>Разобрать</button></div></details>'
     +c1CardHtml()+priceCardHtml()+cloudPriceHtml();
   h+=mxBoxHtml()+mxNoteHtml()+'<div class="pbar">'+pviewHtml(bs)+'</div>';
@@ -737,7 +745,7 @@ function pObjHtml(){
     +C.per.map(function(q){return'<tr><th scope="row">'+esc(pObjLabel(q.obj))+'</th><td class="n">'+fmt(q.all,0)+'</td><td class="n">'+fmt(q.spend,0)+'</td><td class="n">'+(q.over===null?'—':'<span class="pdl '+(q.over>=0.5?'up':(q.over<=-0.5?'dn':'eq'))+'">'+pcTxt(q.over)+'</span>')+'</td><td class="n">'+fmt(q.saving,0)+'</td><td class="n">'+q.cheapest+' из '+q.n+'</td></tr>';}).join('')+'</tbody></table></div></div>';
   /* сырьё */
   var lim=(a&&a.all)?C.rows.length:30,shown=C.rows.slice(0,lim);
-  h+='<div class="card"><h2>Цены сырья по объектам, ₽/кг</h2><p class="hint" style="margin:-6px 0 8px">Зелёным — самая низкая цена, красным — самая высокая. Сверху те, где разница дороже всего обходится в рублях.</p>';
+  h+='<div class="card"><h2>Цены сырья по объектам, ₽/кг</h2><p class="hint" style="margin:-6px 0 8px">Синим — самая низкая цена, коричневым — самая высокая. Сверху те, где разница дороже всего обходится в рублях.</p>';
   if(!C.rows.length)h+='<p class="muted">Общих позиций у объектов за этот период нет.</p>';
   else{
     h+='<div class="scroll" style="margin-top:0"><table><thead><tr><th>Сырьё</th>'+C.objs.map(function(o){return'<th>'+esc(pObjLabel(o))+'</th>';}).join('')+'<th>Регион</th><th>Разброс</th><th>Потенциал, ₽</th></tr></thead><tbody>'

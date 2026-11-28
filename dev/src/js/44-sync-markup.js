@@ -23,7 +23,8 @@ function syRoleHint(r){
 function syAddrBaked(){return!!(syBakedUrl()||(typeof window!=='undefined'&&window.KBZHU_PTR));}
 function syConnHtml(){
   var c=S.sy.cfg,linked=syLinked(),busy=S.sy.busy.conn,baked=syAddrBaked();
-  var h='<section class="card" id="syConn"><h2>'+(guestOn()?'Вход':'Личный кабинет')+'</h2>'
+  var h=(guestOn()?'<section class="card loginc" id="syConn"><div class="lgbrand" aria-hidden="true"><span class="rbmark"><svg viewBox="0 0 24 24"><path d="M7.5 14.5A4 4 0 0 1 8 6.6a4 4 0 0 1 8 0 4 4 0 0 1 .5 7.9V17h-9z"/><path d="M7.5 20h9"/></svg></span><p class="lgname">Не на глазок</p><p class="lgslogan">У каждой котлеты есть амбиции, финансовые ожидания и право знать себе цену.</p></div><h2>Вход</h2>'
+    :'<section class="card" id="syConn"><h2>Личный кабинет</h2>')
     +(linked?'<p class="rgtag">Подключено: '+esc(syRoleName(c.role))+(syPriceRole(c.role)?'':' · цены не показываются')+'</p><p class="hint" style="margin:0 0 4px">'+esc(syRoleHint(c.role))+'</p>':'')
     +(!linked&&NOPRICE?'<p class="hint cmsg warn" style="margin-top:0">'+(guestOn()?'Без входа доступно только меню с ценами продажи. Введите ФИО и код доступа, который вам выдали.':'Цены и финансы откроются после подключения.')+'</p>':'')
     +'<div class="sygrid">'

@@ -344,9 +344,10 @@ function onClick(e){
       var used=usedIn(id);
       if(used.length){flash('Сырьё используется в рецептах: '+used.slice(0,3).join(', ')+(used.length>3?'…':'')+'. Сначала уберите его из рецептов.');break;}
       arm(b,'Удалить?',function(){syForgetIng(id);removeDoc('ingredients',id);renderAll();});break;
-    case'filterAll':S.onlyEst=false;S.onlyUnk=false;S.pnoprice=false;renderAll();break;
-    case'filterEst':S.onlyEst=true;S.onlyUnk=false;S.pnoprice=false;renderAll();break;
-    case'filterUnk':S.onlyUnk=true;S.onlyEst=false;S.pnoprice=false;renderAll();break;
+    case'filterAll':S.onlyEst=false;S.onlyUnk=false;S.pnoprice=false;S.kNoPrice=false;renderAll();break;
+    case'filterKnp':S.kNoPrice=true;S.onlyEst=false;S.onlyUnk=false;renderAll();break;
+    case'filterEst':S.onlyEst=true;S.onlyUnk=false;S.kNoPrice=false;S.pnoprice=false;renderAll();break;
+    case'filterUnk':S.onlyUnk=true;S.onlyEst=false;S.kNoPrice=false;S.pnoprice=false;renderAll();break;
     case'filterNoPrice':S.pnoprice=true;S.onlyEst=false;S.onlyUnk=false;renderAll();break;
     case'openImport':S.importOpen=true;renderAll();break;
     case'closeImport':S.importOpen=false;renderAll();break;

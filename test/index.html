@@ -1749,11 +1749,12 @@ html.testmode .tabs{top:82px}
 .fcing th{white-space:normal}
 .fcwrap td,.fcwrap th{white-space:normal;overflow-wrap:anywhere;vertical-align:top}
 .fcwrap td.n{white-space:nowrap}
-/* v94: «стекло на старом фото», стальная гамма. Одна светлая схема (тёмная тема и выбор цвета убраны).
+/* Контраст: вторичный текст и подписи затемнены относительно токенов брифа (#5F7080 → #475867 и т. п.), чтобы держать ≥4.5:1 на самом тёмном стекле над фото (~#C3CFD7).
+   v94: «стекло на старом фото», стальная гамма. Одна светлая схема (тёмная тема и выбор цвета убраны).
    Фото — сцена, стекло — слои; прозрачность обратно пропорциональна размеру текста.
    Сталь — норма и действие, глина — потери, охра — внимание; остальное — графит. */
 :root[data-theme="light"]:not([data-accent]){
-  --ink:#20303C; --ink-2:#4C5D6C; --ink-3:#5F7080; --ink-4:#8296A6;
+  --ink:#20303C; --ink-2:#44535F; --ink-3:#475867; --ink-4:#8296A6;
   --steel:#5E87A5; --steel-deep:#456F8D; --steel-ink:#2F526B;
   --clay:#8B6B64; --amber:#A78C5F;
   --edge:rgba(255,255,255,.82); --hair:rgba(32,48,60,.10); --hair-2:rgba(32,48,60,.16);
@@ -1780,9 +1781,9 @@ html.testmode .tabs{top:82px}
   --bg:#E4ECF2; --surface:#F7FAFC; --surface-2:rgba(255,255,255,.46); --field:rgba(255,255,255,.32); --rail:transparent;
   --line:rgba(32,48,60,.14);
   --accent:#456F8D; --accent-ink:#FFFFFF; --accent-soft:rgba(94,135,165,.16); --glow:rgba(69,111,141,.35);
-  --good:#3F6884; --good-soft:rgba(94,135,165,.14);
-  --bad:#7D5C55; --bad-soft:rgba(139,107,100,.14);
-  --warn:#7A6440; --warn-soft:rgba(167,140,95,.18);
+  --good:#355770; --good-soft:rgba(94,135,165,.14);
+  --bad:#634641; --bad-soft:rgba(139,107,100,.14);
+  --warn:#5A4729; --warn-soft:rgba(167,140,95,.18);
   --abc-a:#5E87A5; --abc-b:#9DB5C8; --abc-c:#B9A29C; --gl-green:#5E87A5; --gl-blue:#9DB5C8; --gl-pink:#B9A29C;
   --r:var(--r-lg); --ws-r:var(--r-sm);
   --sh1:var(--e1);
@@ -1810,15 +1811,15 @@ html.testmode .tabs{top:82px}
   .rbmark svg{width:19px;height:19px;stroke:#3D6280;fill:none;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
   .rbtxt{display:flex;flex-direction:column;min-width:0}
   .rbname{font-family:var(--serif);font-size:17px;line-height:1.15;font-weight:500;letter-spacing:-.01em;color:var(--ink)}
-  .rbslogan{font-family:var(--serif);font-style:italic;font-size:11px;line-height:1.45;color:#586A78;margin-top:7px;width:160px}
-  .navcap{font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:#6E8191;margin:16px 0 4px}
+  .rbslogan{font-family:var(--serif);font-style:italic;font-size:11px;line-height:1.45;color:#475867;margin-top:7px;width:160px}
+  .navcap{font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:#475867;margin:16px 0 4px}
   .railbrand+.navcap{margin-top:0}
-  :root[data-theme="light"]:not([data-accent]) .tabs .tab:not([hidden]){min-height:34px;padding:6px 8px;margin:0 -8px;gap:9px;font-size:13.4px;color:#4F606F;border-radius:11px;background:transparent;box-shadow:none;font-weight:400}
+  :root[data-theme="light"]:not([data-accent]) .tabs .tab:not([hidden]){min-height:34px;padding:6px 8px;margin:0 -8px;gap:9px;font-size:13.4px;color:#44535F;border-radius:11px;background:transparent;box-shadow:none;font-weight:400}
   :root[data-theme="light"]:not([data-accent]) .tabs .tab::before{width:16px;height:16px;opacity:.8}
   :root[data-theme="light"]:not([data-accent]) .tabs .tab:hover{background:rgba(255,255,255,.32);color:var(--ink)}
   :root[data-theme="light"]:not([data-accent]) .tabs .tab[aria-selected="true"]:not([hidden]){color:#22323E;font-weight:600;background:linear-gradient(180deg,rgba(255,255,255,.78),rgba(255,255,255,.52));box-shadow:var(--e1),inset 0 0 0 1px rgba(255,255,255,.72)}
-  :root[data-theme="light"]:not([data-accent]) .tabs .tab[aria-selected="true"] .tcnt{background:none;color:#8A9CAC}
-  :root[data-theme="light"]:not([data-accent]) .tabs .tcnt{margin-left:auto;font:10.5px var(--num);color:#8A9CAC;background:none;padding:0}
+  :root[data-theme="light"]:not([data-accent]) .tabs .tab[aria-selected="true"] .tcnt{background:none;color:#475867}
+  :root[data-theme="light"]:not([data-accent]) .tabs .tcnt{margin-left:auto;font:10.5px var(--num);color:#475867;background:none;padding:0}
   :root[data-theme="light"]:not([data-accent]) header.top{position:sticky;top:32px;z-index:40;margin:0 0 16px;padding:10px 16px;min-height:62px;border-radius:var(--r-lg);
     background:var(--g-top);border:1px solid var(--edge);box-shadow:var(--e2),var(--rim);-webkit-backdrop-filter:blur(22px) saturate(118%);backdrop-filter:blur(22px) saturate(118%)}
   :root[data-theme="light"]:not([data-accent]) #view{padding:26px 28px 30px;border-radius:var(--r-lg);background:var(--g-page);border:1px solid var(--edge);box-shadow:var(--e3),var(--rim);
@@ -1865,7 +1866,7 @@ html.testmode .tabs{top:82px}
 
 /* ---------- таблицы: полосы с зазором, шапка — единая полка ---------- */
 :root[data-theme="light"]:not([data-accent]) :is(.card table,.wtbl,.fctab){background:none;border-collapse:separate;border-spacing:0 7px}
-:root[data-theme="light"]:not([data-accent]) :is(.wtbl,.fctab,.card table) thead th{background:var(--g-head);font:500 9.5px/1.2 var(--ui);letter-spacing:.12em;text-transform:uppercase;color:#6E8191;border:0;
+:root[data-theme="light"]:not([data-accent]) :is(.wtbl,.fctab,.card table) thead th{background:var(--g-head);font:500 9.5px/1.2 var(--ui);letter-spacing:.12em;text-transform:uppercase;color:#475867;border:0;
   border-top:1px solid rgba(255,255,255,.9);border-bottom:1px solid rgba(32,48,60,.08);padding:11px 10px}
 :root[data-theme="light"]:not([data-accent]) :is(.wtbl,.fctab,.card table) thead th:first-child{border-radius:13px 0 0 13px;border-left:1px solid rgba(255,255,255,.9)}
 :root[data-theme="light"]:not([data-accent]) :is(.wtbl,.fctab,.card table) thead th:last-child{border-radius:0 13px 13px 0;border-right:1px solid rgba(255,255,255,.9)}
@@ -1911,13 +1912,13 @@ html.testmode .tabs{top:82px}
 /* хвост корешка: версия и «Что изменилось» */
 @media (min-width:1000px){
   :root[data-theme="light"]:not([data-accent]) #relFoot{position:fixed;left:calc(max(32px,calc((100vw - 1336px)/2)) + 18px);bottom:50px;width:218px;z-index:61;margin:0;padding:12px 0 0;border-top:1px solid var(--hair);text-align:left;background:none}
-  :root[data-theme="light"]:not([data-accent]) #relFoot :is(a,button){font:10.5px/1.6 var(--num);color:#6E8191;background:none;border:0;box-shadow:none;padding:0;text-decoration:none}
+  :root[data-theme="light"]:not([data-accent]) #relFoot :is(a,button){font:10.5px/1.6 var(--num);color:#475867;background:none;border:0;box-shadow:none;padding:0;text-decoration:none}
   :root[data-theme="light"]:not([data-accent]) .tabs{padding-bottom:64px}
 }
 :root[data-theme="light"]:not([data-accent]) #upBar .btn{min-height:38px}
 
 /* ---------- этап 2: карта блюда ---------- */
-.kicker{font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:#6E8191;margin:0 0 6px;font-weight:500}
+.kicker{font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:#475867;margin:0 0 6px;font-weight:500}
 .chead{margin:0 0 14px}
 .ctitle{font-family:var(--serif);font-weight:500;font-size:30px;line-height:1.15;letter-spacing:-.015em;margin:0 0 6px;color:var(--ink)}
 .cmeta{margin:0;font-size:13.5px;color:var(--ink-2)}
@@ -1967,7 +1968,7 @@ html.testmode .tabs{top:82px}
   :root[data-theme="light"]:not([data-accent]) .mrow:not(.mlite) :is(.cell,.num)::before{display:none}
 }
 :root[data-theme="light"]:not([data-accent]) .mrow.mcols{position:sticky;top:104px;z-index:5;background:var(--g-head);border:1px solid rgba(255,255,255,.9);border-bottom-color:rgba(32,48,60,.08);border-radius:13px;box-shadow:var(--e1);
-  font:500 9.5px/1.2 var(--ui);letter-spacing:.12em;text-transform:uppercase;color:#6E8191;min-height:38px}
+  font:500 9.5px/1.2 var(--ui);letter-spacing:.12em;text-transform:uppercase;color:#475867;min-height:38px}
 :root[data-theme="light"]:not([data-accent]) .mtable .mfold{margin:0 0 8px}
 :root[data-theme="light"]:not([data-accent]) .mrow .mn b{font-family:var(--serif);font-weight:500;font-size:15px;color:var(--ink)}
 :root[data-theme="light"]:not([data-accent]) .mrow .mn small{font-size:12px;color:var(--ink-3)}
@@ -2025,6 +2026,55 @@ html.testmode .tabs{top:82px}
 @media (max-width:640px){:root[data-theme="light"]:not([data-accent]) .hlow :is(th,td):is(:nth-child(2),:nth-child(5)){display:none}:root[data-theme="light"]:not([data-accent]) .hlow :is(th,td){padding:9px 8px}.hlow{table-layout:fixed}.hlow td:first-child{width:55%}}
 @media (max-width:640px){.calctbl{overflow-x:auto}:root[data-theme="light"]:not([data-accent]) .ctbl :is(th,td){padding:8px 6px;font-size:12.5px}:root[data-theme="light"]:not([data-accent]) .ctbl :is(th,td):nth-child(4){display:none}.calcsum .bignum{font-size:32px}}
 @media (max-width:640px){.ctbl{table-layout:fixed;width:100%}:root[data-theme="light"]:not([data-accent]) .ctbl :is(th,td):nth-child(1){width:26px}:root[data-theme="light"]:not([data-accent]) .ctbl :is(th,td):is(:nth-child(3),:nth-child(5)){width:66px}:root[data-theme="light"]:not([data-accent]) .ctbl td:nth-child(2){white-space:normal;overflow-wrap:anywhere}:root[data-theme="light"]:not([data-accent]) .ctbl th{letter-spacing:.04em}}
+
+/* ---------- этап 3: сырьё и КБЖУ ---------- */
+.nmw{display:flex;flex-direction:column;gap:3px;min-width:0}
+.imeta{display:flex;flex-wrap:wrap;align-items:center;gap:4px 9px;padding:0 4px;font-size:11.5px;color:var(--ink-3);line-height:1.3}
+.imeta .impr b{font:500 11.5px var(--num);color:var(--ink)}
+.imch{font-family:var(--num)}
+.imch.up{color:var(--bad)}.imch.dn{color:var(--steel-deep)}
+.imnp{color:var(--warn)}
+.ispark{display:block;overflow:visible}
+.ispark polyline{fill:none;stroke:var(--steel);stroke-width:1.4;stroke-linejoin:round;stroke-linecap:round}
+.ibadge{font-size:10.5px;padding:1px 7px;border-radius:7px;background:rgba(94,135,165,.12);color:var(--steel-ink)}
+.ibadge.est{background:var(--warn-soft);color:var(--warn)}
+:root[data-theme="light"]:not([data-accent]) .irow{align-items:start}
+:root[data-theme="light"]:not([data-accent]) .irow>:not(.nmw){margin-top:2px}
+@media (max-width:999.98px){.irow .nmw{grid-area:nm}}
+/* ---------- этап 3: цены и динамика ---------- */
+:root[data-theme="light"]:not([data-accent]){--s0:#456F8D;--s1:#8B6B64;--s2:#9DB5C8;--s3:#A78C5F;--s4:#475867}
+:root[data-theme="light"]:not([data-accent]) .pchart .ol.s1{stroke-dasharray:6 5}
+:root[data-theme="light"]:not([data-accent]) .pchart .ps{stroke:var(--steel-deep)}
+:root[data-theme="light"]:not([data-accent]) .pchart .cn{stroke:var(--ink-4)}
+#tabPx{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 17l6-6 4 4 8-8'/%3E%3Cpath d='M15 7h6v6'/%3E%3C/svg%3E")}
+:root[data-theme="light"]:not([data-accent]) .irow>.out{line-height:40px;margin-top:0}
+:root[data-theme="light"]:not([data-accent]) .irow>:is(.mbtn,.x){height:40px;margin-top:0}
+@media (max-width:700px){
+  :root[data-theme="light"]:not([data-accent]) header.top .topr .status{font-size:0}
+  :root[data-theme="light"]:not([data-accent]) header.top .topr .status.open{font-size:14px}
+}
+/* ---------- вход: карточка по центру ---------- */
+:root[data-theme="light"]:not([data-accent]) .loginc{max-width:460px;margin:40px auto;padding:32px 34px 28px;text-align:left;background:linear-gradient(135deg,rgba(250,253,255,.78),rgba(250,253,255,.56));box-shadow:var(--e3),var(--rim)}
+.lgbrand{text-align:center;margin:0 0 22px}
+.lgbrand .rbmark{width:46px;height:46px;border-radius:50%;display:inline-grid;place-items:center;background:linear-gradient(160deg,rgba(94,135,165,.30),rgba(94,135,165,.10));border:1px solid rgba(69,111,141,.32)}
+.lgbrand .rbmark svg{width:22px;height:22px;stroke:#3D6280;fill:none;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
+.lgname{font-family:var(--serif);font-size:29px;font-weight:500;letter-spacing:-.015em;margin:10px 0 6px;color:var(--ink)}
+.lgslogan{font-family:var(--serif);font-style:italic;font-size:13px;line-height:1.5;color:#475867;margin:0 auto;max-width:300px}
+:root[data-theme="light"]:not([data-accent]) .loginc h2{font-size:17px;margin:0 0 6px}
+:root[data-theme="light"]:not([data-accent]) .loginc .fgrid,:root[data-theme="light"]:not([data-accent]) .loginc .inline{display:flex;flex-direction:column;gap:12px}
+:root[data-theme="light"]:not([data-accent]) #syConn.loginc input:not([type=checkbox]){background:transparent;border:0;border-bottom:1.5px solid var(--hair-2);border-radius:0;box-shadow:none;padding-left:2px}
+:root[data-theme="light"]:not([data-accent]) #syConn.loginc input:not([type=checkbox]):focus-visible{border-bottom-color:var(--steel);box-shadow:0 1px 0 0 var(--steel)}
+:root[data-theme="light"]:not([data-accent]) .loginc .btn.primary{width:100%;min-height:42px;margin-top:6px}
+:root[data-theme="light"]:not([data-accent]) .loginc .hint{font-size:12px}
+
+/* ---------- этап 3: телефон ---------- */
+@media (max-width:999.98px){
+  :root[data-theme="light"]:not([data-accent]) header.top{position:sticky;top:0;z-index:40;min-height:56px;margin:0 -12px 12px;padding:8px 12px;border-radius:0 0 18px 18px;
+    background:var(--g-top);border:1px solid var(--edge);border-top:0;box-shadow:var(--e2);-webkit-backdrop-filter:blur(22px) saturate(118%);backdrop-filter:blur(22px) saturate(118%)}
+  :root[data-theme="light"]:not([data-accent]) .pbtns .btn.pmain{position:fixed;right:16px;bottom:calc(96px + env(safe-area-inset-bottom,0px));z-index:55;min-height:46px;padding:0 18px;border-radius:14px;box-shadow:var(--e3),inset 0 1px 0 rgba(255,255,255,.38)}
+  .ptitle{font-size:26px}
+  .psum{font-size:14.5px}
+}
 </style>
 <script id="skinBoot">document.documentElement.setAttribute("data-theme","light");</script>
 
@@ -2061,12 +2111,13 @@ html.testmode .tabs{top:82px}
     <button class="tab" role="tab" id="tabMenu" data-tab="menu" aria-selected="false">Меню и цены</button>
     <button class="tab" role="tab" id="tabFc" data-tab="fc" aria-selected="false" hidden>Фудкост</button>
     <button class="tab" role="tab" id="tabAbc" data-tab="abc" aria-selected="false">ABC-анализ</button>
+    <button class="tab" role="tab" id="tabPx" data-tab="base" data-bsub="price" aria-selected="false">Цены и динамика</button>
     <div class="navcap" role="presentation">Документы</div>
     <button class="tab" role="tab" id="tabCalc" data-tab="calc" aria-selected="true">ТТК и калькуляции</button>
     <button class="tab" role="tab" id="tabOp1" data-tab="op1" aria-selected="false">Калькуляция ОП-1</button>
     <button class="tab" role="tab" id="tabRev" data-tab="rev" aria-selected="false" hidden>Ревизии</button>
     <div class="navcap" role="presentation">Дополнительно</div>
-    <button class="tab" role="tab" id="tabBase" data-tab="base" aria-selected="false">Сырьё и КБЖУ</button>
+    <button class="tab" role="tab" id="tabBase" data-tab="base" data-bsub="kbzhu" aria-selected="false">Сырьё и КБЖУ</button>
     <button class="tab" role="tab" id="tabDir" data-tab="dir" aria-selected="false" hidden>Справочники</button>
     <div class="navcap" role="presentation">Служебное</div>
     <button class="tab" role="tab" id="tabSync" data-tab="sync" aria-selected="false" hidden>Личный кабинет</button>
@@ -2108,7 +2159,7 @@ try{
 }catch(e){fail=1;}
 window.__realLS=real;window.KBZHU_TEST=1;
 if(fail){window.stop();document.documentElement.innerHTML='<body style="font:16px sans-serif;padding:24px"><h2>Тестовая версия остановлена</h2><p>Браузер не дал отделить тестовые данные от рабочих, поэтому ничего не запущено. Рабочие данные не тронуты.</p></body>';throw new Error('test-isolation');}
-})();window.KBZHU_TEST_PROD="";window.KBZHU_SEED={"ings":{},"recipes":{}};window.KBZHU_BUILD=202611280541;</script>
+})();window.KBZHU_TEST_PROD="";window.KBZHU_SEED={"ings":{},"recipes":{}};window.KBZHU_BUILD=202611280728;</script>
 <script>
 (function(){
 'use strict';
@@ -3737,7 +3788,7 @@ function hlPanelHtml(){
   n=c.items.length;
   h='<details class="rvdf" id="rvDf" open><summary>'+(c.fresh?'Такой ТТК в общей базе нет: это новая карта':'Что изменено относительно '+esc(c.from)+(n?' · '+n:''))+'</summary>';
   if(c.fresh)h+='<p class="rvt" style="margin:4px 0 0">Подсвечены все строки состава.</p>';
-  else h+=(n?syDfHtml(c.items):'<p class="rvt" style="margin:4px 0 0">Отличий нет: карта совпадает с базой.</p>')+(n?'<p class="rvt" style="margin:4px 0 0">В составе карты изменённые строки подсвечены: зелёным — новые, жёлтым — с другим количеством.</p>':'');
+  else h+=(n?syDfHtml(c.items):'<p class="rvt" style="margin:4px 0 0">Отличий нет: карта совпадает с базой.</p>')+(n?'<p class="rvt" style="margin:4px 0 0">В составе карты изменённые строки подсвечены: синим — новые, охрой — с другим количеством.</p>':'');
   return h+'</details>';
 }
 
@@ -5524,7 +5575,9 @@ function restoreFocus(k){
   try{if(k.s!==null&&el.setSelectionRange)el.setSelectionRange(k.s,k.e);}catch(x){}
 }
 function renderTabs(){
-  $$('.tab').forEach(function(b){var t=b.getAttribute('data-tab');b.setAttribute('aria-selected',(t===S.tab||(t==='calc'&&S.tab==='cloud'))?'true':'false');});
+  $$('.tab').forEach(function(b){var t=b.getAttribute('data-tab'),bs=b.getAttribute('data-bsub'),on=(t===S.tab||(t==='calc'&&S.tab==='cloud'));if(on&&t==='base'&&bs&&!NOPRICE&&!syMgr())on=(S.bsub===bs);b.setAttribute('aria-selected',on?'true':'false');});
+  var tpx=$('#tabPx');if(tpx)tpx.hidden=NOPRICE||syMgr()||!tabOk('base');
+  setTimeout(navCapsFix,0);
   $('#tabBase').innerHTML='Сырьё и КБЖУ'+(S.loaded.ingredients?'<span class="tdot"> · </span><span class="tcnt">'+Object.keys(S.ings).length+'</span>':'');
   var th=$('#tabHome');if(th)th.hidden=guestOn()||!tabOk('home');
   var tm=$('#tabMenu'),ta=$('#tabAbc'),to=$('#tabOp1'),tk=$('#tabCalc');
@@ -5744,6 +5797,12 @@ function renderAll(){
   restoreFocus(keep);
 }
 
+
+/* подпись группы в корешке скрыта, если в группе нет видимых пунктов */
+function navCapsFix(){
+  var caps=$$('#tabs .navcap');
+  caps.forEach(function(c){var n=c.nextElementSibling,any=false;while(n&&!n.classList.contains('navcap')){if(n.classList.contains('tab')&&!n.hidden)any=true;n=n.nextElementSibling;}c.hidden=!any;});
+}
 /* ---------- вкладка «ТТК»: создание карты по рецептуре и расчёту ---------- */
 var TT_DEF={
   scope:'Настоящая технико-технологическая карта распространяется на блюдо {блюдо} {порция}, вырабатываемое {орг}.',
@@ -7034,7 +7093,7 @@ function mColsHtml(){
 /* главные действия меню: новое блюдо, цены продажи из файла, Excel меню */
 function mTopBtnsHtml(){
   var b='';
-  if(!uiRO()&&!syLimited())b+='<button class="btn primary" data-act="newRecipe" data-edit>'+IC.plus+'Новое блюдо</button>';
+  if(!uiRO()&&!syLimited())b+='<button class="btn primary pmain" data-act="newRecipe" data-edit>'+IC.plus+'Новое блюдо</button>';
   if(!S.sx)b+='<button class="btn" data-act="pickSx" data-edit title="Прейскурант: наименование блюда, единица, стоимость. Цены попадут в выбранный регион">'+IC.up+'Загрузить цены</button>';
   if(!guestOn()&&canDl())b+='<button class="btn" data-act="dlMenuX" title="Меню региона с ценами продажи, финансами и КБЖУ, без состава блюд">'+IC.dl+'Скачать меню</button>';
   return b?'<div class="btns pbtns">'+b+'</div>':'';
@@ -10663,7 +10722,8 @@ function syRoleHint(r){
 function syAddrBaked(){return!!(syBakedUrl()||(typeof window!=='undefined'&&window.KBZHU_PTR));}
 function syConnHtml(){
   var c=S.sy.cfg,linked=syLinked(),busy=S.sy.busy.conn,baked=syAddrBaked();
-  var h='<section class="card" id="syConn"><h2>'+(guestOn()?'Вход':'Личный кабинет')+'</h2>'
+  var h=(guestOn()?'<section class="card loginc" id="syConn"><div class="lgbrand" aria-hidden="true"><span class="rbmark"><svg viewBox="0 0 24 24"><path d="M7.5 14.5A4 4 0 0 1 8 6.6a4 4 0 0 1 8 0 4 4 0 0 1 .5 7.9V17h-9z"/><path d="M7.5 20h9"/></svg></span><p class="lgname">Не на глазок</p><p class="lgslogan">У каждой котлеты есть амбиции, финансовые ожидания и право знать себе цену.</p></div><h2>Вход</h2>'
+    :'<section class="card" id="syConn"><h2>Личный кабинет</h2>')
     +(linked?'<p class="rgtag">Подключено: '+esc(syRoleName(c.role))+(syPriceRole(c.role)?'':' · цены не показываются')+'</p><p class="hint" style="margin:0 0 4px">'+esc(syRoleHint(c.role))+'</p>':'')
     +(!linked&&NOPRICE?'<p class="hint cmsg warn" style="margin-top:0">'+(guestOn()?'Без входа доступно только меню с ценами продажи. Введите ФИО и код доступа, который вам выдали.':'Цены и финансы откроются после подключения.')+'</p>':'')
     +'<div class="sygrid">'
@@ -12428,7 +12488,7 @@ function usClick(act,b){
   return false;
 }
 /* единый номер выпуска: приложение (APP_REL) и скрипт общей базы (нужна версия не ниже SRV_NEED); обновление репозитория не обновляет скрипт */
-var APP_REL=93,SRV_NEED=28;
+var APP_REL=94,SRV_NEED=28;
 function syRelHtml(){
   var i=S.sy.info,v=i&&Number(i.v)||0;
   if(!syLinked()||!i||!syAdmin())return'';
@@ -14470,7 +14530,8 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape')Array.protot
 /* ---------- ingredient base ---------- */
 function chipsHtml(){
   var ids=Object.keys(S.ings),n=ids.length,e=ids.filter(function(id){return S.ings[id].kind==='estimate';}).length,u=ids.filter(function(id){return kUnknown(S.ings[id]);}).length;
-  return '<button class="chip" data-act="filterAll" aria-pressed="'+(!S.onlyEst&&!S.onlyUnk)+'">Все · '+n+'</button><button class="chip" data-act="filterEst" aria-pressed="'+(!!S.onlyEst)+'">Ориентир · '+e+'</button>'
+  return '<button class="chip" data-act="filterAll" aria-pressed="'+(!S.onlyEst&&!S.onlyUnk&&!S.kNoPrice)+'">Все · '+n+'</button><button class="chip" data-act="filterEst" aria-pressed="'+(!!S.onlyEst)+'">Ориентир · '+e+'</button>'
+    +(NOPRICE?'':(function(){var np=ids.filter(function(id){return pricePerKg(S.ings[id],curRegion())===null;}).length;return np?'<button class="chip" data-act="filterKnp" aria-pressed="'+(!!S.kNoPrice)+'" title="Сырьё без закупочной цены в регионе «'+esc(regionName(curRegion()))+'»">Нет цены · '+np+'</button>':'';})())
     +(u?'<button class="chip" data-act="filterUnk" aria-pressed="'+(!!S.onlyUnk)+'" title="Сырьё с пометкой «Ориентир» и нулями вместо КБЖУ: в расчёте карт оно считается нулём">КБЖУ не заполнено · '+u+'</button>':'');
 }
 /* ---------- разделы сырья в базе ---------- */
@@ -14496,6 +14557,36 @@ function refreshIngList(){
   var f=$('#catF');if(f)f.innerHTML=catFilterOpts();
   var ch=$('#chips');if(ch)ch.innerHTML=chipsHtml();
 }
+/* строка под названием: раздел, синонимы, цена ₽/кг с изменением и спарклайном по загрузкам, источник КБЖУ */
+var ING_PX=null;
+function ingPxIndex(){
+  var m={},list;
+  try{list=phMerge(pAllRaw()).slice().sort(function(a,b){return a.from<b.from?-1:a.from>b.from?1:0;});}catch(e){return m;}
+  list.forEach(function(b){b.it.forEach(function(x){(m[x.ing]||(m[x.ing]=[])).push({d:b.to||b.from,pr:x.pr});});});
+  return m;
+}
+function ingSpark(ser){
+  var v=ser.map(function(x){return x.pr;}),mn=Math.min.apply(null,v),mx=Math.max.apply(null,v),W=54,H=16,n=v.length;
+  if(n<2)return'';
+  var pts=v.map(function(y,i){return(i*(W-2)/(n-1)+1).toFixed(1)+','+(mx===mn?H/2:(H-2-(y-mn)/(mx-mn)*(H-4))).toFixed(1);}).join(' ');
+  return'<svg class="ispark" viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" aria-hidden="true"><polyline points="'+pts+'"/></svg>';
+}
+var KIND_BADGE={table:'справочник',label:'этикетка',estimate:'ориентир',lab:'лаборатория'};
+function ingMetaHtml(id,i,uk){
+  var bits=[],al=(i.aliases||[]).length;
+  if(al)bits.push('<span class="imal" title="Названия из 1С и прайсов, по которым сырьё находится автоматически">синонимов: '+al+'</span>');
+  if(!NOPRICE){
+    var pk=pricePerKg(i,curRegion()),ser=(ING_PX&&ING_PX[id])||[];
+    if(pk===null)bits.push('<span class="imnp">нет цены</span>');
+    else{
+      var ch='',last=ser.length>1?ser[ser.length-1].pr:null,prev=ser.length>1?ser[ser.length-2].pr:null;
+      if(last>0&&prev>0){var d=(last-prev)/prev*100;ch=' <span class="imch '+(d>0.5?'up':(d<-0.5?'dn':''))+'" title="Изменение к предыдущей загрузке цен">'+(d>0.5?'▲':(d<-0.5?'▼':'='))+' '+fmt(Math.abs(d),1)+' %</span>';}
+      bits.push('<span class="impr"><b class="num">'+money(pk)+'</b> ₽/кг'+ch+'</span>'+(ser.length>1?'<span title="Цена по последним '+ser.length+' загрузкам 1С">'+ingSpark(ser.slice(-8))+'</span>':''));
+    }
+  }
+  bits.push('<span class="ibadge'+(i.kind==='estimate'?' est':'')+'" title="Источник КБЖУ">'+(KIND_BADGE[i.kind]||'справочник')+'</span>');
+  return'<span class="imeta">'+bits.join('')+'</span>';
+}
 function kindOptions(sel){return Object.keys(KINDS).map(function(k){return '<option value="'+k+'"'+(k===sel?' selected':'')+'>'+KINDS[k]+'</option>';}).join('');}
 function ingRowHtml(id){
   var i=S.ings[id],k=KCAL_P*i.p+KCAL_F*i.f+KCAL_C*i.c,fk='i:'+esc(id)+':',l=i.loss||{},uk=kUnknown(i);
@@ -14503,7 +14594,7 @@ function ingRowHtml(id){
   function lf(key,label,title){var v=l[key];return '<label class="cell il il-'+key+'" data-label="'+label+'"><input class="num" inputmode="decimal" autocomplete="off" aria-label="'+title+', %" title="'+title+', %" data-act="iLoss" data-k="'+key+'" data-edit data-fk="'+fk+'l'+key+'" value="'+toInput(v===undefined?null:v)+'" placeholder="—"></label>';}
   var open=!!LOSSUI.more[id];
   return '<div class="irow'+(i.kind==='estimate'?' est':'')+(uk?' unk':'')+'" data-iid="'+esc(id)+'">'
-    +'<input class="nm" aria-label="Название" autocomplete="off" data-act="iName" data-edit data-fk="'+fk+'name" value="'+esc(i.name)+'" placeholder="Название сырья"'+(i.kind==='estimate'?' title="Ориентир: значения ещё не сверены"':'')+'>'
+    +'<span class="nmw"><input class="nm" aria-label="Название" autocomplete="off" data-act="iName" data-edit data-fk="'+fk+'name" value="'+esc(i.name)+'" placeholder="Название сырья"'+(i.kind==='estimate'?' title="Ориентир: значения ещё не сверены"':'')+'>'+ingMetaHtml(id,i,uk)+'</span>'
     +nf('iP','ip','Белки',i.p,'p')+nf('iF','if','Жиры',i.f,'f')+nf('iC','ic','Углеводы',i.c,'c')
     +'<span class="out ik" data-label="ккал" data-out="k"'+(uk?' title="КБЖУ не заполнено"':'')+'>'+(uk?'—':fmt(k,0))+'</span>'
     +lf('cold','Х/о','Холодная обработка (отходы при очистке)')+lf('boil','Варка','Потери при варке')+lf('fry','Жарка','Потери при жарке')+lf('stew','Тушение','Потери при тушении')+lf('bake','Запекание','Потери при запекании')
@@ -14520,11 +14611,13 @@ function ingRowHtml(id){
       +'</div>':'');
 }
 function ingListHtml(){
+  ING_PX=NOPRICE?null:ingPxIndex();
   var q=catKey(S.q.trim());
   var ids=Object.keys(S.ings).sort(byName(S.ings)).filter(function(id){
     var i=S.ings[id];
     if(S.onlyEst&&i.kind!=='estimate')return false;
     if(S.onlyUnk&&!kUnknown(i))return false;
+    if(S.kNoPrice&&pricePerKg(i,curRegion())!==null)return false;
     if(S.catF&&String(i.name).trim()&&ingCat(i)!==S.catF)return false;
     return!q||catKey(i.name).indexOf(q)>-1||catKey(i.source).indexOf(q)>-1||catKey(ingCat(i)).indexOf(q)>-1;
   });
@@ -14907,6 +15000,10 @@ function mxChange(act,t){
   X.ask=0;mxPaint();
 }
 /*MX-END*/
+function kbHeadHtml(){
+  var ids=Object.keys(S.ings),n=ids.length,u=ids.filter(function(id){return kUnknown(S.ings[id]);}).length,np=NOPRICE?0:ids.filter(function(id){return pricePerKg(S.ings[id],curRegion())===null;}).length;
+  return'<div class="phead"><p class="kicker">Дополнительно · '+esc(regionName(curRegion()))+'</p><h1 class="ptitle">Сырьё и КБЖУ</h1><p class="psum"><b class="num">'+n+'</b> '+plural(n,['позиция','позиции','позиций'])+(u?', у <b class="num">'+u+'</b> нет КБЖУ':'')+(np?', у <b class="num">'+np+'</b> нет цены':'')+'. КБЖУ — на 100 г, цена — за килограмм в регионе «'+esc(regionName(curRegion()))+'».</p></div>';
+}
 function viewKbzhu(){
   var imp='';
   if(S.importOpen){
@@ -14917,7 +15014,7 @@ function viewKbzhu(){
       +'<button class="btn primary" data-act="doImport" data-edit>Добавить в базу</button><button class="btn" data-act="closeImport">Закрыть</button></div>'
       +'<p class="hint" id="importMsg">'+esc(S.importMsg)+'</p></section>';
   }
-  return '<div class="tools"><label class="field grow"><span class="lbl">Поиск по названию, источнику и разделу</span><input id="search" data-act="search" data-fk="search" autocomplete="off" value="'+esc(S.q)+'" placeholder="Например: говядина"></label>'
+  return kbHeadHtml()+'<div class="tools"><label class="field grow"><span class="lbl">Поиск по названию, источнику и разделу</span><input id="search" data-act="search" data-fk="search" autocomplete="off" value="'+esc(S.q)+'" placeholder="Например: говядина"></label>'
     +'<label class="field" style="flex:0 0 240px;align-self:flex-end"><span class="lbl">Раздел</span><select id="catF" data-act="catFilter" data-fk="catf">'+catFilterOpts()+'</select></label>'
     +'<div class="chips" id="chips" style="align-self:flex-end">'+chipsHtml()+'</div>'
     +'<div class="btns" style="align-self:flex-end"><button class="btn primary" data-act="newIng" data-edit>Новое сырьё</button><button class="btn" data-act="openImport">Импорт из таблицы</button>'+(canDl()?'<button class="btn" data-act="dlBase">Скачать CSV</button>':'')+'<button class="btn" data-act="cpBase">Копировать для Excel</button></div></div>'
@@ -15501,10 +15598,18 @@ function cloudPriceHtml(){
   return'<details class="pgroup cloud" id="cloudPrice"'+(S.cloudOpenP?' open':'')+'><summary>Прайс по ссылке (Google Таблица, CSV)</summary>'
     +'<p class="rgtag" style="margin-top:10px">Регион «'+esc(regionName(curRegion()))+'»</p>'+cloudNoteHtml()+cloudRowHtml('price')+'</details>';
 }
+/* заголовок «Цены и динамика»: сколько загрузок и чем покрыта база */
+function pxHeadHtml(){
+  var raw=pAllRaw(),m=phMerge(raw),ids=Object.keys(S.ings),g=curRegion(),wp=ids.filter(function(id){return pricePerKg(S.ings[id],g)!==null;}).length,last=m.length?m[m.length-1]:null;
+  var t='<b class="num">'+wp+'</b> из <b class="num">'+ids.length+'</b> позиций сырья с ценой';
+  if(m.length)t+=', загрузок цен из 1С: <b class="num">'+m.length+'</b>'+(phObjects(raw).length>1?' по <b class="num">'+phObjects(raw).length+'</b> объектам':'')+', последняя — <b class="num">'+esc(phLabel(last))+'</b>.';
+  else t+='. Загрузок цен из 1С пока нет: загрузите отчёт о закупках, тогда появятся изменения, поставщики и график.';
+  return'<div class="phead"><p class="kicker">Деньги · '+esc(regionName(g))+'</p><h1 class="ptitle">'+(syMgr()?'Цены сырья':'Цены и динамика')+'</h1><p class="psum">'+t+'</p></div>';
+}
 function viewPrices(){
   var bs=pBatches(),ix=phIndex(bs),g=curRegion();
   var paste=S.c1Paste?' open':'';
-  var h='<div class="tools"><div class="btns"><button class="btn primary" data-act="pickC1" data-edit>Загрузить выгрузку 1С</button><button class="btn" data-act="pickPrice" data-edit>Загрузить прайс (.odt, .csv)</button></div></div>'
+  var h=pxHeadHtml()+'<div class="tools"><div class="btns"><button class="btn primary" data-act="pickC1" data-edit>'+IC.up+'Загрузить выгрузку 1С</button><button class="btn" data-act="pickPrice" data-edit>Загрузить прайс (.odt, .csv)</button></div></div>'
     +'<details class="pgroup c1paste" id="c1PasteBox"'+paste+'><summary>Или вставьте строки отчёта из Excel</summary><label class="field"><span class="lbl">Скопируйте таблицу отчёта 1С целиком, вместе с заголовком «Период», и вставьте сюда</span><textarea id="c1Text" rows="5" data-fk="c1Text" aria-label="Строки отчёта 1С"></textarea></label><div class="btns" style="margin-top:8px"><button class="btn" data-act="c1Paste" data-edit>Разобрать</button></div></details>'
     +c1CardHtml()+priceCardHtml()+cloudPriceHtml();
   h+=mxBoxHtml()+mxNoteHtml()+'<div class="pbar">'+pviewHtml(bs)+'</div>';
@@ -15674,7 +15779,7 @@ function pObjHtml(){
     +C.per.map(function(q){return'<tr><th scope="row">'+esc(pObjLabel(q.obj))+'</th><td class="n">'+fmt(q.all,0)+'</td><td class="n">'+fmt(q.spend,0)+'</td><td class="n">'+(q.over===null?'—':'<span class="pdl '+(q.over>=0.5?'up':(q.over<=-0.5?'dn':'eq'))+'">'+pcTxt(q.over)+'</span>')+'</td><td class="n">'+fmt(q.saving,0)+'</td><td class="n">'+q.cheapest+' из '+q.n+'</td></tr>';}).join('')+'</tbody></table></div></div>';
   /* сырьё */
   var lim=(a&&a.all)?C.rows.length:30,shown=C.rows.slice(0,lim);
-  h+='<div class="card"><h2>Цены сырья по объектам, ₽/кг</h2><p class="hint" style="margin:-6px 0 8px">Зелёным — самая низкая цена, красным — самая высокая. Сверху те, где разница дороже всего обходится в рублях.</p>';
+  h+='<div class="card"><h2>Цены сырья по объектам, ₽/кг</h2><p class="hint" style="margin:-6px 0 8px">Синим — самая низкая цена, коричневым — самая высокая. Сверху те, где разница дороже всего обходится в рублях.</p>';
   if(!C.rows.length)h+='<p class="muted">Общих позиций у объектов за этот период нет.</p>';
   else{
     h+='<div class="scroll" style="margin-top:0"><table><thead><tr><th>Сырьё</th>'+C.objs.map(function(o){return'<th>'+esc(pObjLabel(o))+'</th>';}).join('')+'<th>Регион</th><th>Разброс</th><th>Потенциал, ₽</th></tr></thead><tbody>'
@@ -16759,6 +16864,12 @@ testBar();
 var REL_FIRST=91;         /* с какого выпуска ведётся журнал для объявлений: прежнюю историю прежним пользователям не показываем */
 /* k: new — новое, fix — исправлено, act — нужно сделать; r — роли, которым это важно (нет — всем) */
 var REL_LOG=[
+  {v:94,d:'2026-11-28',items:[
+    {k:'new',t:'Новое оформление: стекло на фото, одна светлая стальная гамма (выбор цвета и тёмная тема убраны). Левое меню разбито на группы «Деньги», «Документы», «Дополнительно», «Служебное».'},
+    {k:'new',r:['admin','editor','finance','audit'],t:'Калькуляция — вкладка в карте ТТК: «Карта · Калькуляция · КБЖУ и сверка». В калькуляции сырьё на 1 или 100 блюд, себестоимость, цена, наценка, маржа, структура себестоимости и реквизиты ОП-1. Отдельного раздела «Калькуляция ОП-1» больше нет.'},
+    {k:'new',r:['admin','editor','finance','audit'],t:'«Меню и цены»: действия с блюдом — за кнопкой «⋯» в строке (калькуляция, карта, КБЖУ, просмотр, скачать, архив). «Обзор»: выручка, фудкост, маржа, потери на цене до цели и блюда, которые забирают маржу; КБЖУ и декларации — внизу.'},
+    {k:'new',r:['admin','editor','finance','audit'],t:'«Цены и динамика» — отдельный пункт меню. В «Сырьё и КБЖУ» под названием видны цена за кг, изменение к прошлой загрузке и мини-график, а также фильтр «Нет цены».'}
+  ]},
   {v:93,d:'2026-11-26',items:[
     {k:'new',r:['admin','editor','finance'],t:'Цены из 1С: перед загрузкой видны все закупки каждой позиции (дата, поставщик, цена, количество). Цена, которая сильно отличается от цены в базе или от других закупок (например, лук по 1000 ₽), не загрузится, пока вы не нажмёте «Цена верна» или не снимете отметку с ошибочной закупки. На экране подтверждения — все позиции, включая цены без изменений.'},
     {k:'new',r:['admin','editor','finance'],t:'ТТК → «Загрузить блюда из спецификации 1С»: отчёт «Список сырья по Спецификации» (все листы) превращается в карты с выходом и сырьём на порцию. Такие карты помечены «Нет ТТК»; файл ТТК привязывается позже кнопкой «Привязать ТТК» в карте или открытием ТТК из облака. Ошибки самой спецификации (сырья в разы больше выхода) отмечаются и не загружаются сами.'},
@@ -16866,7 +16977,10 @@ function relBarHtml(){
     +relListHtml(REL_LOG.filter(function(e){return e.v<=APP_REL&&relItems(e,role).length;}).sort(function(a,b){return b.v-a.v;}),role)+'</div>';
   if(!p.length||!S.rel.show)return'';
   h='<div class="relbar" role="status" aria-label="Что изменилось"><div class="relh"><b>Что изменилось</b><span>Установлена версия '+APP_REL+'</span></div>'+relListHtml(p.slice(0,3),role)
-    +(p.length>3?'<p class="hint">Ещё выпусков: '+(p.length-3)+'. Они в полной истории.</p>':'')
+    +(p.length>3?(function(){   /* из выпусков, не попавших в окно, всё равно показываем «Нужно сделать» */
+      var acts=[];p.slice(3).forEach(function(e){relItems(e,role).forEach(function(x){if(x.k==='act')acts.push({v:e.v,t:x.t});});});
+      return(acts.length?'<div class="relv"><b>Нужно сделать из прежних выпусков</b><ul>'+acts.map(function(x){return'<li class="rel-act"><i>'+REL_KIND.act+'</i> '+esc(x.t)+' <span class="reld">версия '+x.v+'</span></li>';}).join('')+'</ul></div>':'')
+        +'<p class="hint">Ещё выпусков: '+(p.length-3)+'. Они в полной истории.</p>';})():'')
     +'<div class="relbtns"><button type="button" class="btn primary" data-rel="ok">Понятно</button><button type="button" class="btn" data-rel="all">Вся история</button></div></div>';
   return h;
 }
@@ -20704,9 +20818,10 @@ function onClick(e){
       var used=usedIn(id);
       if(used.length){flash('Сырьё используется в рецептах: '+used.slice(0,3).join(', ')+(used.length>3?'…':'')+'. Сначала уберите его из рецептов.');break;}
       arm(b,'Удалить?',function(){syForgetIng(id);removeDoc('ingredients',id);renderAll();});break;
-    case'filterAll':S.onlyEst=false;S.onlyUnk=false;S.pnoprice=false;renderAll();break;
-    case'filterEst':S.onlyEst=true;S.onlyUnk=false;S.pnoprice=false;renderAll();break;
-    case'filterUnk':S.onlyUnk=true;S.onlyEst=false;S.pnoprice=false;renderAll();break;
+    case'filterAll':S.onlyEst=false;S.onlyUnk=false;S.pnoprice=false;S.kNoPrice=false;renderAll();break;
+    case'filterKnp':S.kNoPrice=true;S.onlyEst=false;S.onlyUnk=false;renderAll();break;
+    case'filterEst':S.onlyEst=true;S.onlyUnk=false;S.kNoPrice=false;S.pnoprice=false;renderAll();break;
+    case'filterUnk':S.onlyUnk=true;S.onlyEst=false;S.kNoPrice=false;S.pnoprice=false;renderAll();break;
     case'filterNoPrice':S.pnoprice=true;S.onlyEst=false;S.onlyUnk=false;renderAll();break;
     case'openImport':S.importOpen=true;renderAll();break;
     case'closeImport':S.importOpen=false;renderAll();break;
@@ -21058,6 +21173,7 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape')ttkMenuClose
 $('#tabs').addEventListener('click',function(e){
   var b=e.target.closest('.tab');if(!b||b.id==='tabMore')return;
   S.tab=b.getAttribute('data-tab');
+  if(S.tab==='base'&&b.getAttribute('data-bsub')){S.bsub=b.getAttribute('data-bsub')==='price'?'price':'kbzhu';lsSet('kbzhu:bsub',S.bsub);if(S.bsub==='price'&&S.pview==='tbl'&&b.id==='tabPx'){S.pview='an';lsSet('kbzhu:pview','an');}}   /* «Цены и динамика» и «Сырьё и КБЖУ» — две части базы сырья */
   if(S.tab==='calc'&&!tabOk('calc')&&ttkCloudOn())S.tab='cloud';          /* шеф-повару расчёт не нужен: у него «ТТК» открывает сразу облако */
   if(S.tab==='calc'){ttkDropDraft();S.ttkHome=true;}
   renderAll();

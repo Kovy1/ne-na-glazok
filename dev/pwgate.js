@@ -67,7 +67,7 @@ const errs = [];
   // ===== 2. «Вход»: только форма входа; после входа обычные вкладки
   await page.click('[data-act="gmLogin"]'); await page.waitForSelector('#syConn');
   const conn = await txt('#syConn'); console.log('Вход:', conn.slice(0, 300));
-  assert.ok(/^Вход/.test(conn) && /Без входа доступно только меню/.test(conn));
+  assert.ok(/(^|право знать себе цену\.)Вход/.test(conn) && /Без входа доступно только меню/.test(conn));
   assert.strictEqual(await page.locator('#syHow').count(), 0, 'настройки скрипта у гостя нет');
   await page.fill('#sy-name', 'Кузя'); await page.fill('#sy-code', E);
   await page.click('[data-act="syConnect"]');

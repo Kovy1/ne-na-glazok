@@ -1,7 +1,8 @@
 /* ---------- ingredient base ---------- */
 function chipsHtml(){
   var ids=Object.keys(S.ings),n=ids.length,e=ids.filter(function(id){return S.ings[id].kind==='estimate';}).length,u=ids.filter(function(id){return kUnknown(S.ings[id]);}).length;
-  return '<button class="chip" data-act="filterAll" aria-pressed="'+(!S.onlyEst&&!S.onlyUnk)+'">Все · '+n+'</button><button class="chip" data-act="filterEst" aria-pressed="'+(!!S.onlyEst)+'">Ориентир · '+e+'</button>'
+  return '<button class="chip" data-act="filterAll" aria-pressed="'+(!S.onlyEst&&!S.onlyUnk&&!S.kNoPrice)+'">Все · '+n+'</button><button class="chip" data-act="filterEst" aria-pressed="'+(!!S.onlyEst)+'">Ориентир · '+e+'</button>'
+    +(NOPRICE?'':(function(){var np=ids.filter(function(id){return pricePerKg(S.ings[id],curRegion())===null;}).length;return np?'<button class="chip" data-act="filterKnp" aria-pressed="'+(!!S.kNoPrice)+'" title="Сырьё без закупочной цены в регионе «'+esc(regionName(curRegion()))+'»">Нет цены · '+np+'</button>':'';})())
     +(u?'<button class="chip" data-act="filterUnk" aria-pressed="'+(!!S.onlyUnk)+'" title="Сырьё с пометкой «Ориентир» и нулями вместо КБЖУ: в расчёте карт оно считается нулём">КБЖУ не заполнено · '+u+'</button>':'');
 }
 /* ---------- разделы сырья в базе ---------- */
@@ -27,6 +28,36 @@ function refreshIngList(){
   var f=$('#catF');if(f)f.innerHTML=catFilterOpts();
   var ch=$('#chips');if(ch)ch.innerHTML=chipsHtml();
 }
+/* строка под названием: раздел, синонимы, цена ₽/кг с изменением и спарклайном по загрузкам, источник КБЖУ */
+var ING_PX=null;
+function ingPxIndex(){
+  var m={},list;
+  try{list=phMerge(pAllRaw()).slice().sort(function(a,b){return a.from<b.from?-1:a.from>b.from?1:0;});}catch(e){return m;}
+  list.forEach(function(b){b.it.forEach(function(x){(m[x.ing]||(m[x.ing]=[])).push({d:b.to||b.from,pr:x.pr});});});
+  return m;
+}
+function ingSpark(ser){
+  var v=ser.map(function(x){return x.pr;}),mn=Math.min.apply(null,v),mx=Math.max.apply(null,v),W=54,H=16,n=v.length;
+  if(n<2)return'';
+  var pts=v.map(function(y,i){return(i*(W-2)/(n-1)+1).toFixed(1)+','+(mx===mn?H/2:(H-2-(y-mn)/(mx-mn)*(H-4))).toFixed(1);}).join(' ');
+  return'<svg class="ispark" viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" aria-hidden="true"><polyline points="'+pts+'"/></svg>';
+}
+var KIND_BADGE={table:'справочник',label:'этикетка',estimate:'ориентир',lab:'лаборатория'};
+function ingMetaHtml(id,i,uk){
+  var bits=[],al=(i.aliases||[]).length;
+  if(al)bits.push('<span class="imal" title="Названия из 1С и прайсов, по которым сырьё находится автоматически">синонимов: '+al+'</span>');
+  if(!NOPRICE){
+    var pk=pricePerKg(i,curRegion()),ser=(ING_PX&&ING_PX[id])||[];
+    if(pk===null)bits.push('<span class="imnp">нет цены</span>');
+    else{
+      var ch='',last=ser.length>1?ser[ser.length-1].pr:null,prev=ser.length>1?ser[ser.length-2].pr:null;
+      if(last>0&&prev>0){var d=(last-prev)/prev*100;ch=' <span class="imch '+(d>0.5?'up':(d<-0.5?'dn':''))+'" title="Изменение к предыдущей загрузке цен">'+(d>0.5?'▲':(d<-0.5?'▼':'='))+' '+fmt(Math.abs(d),1)+' %</span>';}
+      bits.push('<span class="impr"><b class="num">'+money(pk)+'</b> ₽/кг'+ch+'</span>'+(ser.length>1?'<span title="Цена по последним '+ser.length+' загрузкам 1С">'+ingSpark(ser.slice(-8))+'</span>':''));
+    }
+  }
+  bits.push('<span class="ibadge'+(i.kind==='estimate'?' est':'')+'" title="Источник КБЖУ">'+(KIND_BADGE[i.kind]||'справочник')+'</span>');
+  return'<span class="imeta">'+bits.join('')+'</span>';
+}
 function kindOptions(sel){return Object.keys(KINDS).map(function(k){return '<option value="'+k+'"'+(k===sel?' selected':'')+'>'+KINDS[k]+'</option>';}).join('');}
 function ingRowHtml(id){
   var i=S.ings[id],k=KCAL_P*i.p+KCAL_F*i.f+KCAL_C*i.c,fk='i:'+esc(id)+':',l=i.loss||{},uk=kUnknown(i);
@@ -34,7 +65,7 @@ function ingRowHtml(id){
   function lf(key,label,title){var v=l[key];return '<label class="cell il il-'+key+'" data-label="'+label+'"><input class="num" inputmode="decimal" autocomplete="off" aria-label="'+title+', %" title="'+title+', %" data-act="iLoss" data-k="'+key+'" data-edit data-fk="'+fk+'l'+key+'" value="'+toInput(v===undefined?null:v)+'" placeholder="—"></label>';}
   var open=!!LOSSUI.more[id];
   return '<div class="irow'+(i.kind==='estimate'?' est':'')+(uk?' unk':'')+'" data-iid="'+esc(id)+'">'
-    +'<input class="nm" aria-label="Название" autocomplete="off" data-act="iName" data-edit data-fk="'+fk+'name" value="'+esc(i.name)+'" placeholder="Название сырья"'+(i.kind==='estimate'?' title="Ориентир: значения ещё не сверены"':'')+'>'
+    +'<span class="nmw"><input class="nm" aria-label="Название" autocomplete="off" data-act="iName" data-edit data-fk="'+fk+'name" value="'+esc(i.name)+'" placeholder="Название сырья"'+(i.kind==='estimate'?' title="Ориентир: значения ещё не сверены"':'')+'>'+ingMetaHtml(id,i,uk)+'</span>'
     +nf('iP','ip','Белки',i.p,'p')+nf('iF','if','Жиры',i.f,'f')+nf('iC','ic','Углеводы',i.c,'c')
     +'<span class="out ik" data-label="ккал" data-out="k"'+(uk?' title="КБЖУ не заполнено"':'')+'>'+(uk?'—':fmt(k,0))+'</span>'
     +lf('cold','Х/о','Холодная обработка (отходы при очистке)')+lf('boil','Варка','Потери при варке')+lf('fry','Жарка','Потери при жарке')+lf('stew','Тушение','Потери при тушении')+lf('bake','Запекание','Потери при запекании')
@@ -51,11 +82,13 @@ function ingRowHtml(id){
       +'</div>':'');
 }
 function ingListHtml(){
+  ING_PX=NOPRICE?null:ingPxIndex();
   var q=catKey(S.q.trim());
   var ids=Object.keys(S.ings).sort(byName(S.ings)).filter(function(id){
     var i=S.ings[id];
     if(S.onlyEst&&i.kind!=='estimate')return false;
     if(S.onlyUnk&&!kUnknown(i))return false;
+    if(S.kNoPrice&&pricePerKg(i,curRegion())!==null)return false;
     if(S.catF&&String(i.name).trim()&&ingCat(i)!==S.catF)return false;
     return!q||catKey(i.name).indexOf(q)>-1||catKey(i.source).indexOf(q)>-1||catKey(ingCat(i)).indexOf(q)>-1;
   });
@@ -438,6 +471,10 @@ function mxChange(act,t){
   X.ask=0;mxPaint();
 }
 /*MX-END*/
+function kbHeadHtml(){
+  var ids=Object.keys(S.ings),n=ids.length,u=ids.filter(function(id){return kUnknown(S.ings[id]);}).length,np=NOPRICE?0:ids.filter(function(id){return pricePerKg(S.ings[id],curRegion())===null;}).length;
+  return'<div class="phead"><p class="kicker">Дополнительно · '+esc(regionName(curRegion()))+'</p><h1 class="ptitle">Сырьё и КБЖУ</h1><p class="psum"><b class="num">'+n+'</b> '+plural(n,['позиция','позиции','позиций'])+(u?', у <b class="num">'+u+'</b> нет КБЖУ':'')+(np?', у <b class="num">'+np+'</b> нет цены':'')+'. КБЖУ — на 100 г, цена — за килограмм в регионе «'+esc(regionName(curRegion()))+'».</p></div>';
+}
 function viewKbzhu(){
   var imp='';
   if(S.importOpen){
@@ -448,7 +485,7 @@ function viewKbzhu(){
       +'<button class="btn primary" data-act="doImport" data-edit>Добавить в базу</button><button class="btn" data-act="closeImport">Закрыть</button></div>'
       +'<p class="hint" id="importMsg">'+esc(S.importMsg)+'</p></section>';
   }
-  return '<div class="tools"><label class="field grow"><span class="lbl">Поиск по названию, источнику и разделу</span><input id="search" data-act="search" data-fk="search" autocomplete="off" value="'+esc(S.q)+'" placeholder="Например: говядина"></label>'
+  return kbHeadHtml()+'<div class="tools"><label class="field grow"><span class="lbl">Поиск по названию, источнику и разделу</span><input id="search" data-act="search" data-fk="search" autocomplete="off" value="'+esc(S.q)+'" placeholder="Например: говядина"></label>'
     +'<label class="field" style="flex:0 0 240px;align-self:flex-end"><span class="lbl">Раздел</span><select id="catF" data-act="catFilter" data-fk="catf">'+catFilterOpts()+'</select></label>'
     +'<div class="chips" id="chips" style="align-self:flex-end">'+chipsHtml()+'</div>'
     +'<div class="btns" style="align-self:flex-end"><button class="btn primary" data-act="newIng" data-edit>Новое сырьё</button><button class="btn" data-act="openImport">Импорт из таблицы</button>'+(canDl()?'<button class="btn" data-act="dlBase">Скачать CSV</button>':'')+'<button class="btn" data-act="cpBase">Копировать для Excel</button></div></div>'

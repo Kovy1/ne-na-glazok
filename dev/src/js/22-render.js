@@ -17,7 +17,9 @@ function restoreFocus(k){
   try{if(k.s!==null&&el.setSelectionRange)el.setSelectionRange(k.s,k.e);}catch(x){}
 }
 function renderTabs(){
-  $$('.tab').forEach(function(b){var t=b.getAttribute('data-tab');b.setAttribute('aria-selected',(t===S.tab||(t==='calc'&&S.tab==='cloud'))?'true':'false');});
+  $$('.tab').forEach(function(b){var t=b.getAttribute('data-tab'),bs=b.getAttribute('data-bsub'),on=(t===S.tab||(t==='calc'&&S.tab==='cloud'));if(on&&t==='base'&&bs&&!NOPRICE&&!syMgr())on=(S.bsub===bs);b.setAttribute('aria-selected',on?'true':'false');});
+  var tpx=$('#tabPx');if(tpx)tpx.hidden=NOPRICE||syMgr()||!tabOk('base');
+  setTimeout(navCapsFix,0);
   $('#tabBase').innerHTML='Сырьё и КБЖУ'+(S.loaded.ingredients?'<span class="tdot"> · </span><span class="tcnt">'+Object.keys(S.ings).length+'</span>':'');
   var th=$('#tabHome');if(th)th.hidden=guestOn()||!tabOk('home');
   var tm=$('#tabMenu'),ta=$('#tabAbc'),to=$('#tabOp1'),tk=$('#tabCalc');
@@ -237,3 +239,9 @@ function renderAll(){
   restoreFocus(keep);
 }
 
+
+/* подпись группы в корешке скрыта, если в группе нет видимых пунктов */
+function navCapsFix(){
+  var caps=$$('#tabs .navcap');
+  caps.forEach(function(c){var n=c.nextElementSibling,any=false;while(n&&!n.classList.contains('navcap')){if(n.classList.contains('tab')&&!n.hidden)any=true;n=n.nextElementSibling;}c.hidden=!any;});
+}

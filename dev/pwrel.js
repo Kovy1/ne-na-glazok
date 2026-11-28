@@ -41,7 +41,7 @@ const REL = (require('fs').readFileSync(SRC, 'utf8').match(/APP_REL=(\d+)/) || [
   // 2. прежний пользователь без отметки: видит только выпуск 91, роль «технолог» видит и действие по скрипту
   const L = await mk('L');
   const t = await waitShown(L); console.log(t.replace(/\s+/g, ' ').slice(0, 300));
-  assert.ok(/Версия 91/.test(t) && !/Версия 90/.test(t) && !/Версия 89/.test(t), 'только непрочитанные выпуски журнала (с 91)');
+  assert.ok(new RegExp('Версия ' + REL).test(t) && !/Версия 90/.test(t) && !/Версия 89/.test(t), 'только непрочитанные выпуски журнала (с 91, новые сверху)');
   assert.ok(new RegExp('Установлена версия ' + REL).test(t), 'сказано, что версия установлена');
   assert.ok(/Понятно/.test(t) && /Вся история/.test(t));
   assert.ok(/обновите скрипт общей базы до версии 30/.test(t), 'технолог видит действие по скрипту');
@@ -61,7 +61,7 @@ const REL = (require('fs').readFileSync(SRC, 'utf8').match(/APP_REL=(\d+)/) || [
   await I.evaluate(() => { const i = document.createElement('input'); i.id = 'tmpIn'; document.body.appendChild(i); i.focus(); });
   assert.strictEqual(await shown(I), '', 'пока поле в фокусе, окна нет');
   await I.evaluate(() => document.getElementById('tmpIn').blur());
-  assert.ok(/Версия 91/.test(await waitShown(I)), 'после ввода окно появилось');
+  assert.ok(new RegExp('Версия ' + REL).test(await waitShown(I)), 'после ввода окно появилось');
   console.log('3 OK');
 
   // 4. именной пользователь: по роли (редактор не видит действие по скрипту), синхронизация между устройствами
@@ -70,7 +70,7 @@ const REL = (require('fs').readFileSync(SRC, 'utf8').match(/APP_REL=(\d+)/) || [
   const D1 = await mk('D1');
   await connect(D1, { name: 'Петров П.П.', code: c.code });
   const t1 = await waitShown(D1); console.log(t1.replace(/\s+/g, ' ').slice(0, 200));
-  assert.ok(/Версия 91/.test(t1) && /Загрузка цен из 1С/.test(t1) && !/обновите скрипт/.test(t1), 'редактору — его пункты, без действий технолога');
+  assert.ok(new RegExp('Версия ' + REL).test(t1) && /Калькуляция — вкладка в карте/.test(t1) && !/обновите скрипт/.test(t1), 'редактору — его пункты, без действий технолога');
   await D1.click('[data-rel="ok"]');
   await D1.waitForFunction(() => document.querySelector('#relBar').hidden);
   const srv = post({ op: 'relget', code: c.code, by: 'Петров П.П.' }); assert.strictEqual(srv.v, +REL, 'на сервере записано: ' + JSON.stringify(srv));

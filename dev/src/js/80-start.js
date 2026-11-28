@@ -11,6 +11,7 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape')ttkMenuClose
 $('#tabs').addEventListener('click',function(e){
   var b=e.target.closest('.tab');if(!b||b.id==='tabMore')return;
   S.tab=b.getAttribute('data-tab');
+  if(S.tab==='base'&&b.getAttribute('data-bsub')){S.bsub=b.getAttribute('data-bsub')==='price'?'price':'kbzhu';lsSet('kbzhu:bsub',S.bsub);if(S.bsub==='price'&&S.pview==='tbl'&&b.id==='tabPx'){S.pview='an';lsSet('kbzhu:pview','an');}}   /* «Цены и динамика» и «Сырьё и КБЖУ» — две части базы сырья */
   if(S.tab==='calc'&&!tabOk('calc')&&ttkCloudOn())S.tab='cloud';          /* шеф-повару расчёт не нужен: у него «ТТК» открывает сразу облако */
   if(S.tab==='calc'){ttkDropDraft();S.ttkHome=true;}
   renderAll();
